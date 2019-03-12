@@ -4,7 +4,10 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Recover cell cycle in mESC"
+    "# Recover cell cycle in mESC\n",
+    "\n",
+    "Here we use the mESC dataset. For simplicity we have converted the dataset into TPM.\n",
+    "The original count data is available at ArrayExpress: [E-MTAB-2805](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2805/). Tools to transform data are also provided and explained in the following sections."
    ]
   },
   {

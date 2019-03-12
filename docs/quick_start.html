@@ -81,8 +81,13 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python-part">Python part</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#r-part">R part</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
@@ -181,47 +186,71 @@
 <h1>Quick Start Guide<a class="headerlink" href="#quick-start-guide" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>The package requires <a class="reference external" href="http://www.numpy.org//">numpy</a>, <a class="reference external" href="http://www.scipy.org">scipy</a>, <a class="reference external" href="https://pandas.pydata.org/">pandas</a> and <a class="reference external" href="https://www.tensorflow.org/install/pip">TensorFlow</a>.</p>
+<div class="section" id="python-part">
+<h3>Python part<a class="headerlink" href="#python-part" title="Permalink to this headline">¶</a></h3>
+<p>The package requires <a class="reference external" href="http://www.numpy.org//">numpy</a>, <a class="reference external" href="http://www.scipy.org">scipy</a>, <a class="reference external" href="https://pandas.pydata.org/">pandas</a>, matplotlib, scikit-learn and <a class="reference external" href="https://www.tensorflow.org/">TensorFlow</a>.</p>
 <p>The package versions this package has been tested on is shown in the following table.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="50%" />
-<col width="25%" />
-<col width="25%" />
+<col width="29%" />
+<col width="14%" />
+<col width="57%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Package</th>
-<th class="head">Version</th>
+<th class="head">Tested on
+version</th>
 <th class="head">Annotation</th>
 </tr>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>numpy</td>
 <td>1.15.2</td>
-<td>&#160;</td>
+<td>Provides basic matrix operations.</td>
 </tr>
 <tr class="row-odd"><td>scipy</td>
 <td>1.1.0</td>
-<td>&#160;</td>
+<td>Provides basic statistic functions.</td>
 </tr>
 <tr class="row-even"><td>pandas</td>
 <td>0.23.4</td>
+<td>Provides data frame objects.</td>
+</tr>
+<tr class="row-odd"><td>matplotlib</td>
 <td>&#160;</td>
+<td>Plots figures.</td>
+</tr>
+<tr class="row-even"><td>sklearn</td>
+<td>0.23.4</td>
+<td>Provides basic data transformations (e.g. PCA)</td>
 </tr>
 <tr class="row-odd"><td>TensorFlow</td>
 <td>1.10.1</td>
-<td>&#160;</td>
+<td>Provides rich optimization tools</td>
 </tr>
 </tbody>
 </table>
-<p>A virtual environment manager like Conda is recommended.</p>
+<p>For numpy, scipy, pandas and matplotlib, there are rarely big changes. Thus, unless your run into a problem, you do not have to upgrade/downgrade your packages. All the packages are provided in Anaconda.</p>
+<p>Although TensorFlow is provided in Anaconda, but the TensorFlow official site recommends the pip version. You can follow the <a class="reference external" href="https://www.tensorflow.org/install/pip">official tutorial on how to install tensorflow with pip</a>. TensorFlow 2.x has just been released, but please stay with 1.x. Also be advised that Tensorflow may not be compatible with python 3.7, so please use python 3.6.x.</p>
+<p>To prevent tweaking package versions causing side-effects, a virtual environment manager like Conda is recommended.
+The way to installing TensorFlow within a Conda Virtual Environment is provided in the official tutorial.</p>
+</div>
+<div class="section" id="r-part">
+<h3>R part<a class="headerlink" href="#r-part" title="Permalink to this headline">¶</a></h3>
+<p>Depending on which analysis is preferred in R, packages Mclust, ComplexHeatmap may be required.</p>
+</div>
 </div>
 <div class="section" id="download">
 <h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
-<p>The current release can be found here:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone
+<p>The current release can be downloaded from GitHub:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/lshh125/cyclum.git
 </pre></div>
 </div>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>It is now a small size local package so installation is not required.
+Installation will be added in future releases to allow calling from anywhere.</p>
 </div>
 </div>
 
