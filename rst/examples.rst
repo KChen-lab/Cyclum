@@ -1,11 +1,11 @@
 Examples
 ========
 
-We provide several quick examples.
+.. toctree::
+    :maxdepth: 2
+    :caption: Contents:
 
-Example 1: recover cell cycle in mESC
--------------------------------------
+    example_mESC
 
 
-Example 2: remove cell cycle in perturbed mESC
-----------------------------------------------
+
