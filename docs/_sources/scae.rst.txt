@@ -1,0 +1,38 @@
+scae package
+============
+
+Submodules
+----------
+
+scae.scae module
+----------------
+
+.. automodule:: scae.scae
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+scae.smart\_train module
+------------------------
+
+.. automodule:: scae.smart_train
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+scae.writer module
+------------------
+
+.. automodule:: scae.writer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: scae
+    :members:
+    :undoc-members:
+    :show-inheritance:
