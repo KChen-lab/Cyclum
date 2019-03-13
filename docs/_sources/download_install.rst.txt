@@ -1,6 +1,15 @@
 Download and Install
 ====================
 
+Download
+--------
+
+The current release can be downloaded from GitHub:
+
+.. code:: bash
+
+    git clone https://github.com/lshh125/cyclum.git
+
 Dependencies
 ------------
 
@@ -39,15 +48,6 @@ R part
 ^^^^^^
 
 Depending on which analysis is preferred in R, packages Rtsne, mclust, matrixStats, ComplexHeatmap may be required.
-
-Download
---------
-
-The current release can be downloaded from GitHub:
-
-.. code:: bash
-
-    git clone https://github.com/lshh125/cyclum.git
 
 Installation
 ------------

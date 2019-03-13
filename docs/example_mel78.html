@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Recover cell cycle in mESC &mdash; cyclum 0.1 documentation</title>
+  <title>Analyze Melanoma Patient 78 &mdash; cyclum 0.1 documentation</title>
   
 
   
@@ -84,16 +84,13 @@
 <li class="toctree-l1 current"><a class="reference internal" href="quick_start.html">Quick Start Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="example_mESC.html">Recover cell cycle in mESC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="example_mESC_simulated.html">Remove cell cycle from perturbed mESC</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Recover cell cycle in mESC</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Analyze Melanoma Patient 78</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Import-necessary-packages">Import necessary packages</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Read-data">Read data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Set-up-the-model-and-fit-the-model">Set up the model and fit the model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Illustrations">Illustrations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Comparisons">Comparisons</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#PCA">PCA</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#reCAT">reCAT</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#Propose-genes">Propose genes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#AXL/MITF-program">AXL/MITF program</a></li>
 </ul>
 </li>
 </ul>
@@ -151,7 +148,7 @@
         
           <li><a href="quick_start.html">Quick Start Guide</a> &raquo;</li>
         
-      <li>Recover cell cycle in mESC</li>
+      <li>Analyze Melanoma Patient 78</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -392,9 +389,9 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Recover-cell-cycle-in-mESC">
-<h1>Recover cell cycle in mESC<a class="headerlink" href="#Recover-cell-cycle-in-mESC" title="Permalink to this headline">¶</a></h1>
-<p>Here we use the mESC dataset. For simplicity we have converted the dataset into TPM. The original count data is available at ArrayExpress: <a class="reference external" href="https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2805/">E-MTAB-2805</a>. Tools to transform data are also provided and explained in the following sections.</p>
+<div class="section" id="Analyze-Melanoma-Patient-78">
+<h1>Analyze Melanoma Patient 78<a class="headerlink" href="#Analyze-Melanoma-Patient-78" title="Permalink to this headline">¶</a></h1>
+<p>Here we perform analysis on the gene expressions of cells from the melanoma patient number 78. For simplicity we have converted the dataset into TPM. The original count data is available at Gene Expression Omnibus: <a class="reference external" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE72056">GSE72056</a>.</p>
 <div class="section" id="Import-necessary-packages">
 <h2>Import necessary packages<a class="headerlink" href="#Import-necessary-packages" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
@@ -419,6 +416,7 @@ div.rendered_html tbody tr:hover {
 <span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
 <span class="kn">import</span> <span class="nn">sklearn</span> <span class="k">as</span> <span class="nn">skl</span>
 <span class="kn">import</span> <span class="nn">sklearn.preprocessing</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 
@@ -432,7 +430,9 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">cyclum</span>
+<span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">cyclum</span>
 <span class="kn">from</span> <span class="nn">cyclum</span> <span class="k">import</span> <span class="n">writer</span>
 </pre></div>
 </div>
@@ -451,15 +451,14 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">input_file_mask</span> <span class="o">=</span> <span class="s1">&#39;data/mESC/mesc-tpm&#39;</span>
-<span class="n">output_file_mask</span> <span class="o">=</span> <span class="s1">&#39;./results/mESC_original/mesc-tpm&#39;</span>
+<span></span><span class="n">input_file_mask</span> <span class="o">=</span> <span class="s1">&#39;data/melanoma/M78_tumor&#39;</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="Read-data">
 <h2>Read data<a class="headerlink" href="#Read-data" title="Permalink to this headline">¶</a></h2>
-<p>Here we have label, so we load both. However, the label is not used until evaluation.</p>
+<p>We do not have cell-cycle labels for the cells any more.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -469,10 +468,9 @@ div.rendered_html tbody tr:hover {
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read in data and perform log transform (log2(x+1)), centering (mean = 1) and scaling (sd = 1).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tpm</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">read_df_from_binary</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-    <span class="n">sttpm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">skl</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">tpm</span><span class="o">.</span><span class="n">values</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">sttpm</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">read_df_from_binary</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">)</span>
 
-    <span class="n">label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file_mask</span> <span class="o">+</span> <span class="s1">&#39;-label.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file_mask</span> <span class="o">+</span> <span class="s1">&#39;-label.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sttpm</span><span class="p">,</span> <span class="n">label</span>
 
 <span class="n">sttpm</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">)</span>
@@ -512,153 +510,153 @@ div.rendered_html tbody tr:hover {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Gnai3</th>
-      <th>Pbsn</th>
-      <th>Cdc45</th>
-      <th>H19</th>
-      <th>Scml2</th>
-      <th>Apoh</th>
-      <th>Narf</th>
-      <th>Cav2</th>
-      <th>Klf6</th>
-      <th>Scmh1</th>
+      <th>C9orf152</th>
+      <th>RPS11</th>
+      <th>ELMO2</th>
+      <th>CREB3L1</th>
+      <th>PNMA1</th>
+      <th>MMP2</th>
+      <th>TMEM216</th>
+      <th>TRAF3IP2-AS1</th>
+      <th>LRRC37A5P</th>
+      <th>LOC653712</th>
       <th>...</th>
-      <th>RP23-345J21.2</th>
-      <th>AC121960.1</th>
-      <th>AC136147.1</th>
-      <th>AC122013.1</th>
-      <th>AC132389.1</th>
-      <th>Gm11392</th>
-      <th>AC160109.2</th>
-      <th>AC154675.1</th>
-      <th>AC156980.1</th>
-      <th>RP23-429I18.1</th>
+      <th>GPLD1</th>
+      <th>SNORD115-39</th>
+      <th>RAB8A</th>
+      <th>RXFP2</th>
+      <th>PCIF1</th>
+      <th>PIK3IP1</th>
+      <th>SNRPD2</th>
+      <th>SLC39A6</th>
+      <th>CTSC</th>
+      <th>AQP7</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>G1_cell1_count</th>
-      <td>-0.411123</td>
-      <td>-0.059028</td>
-      <td>-0.099416</td>
-      <td>5.385822</td>
-      <td>-0.691219</td>
+      <th>cy78-CD45-neg-1-B04-S496-comb</th>
+      <td>-0.101847</td>
+      <td>0.007892</td>
+      <td>0.904987</td>
       <td>0.0</td>
-      <td>-0.690715</td>
-      <td>-0.059028</td>
-      <td>-1.051909</td>
-      <td>-0.350978</td>
+      <td>0.940964</td>
+      <td>0.362364</td>
+      <td>1.468877</td>
+      <td>-0.794159</td>
+      <td>0.0</td>
+      <td>-0.137973</td>
       <td>...</td>
-      <td>-0.146722</td>
+      <td>-0.443219</td>
       <td>0.0</td>
-      <td>-0.079577</td>
-      <td>-0.374972</td>
-      <td>-0.824399</td>
-      <td>-0.059028</td>
-      <td>-0.079861</td>
-      <td>0.0</td>
-      <td>-0.144843</td>
-      <td>0.090295</td>
+      <td>-0.001803</td>
+      <td>-0.087706</td>
+      <td>-1.099878</td>
+      <td>0.124245</td>
+      <td>0.069167</td>
+      <td>0.333042</td>
+      <td>-0.390829</td>
+      <td>-0.133081</td>
     </tr>
     <tr>
-      <th>G1_cell2_count</th>
-      <td>-0.180800</td>
-      <td>-0.059028</td>
-      <td>0.777223</td>
-      <td>-0.165725</td>
-      <td>-0.820206</td>
+      <th>cy78-CD45-neg-3-H06-S762-comb</th>
+      <td>-0.101847</td>
+      <td>-0.202088</td>
+      <td>0.875485</td>
       <td>0.0</td>
-      <td>0.362341</td>
-      <td>-0.059028</td>
-      <td>1.458881</td>
-      <td>0.207421</td>
+      <td>1.228029</td>
+      <td>2.059569</td>
+      <td>1.475918</td>
+      <td>-0.433542</td>
+      <td>0.0</td>
+      <td>-0.137973</td>
       <td>...</td>
-      <td>-0.146722</td>
+      <td>0.074614</td>
       <td>0.0</td>
-      <td>-0.079577</td>
-      <td>-0.374972</td>
-      <td>-0.824399</td>
-      <td>-0.059028</td>
-      <td>-0.079861</td>
-      <td>0.0</td>
-      <td>-0.144843</td>
-      <td>-1.271033</td>
+      <td>0.658312</td>
+      <td>-0.087706</td>
+      <td>0.795460</td>
+      <td>0.865745</td>
+      <td>0.430293</td>
+      <td>0.688241</td>
+      <td>-0.973564</td>
+      <td>-0.133081</td>
     </tr>
     <tr>
-      <th>G1_cell3_count</th>
-      <td>-1.409101</td>
-      <td>-0.059028</td>
-      <td>-1.218187</td>
-      <td>-0.165725</td>
-      <td>-0.820206</td>
+      <th>cy78-CD45-neg-1-D07-S523-comb</th>
+      <td>-0.101847</td>
+      <td>0.048798</td>
+      <td>-0.044918</td>
       <td>0.0</td>
-      <td>-0.690715</td>
-      <td>-0.059028</td>
-      <td>-1.271394</td>
-      <td>-0.657735</td>
+      <td>0.092909</td>
+      <td>-0.693664</td>
+      <td>1.148125</td>
+      <td>-0.361802</td>
+      <td>0.0</td>
+      <td>-0.137973</td>
       <td>...</td>
-      <td>2.593349</td>
+      <td>-0.939599</td>
       <td>0.0</td>
-      <td>-0.079577</td>
-      <td>-0.374972</td>
-      <td>-0.592938</td>
-      <td>-0.059028</td>
-      <td>-0.079861</td>
-      <td>0.0</td>
-      <td>-0.144843</td>
-      <td>-1.271033</td>
+      <td>0.951421</td>
+      <td>-0.087706</td>
+      <td>0.263022</td>
+      <td>-0.508476</td>
+      <td>0.559235</td>
+      <td>0.116920</td>
+      <td>0.332409</td>
+      <td>-0.133081</td>
     </tr>
     <tr>
-      <th>G1_cell4_count</th>
-      <td>-1.867558</td>
-      <td>-0.059028</td>
-      <td>0.923695</td>
-      <td>-0.165725</td>
-      <td>-0.820206</td>
+      <th>cy78-CD45-neg-3-D01-S709-comb</th>
+      <td>-0.101847</td>
+      <td>0.025618</td>
+      <td>-1.046433</td>
       <td>0.0</td>
-      <td>0.903266</td>
-      <td>-0.059028</td>
-      <td>1.430708</td>
-      <td>-0.657735</td>
+      <td>0.457558</td>
+      <td>-0.693664</td>
+      <td>1.070903</td>
+      <td>-0.206473</td>
+      <td>0.0</td>
+      <td>-0.137973</td>
       <td>...</td>
-      <td>-0.146722</td>
+      <td>-0.432214</td>
       <td>0.0</td>
-      <td>-0.079577</td>
-      <td>-0.374972</td>
-      <td>2.938898</td>
-      <td>-0.059028</td>
-      <td>-0.079861</td>
-      <td>0.0</td>
-      <td>-0.144843</td>
-      <td>-1.271033</td>
+      <td>1.198078</td>
+      <td>-0.087706</td>
+      <td>1.066057</td>
+      <td>-0.508476</td>
+      <td>0.920172</td>
+      <td>0.153443</td>
+      <td>-1.072105</td>
+      <td>-0.133081</td>
     </tr>
     <tr>
-      <th>G1_cell5_count</th>
-      <td>-1.646290</td>
-      <td>-0.059028</td>
-      <td>0.001887</td>
-      <td>-0.165725</td>
-      <td>-0.820206</td>
+      <th>cy78-CD45-neg-2-B08-S596-comb</th>
+      <td>-0.101847</td>
+      <td>0.143624</td>
+      <td>1.412362</td>
       <td>0.0</td>
-      <td>-0.690715</td>
-      <td>-0.059028</td>
-      <td>-0.811233</td>
-      <td>-0.657735</td>
+      <td>0.253140</td>
+      <td>-0.693664</td>
+      <td>-0.583134</td>
+      <td>-1.203133</td>
+      <td>0.0</td>
+      <td>-0.137973</td>
       <td>...</td>
-      <td>-0.146722</td>
+      <td>1.698251</td>
       <td>0.0</td>
-      <td>-0.079577</td>
-      <td>-0.374972</td>
-      <td>-0.824399</td>
-      <td>-0.059028</td>
-      <td>-0.079861</td>
-      <td>0.0</td>
-      <td>-0.144843</td>
-      <td>-0.111558</td>
+      <td>0.974617</td>
+      <td>-0.087706</td>
+      <td>-0.521885</td>
+      <td>0.187822</td>
+      <td>-0.166806</td>
+      <td>0.687519</td>
+      <td>-0.361164</td>
+      <td>-0.133081</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 38293 columns</p>
+<p>5 rows × 23686 columns</p>
 </div></div>
 </div>
 <div class="nbinput docutils container">
@@ -693,29 +691,41 @@ div.rendered_html tbody tr:hover {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>stage</th>
+      <th>tumor</th>
+      <th>malignant(1=no,2=yes,0=unresolved)</th>
+      <th>non-malignant cell type (1=T,2=B,3=Macro.4=Endo.,5=CAF;6=NK)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>G1_cell1_count</th>
-      <td>g0/g1</td>
+      <th>cy78-CD45-neg-1-B04-S496-comb</th>
+      <td>78</td>
+      <td>2</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>G1_cell2_count</th>
-      <td>g0/g1</td>
+      <th>cy78-CD45-neg-3-H06-S762-comb</th>
+      <td>78</td>
+      <td>2</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>G1_cell3_count</th>
-      <td>g0/g1</td>
+      <th>cy78-CD45-neg-1-D07-S523-comb</th>
+      <td>78</td>
+      <td>2</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>G1_cell4_count</th>
-      <td>g0/g1</td>
+      <th>cy78-CD45-neg-3-D01-S709-comb</th>
+      <td>78</td>
+      <td>2</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>G1_cell5_count</th>
-      <td>g0/g1</td>
+      <th>cy78-CD45-neg-2-B08-S596-comb</th>
+      <td>78</td>
+      <td>2</td>
+      <td>0</td>
     </tr>
   </tbody>
 </table>
@@ -730,7 +740,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">cyclum</span><span class="o">.</span><span class="n">PreloadCyclum</span><span class="p">(</span><span class="n">sttpm</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">q_circular</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">q_linear</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">cyclum</span><span class="o">.</span><span class="n">PreloadCyclum</span><span class="p">(</span><span class="n">sttpm</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">q_circular</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">q_linear</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -740,6 +750,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">pseudotime</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -749,26 +760,26 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 pretrain burnin
-step  2000: loss [0.1452561, 45035228.0, 141884.6] time 9.83
+step  2000: loss [0.49333668, 27318.037, 75596.17] time 5.09
 pretrain train
-step  2000: loss [0.14524707, 45035230.0, 141884.84] time 7.32
-step  4000: loss [0.14524722, 45035230.0, 141884.84] time 6.24
+step  2000: loss [0.49329627, 27318.31, 75596.17] time 3.80
+step  4000: loss [0.49329615, 27318.295, 75596.18] time 3.35
 midtrain burnin
-step  2000: loss [0.14524722, 13479.106, 65288.434] time 31.53
+step  2000: loss [0.49329615, 9224.356, 39934.965] time 9.69
 midtrain train
-step  2000: loss [0.14524722, 13475.677, 65288.434] time 31.44
-step  4000: loss [0.14524722, 13475.676, 65288.434] time 29.15
+step  2000: loss [0.49329615, 9224.358, 39934.953] time 9.60
+step  4000: loss [0.49329615, 9224.36, 39934.95] time 8.79
 finaltrain train
-step  2000: loss [0.23462683, 12895.94, 35502.785] time 41.88
-step  4000: loss [0.25569192, 12895.507, 18958.936] time 38.46
-step  6000: loss [0.276326, 12895.623, 9609.924] time 38.45
+step  2000: loss [0.5430872, 9208.43, 22069.293] time 12.77
+step  4000: loss [0.5481686, 9208.404, 11894.999] time 11.64
+step  6000: loss [0.55096513, 9208.468, 6089.2246] time 11.65
 finaltrain refine
-step  2000: loss [0.28275946, 12895.442, 7700.0806] time 42.01
-step  4000: loss [0.28499442, 12895.469, 6226.207] time 41.03
-step  6000: loss [0.28545943, 12895.44, 5038.1367] time 39.55
-step  8000: loss [0.2893271, 12895.435, 4072.1836] time 40.60
-step 10000: loss [0.29161924, 12895.42, 3288.5647] time 40.55
-Full time 438.50
+step  2000: loss [0.5542275, 9208.411, 4898.9956] time 12.75
+step  4000: loss [0.5545521, 9208.403, 3995.3237] time 11.62
+step  6000: loss [0.5546467, 9208.404, 3257.5784] time 11.63
+step  8000: loss [0.5548571, 9208.413, 2659.4236] time 11.62
+step 10000: loss [0.5553257, 9208.426, 2173.033] time 11.63
+Full time 135.76
 </pre></div></div>
 </div>
 </div>
@@ -789,32 +800,155 @@ Full time 438.50
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">color_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;stage&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;g0/g1&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;g2/m&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">},</span>
-                 <span class="s1">&#39;subcluster&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;intact&quot;</span><span class="p">:</span> <span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="s2">&quot;perturbed&quot;</span><span class="p">:</span> <span class="s2">&quot;violet&quot;</span><span class="p">}}</span>
-<span class="n">cyclum</span><span class="o">.</span><span class="n">illustration</span><span class="o">.</span><span class="n">plot_round_distr_color</span><span class="p">(</span><span class="n">pseudotime</span><span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;stage&#39;</span><span class="p">],</span> <span class="n">color_map</span><span class="p">[</span><span class="s1">&#39;stage&#39;</span><span class="p">])</span>
+<span></span><span class="n">color_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tumor&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">78</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">},}</span>
+<span class="n">cyclum</span><span class="o">.</span><span class="n">illustration</span><span class="o">.</span><span class="n">plot_round_distr_color</span><span class="p">(</span><span class="n">pseudotime</span><span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;tumor&#39;</span><span class="p">],</span> <span class="n">color_map</span><span class="p">[</span><span class="s1">&#39;tumor&#39;</span><span class="p">])</span>
+<span class="k">pass</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<img alt="_images/example_mel78_18_0.png" src="_images/example_mel78_18_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_mel78_18_1.png" src="_images/example_mel78_18_1.png" />
+<img alt="_images/example_mel78_18_0.png" src="_images/example_mel78_18_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sttpm2</span> <span class="o">=</span> <span class="n">sttpm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pseudotime</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">rotation</span>
+</pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Comparisons">
-<h2>Comparisons<a class="headerlink" href="#Comparisons" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="PCA">
-<h3>PCA<a class="headerlink" href="#PCA" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Propose-genes">
+<h2>Propose genes<a class="headerlink" href="#Propose-genes" title="Permalink to this headline">¶</a></h2>
+<p>We show the top 20 proposed gene here.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">rotation</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">]</span> <span class="o">-</span> <span class="n">rotation</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">]</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">rotation</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span>
+                 <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">rotation</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">]</span> <span class="o">-</span> <span class="n">rotation</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">+</span> <span class="mf">1e-12</span><span class="p">)</span>
+<span class="n">order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">weight</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sttpm</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+UGDH-AS1
+NME1
+LOC100131257
+FBLIM1
+ORC4
+ATP5G3
+MAB21L3
+ABCC9
+FABP5
+C1QBP
+LSM10
+REXO1L1
+ATP5G1
+TOMM5
+NDUFA8
+TLCD2
+S100A11
+COX6C
+LOC646214
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="AXL/MITF-program">
+<h2>AXL/MITF program<a class="headerlink" href="#AXL/MITF-program" title="Permalink to this headline">¶</a></h2>
+<p>We show that cyclum helps clarify AXL/MITF contrast.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data/melanoma/AXL_marker_genes.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">axl_genes</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data/melanoma/MITF_marker_genes.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">mitf_genes</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sttpm3</span> <span class="o">=</span> <span class="n">sttpm2</span><span class="p">[</span><span class="n">label</span><span class="p">[</span><span class="s1">&#39;malignant(1=no,2=yes,0=unresolved)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">axl_score</span> <span class="o">=</span> <span class="n">sttpm3</span><span class="p">[</span><span class="n">axl_genes</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">sttpm3</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mitf_score</span> <span class="o">=</span> <span class="n">sttpm3</span><span class="p">[</span><span class="n">mitf_genes</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">sttpm3</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">axl_score</span><span class="p">,</span> <span class="n">mitf_score</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">axl_score</span><span class="p">,</span> <span class="n">mitf_score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([[ 1.        , -0.23826302],
+       [-0.23826302,  1.        ]])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/example_mel78_25_1.png" src="_images/example_mel78_25_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sttpm4</span> <span class="o">=</span> <span class="n">sttpm</span><span class="p">[</span><span class="n">label</span><span class="p">[</span><span class="s1">&#39;malignant(1=no,2=yes,0=unresolved)&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">axl_score</span> <span class="o">=</span> <span class="n">sttpm4</span><span class="p">[</span><span class="n">axl_genes</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">sttpm4</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mitf_score</span> <span class="o">=</span> <span class="n">sttpm4</span><span class="p">[</span><span class="n">mitf_genes</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">sttpm4</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">axl_score</span><span class="p">,</span> <span class="n">mitf_score</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">axl_score</span><span class="p">,</span> <span class="n">mitf_score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([[1.        , 0.23976131],
+       [0.23976131, 1.        ]])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/example_mel78_26_1.png" src="_images/example_mel78_26_1.png" />
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -822,19 +956,6 @@ Full time 438.50
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span>
 </pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="reCAT">
-<h3>reCAT<a class="headerlink" href="#reCAT" title="Permalink to this headline">¶</a></h3>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
 </div>
 </div>
 </div>

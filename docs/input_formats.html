@@ -29,7 +29,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Output Formats" href="output_formats.html" />
-    <link rel="prev" title="Recover cell cycle in mESC" href="example_mel78.html" /> 
+    <link rel="prev" title="Analyze Melanoma Patient 78" href="example_mel78.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -84,7 +84,7 @@
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Input Formats</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#expression-matrix">Expression matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration-file">Configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-file-to-be-supported">Configuration file (to be supported)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="output_formats.html">Output Formats</a></li>
@@ -185,10 +185,19 @@
 <p>As a marker-gene free method, cyclum only requires an expression matrix.</p>
 <div class="section" id="expression-matrix">
 <h2>Expression matrix<a class="headerlink" href="#expression-matrix" title="Permalink to this headline">¶</a></h2>
-<p>Several formats are supported but the current</p>
+<dl class="docutils">
+<dt>Cyclum accept expression matrix as input. Cyclum includes tools to</dt>
+<dd><ul class="first last simple">
+<li>covert count matrix to TPM/PKM value,</li>
+<li>log transform / Freeman-Tukey transform matrix,</li>
+<li>center and scale expression data .</li>
+</ul>
+</dd>
+</dl>
+<p>For evaluation purpose, cyclum also accept cell labels.</p>
 </div>
-<div class="section" id="configuration-file">
-<h2>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration-file-to-be-supported">
+<h2>Configuration file (to be supported)<a class="headerlink" href="#configuration-file-to-be-supported" title="Permalink to this headline">¶</a></h2>
 <p>The parameters for runing cyclum is specified in the configuration file. Fields are listed in the following table.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -231,7 +240,7 @@
         <a href="output_formats.html" class="btn btn-neutral float-right" title="Output Formats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="example_mel78.html" class="btn btn-neutral" title="Recover cell cycle in mESC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="example_mel78.html" class="btn btn-neutral" title="Analyze Melanoma Patient 78" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -6,10 +6,15 @@ As a marker-gene free method, cyclum only requires an expression matrix.
 Expression matrix
 -----------------
 
-Several formats are supported but the current
+Cyclum accept expression matrix as input. Cyclum includes tools to
+ + covert count matrix to TPM/PKM value,
+ + log transform / Freeman-Tukey transform matrix,
+ + center and scale expression data .
 
-Configuration file
-------------------
+For evaluation purpose, cyclum also accept cell labels.
+
+Configuration file (to be supported)
+------------------------------------
 
 The parameters for runing cyclum is specified in the configuration file. Fields are listed in the following table.
 

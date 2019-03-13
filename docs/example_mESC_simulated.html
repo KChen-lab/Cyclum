@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Recover cell cycle in mESC" href="example_mel78.html" />
+    <link rel="next" title="Analyze Melanoma Patient 78" href="example_mel78.html" />
     <link rel="prev" title="Recover cell cycle in mESC" href="example_mESC.html" /> 
 
   
@@ -91,7 +91,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Subclone-analysis">Subclone analysis</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="example_mel78.html">Recover cell cycle in mESC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_mel78.html">Analyze Melanoma Patient 78</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
@@ -390,7 +390,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Remove-cell-cycle-from-perturbed-mESC">
 <h1>Remove cell cycle from perturbed mESC<a class="headerlink" href="#Remove-cell-cycle-from-perturbed-mESC" title="Permalink to this headline">¶</a></h1>
-<p>Here we use the mESC dataset. For simplicity we have converted the dataset into TPM. The original count data is available at ArrayExpress: <a class="reference external" href="https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2805/">E-MTAB-2805</a>. Tools to transform data are also provided and explained in the following sections.</p>
+<p>Here we use the mESC dataset with 600 cell cycle genes and 1000 other gene expressions doubled for 40% cells. For simplicity we have converted the dataset into TPM.</p>
 <div class="section" id="Import-necessary-packages">
 <h2>Import necessary packages<a class="headerlink" href="#Import-necessary-packages" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
@@ -827,6 +827,7 @@ Full time 422.85
 <div class="section" id="Subclone-analysis">
 <h2>Subclone analysis<a class="headerlink" href="#Subclone-analysis" title="Permalink to this headline">¶</a></h2>
 <p>Many analysis are done in R, so we also choose R to do this job. On the jupyter/python side, package rpy2 is needed to run R inline. On the R side, packages Rtsne and matrixStats are required. It takes some time to transfer data from python to R.</p>
+<p>The data corrected by cyclum shows better separation of two subclones in the tsne plot.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -947,7 +948,7 @@ title<span class="p">(</span><span class="kp">paste</span><span class="p">(</spa
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="example_mel78.html" class="btn btn-neutral float-right" title="Recover cell cycle in mESC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="example_mel78.html" class="btn btn-neutral float-right" title="Analyze Melanoma Patient 78" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="example_mESC.html" class="btn btn-neutral" title="Recover cell cycle in mESC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

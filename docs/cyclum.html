@@ -87,6 +87,10 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">cyclum package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cyclum.core">cyclum.core module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cyclum.evaluation">cyclum.evaluation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cyclum.filter">cyclum.filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cyclum.illustration">cyclum.illustration module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cyclum.preproc">cyclum.preproc module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cyclum.smart_train">cyclum.smart_train module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cyclum.writer">cyclum.writer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cyclum">Module contents</a></li>
@@ -322,6 +326,226 @@ The model will not be fitted again.</p>
 <dd></dd></dl>
 
 </dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.evaluation">
+<span id="cyclum-evaluation-module"></span><h2>cyclum.evaluation module<a class="headerlink" href="#module-cyclum.evaluation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cyclum.evaluation.parzen_estimate">
+<code class="descclassname">cyclum.evaluation.</code><code class="descname">parzen_estimate</code><span class="sig-paren">(</span><em>x</em>, <em>lim</em>, <em>half_granularity=100</em>, <em>window=&lt;function &lt;lambda&gt;&gt;</em>, <em>scale=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/evaluation.html#parzen_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.evaluation.parzen_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate parzen window estimation (a non-parametric density estimation method)
+:param x: instances
+:param lim: limit of domain
+:param half_granularity:
+:param window:
+:param scale:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.evaluation.periodic_parzen_estimate">
+<code class="descclassname">cyclum.evaluation.</code><code class="descname">periodic_parzen_estimate</code><span class="sig-paren">(</span><em>x</em>, <em>period=3.14</em>, <em>half_granularity=100</em>, <em>window=&lt;function &lt;lambda&gt;&gt;</em>, <em>scale=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/evaluation.html#periodic_parzen_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.evaluation.periodic_parzen_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate parzen window estimation specifically for periodic domain
+:param x:
+:param period:
+:param half_granularity:
+:param window:
+:param scale:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.evaluation.precision_estimate">
+<code class="descclassname">cyclum.evaluation.</code><code class="descname">precision_estimate</code><span class="sig-paren">(</span><em>distr_vector_list</em>, <em>label_vector</em>, <em>possible_label_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/evaluation.html#precision_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.evaluation.precision_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>distr_vector_list</strong> – </li>
+<li><strong>label_vector</strong> – </li>
+<li><strong>possible_label_list</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.filter">
+<span id="cyclum-filter-module"></span><h2>cyclum.filter module<a class="headerlink" href="#module-cyclum.filter" title="Permalink to this headline">¶</a></h2>
+<p>Provides filters to filter out genes and cells.</p>
+<dl class="function">
+<dt id="cyclum.filter.cell_sparsity">
+<code class="descclassname">cyclum.filter.</code><code class="descname">cell_sparsity</code><span class="sig-paren">(</span><em>data</em>, <em>ratio=None</em>, <em>count=None</em>, <em>threshold=0.5</em>, <em>return_mask=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/filter.html#cell_sparsity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.filter.cell_sparsity" title="Permalink to this definition">¶</a></dt>
+<dd><p>filter cells by how many 0 genes they have
+:param data:
+:param ratio: ratio of non-zero entries. Either a number or a pair of numbers. Treat as [ ).
+:param count: number of non-zero entries. Treat as [ ).
+:param threshold: threshold to decide what is considered 0
+:param return_mask: if set to True, output mask instead of matrix
+You must supply ratio XOR number, i.e. one of them and only one of them.
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.filter.gene_sparsity">
+<code class="descclassname">cyclum.filter.</code><code class="descname">gene_sparsity</code><span class="sig-paren">(</span><em>data</em>, <em>ratio=None</em>, <em>count=None</em>, <em>threshold=0.5</em>, <em>return_mask=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/filter.html#gene_sparsity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.filter.gene_sparsity" title="Permalink to this definition">¶</a></dt>
+<dd><p>filter cells by how many 0 genes they have
+:param linear_data: data
+:param ratio: ratio of non-zero entries. Either a number or a pair of numbers. Treat as [ ).
+:param count: number of non-zero entries. Treat as [ ).
+:param threshold: threshold to decide what is considered 0
+:param return_mask: if set to True, output mask instead of matrix
+You must supply ratio XOR number, i.e. one of them and only one of them.
+:return:</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.illustration">
+<span id="cyclum-illustration-module"></span><h2>cyclum.illustration module<a class="headerlink" href="#module-cyclum.illustration" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cyclum.illustration.FigureWriter">
+<em class="property">class </em><code class="descclassname">cyclum.illustration.</code><code class="descname">FigureWriter</code><span class="sig-paren">(</span><em>pdf_name: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#FigureWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.FigureWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>keep and write figures into a pdf file.</p>
+<dl class="method">
+<dt id="cyclum.illustration.FigureWriter.add_figure">
+<code class="descname">add_figure</code><span class="sig-paren">(</span><em>figure</em>, <em>title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#FigureWriter.add_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.FigureWriter.add_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>add a figure, but not write to file
+:param figure:
+:param title:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.illustration.FigureWriter.add_figure_and_write">
+<code class="descname">add_figure_and_write</code><span class="sig-paren">(</span><em>figure</em>, <em>title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#FigureWriter.add_figure_and_write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.FigureWriter.add_figure_and_write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cyclum.illustration.FigureWriter.write">
+<code class="descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#FigureWriter.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.FigureWriter.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_cell_sparsity">
+<code class="descclassname">cyclum.illustration.</code><code class="descname">plot_cell_sparsity</code><span class="sig-paren">(</span><em>linear_data</em>, <em>use_ratio=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_cell_sparsity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_cell_sparsity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a figure of #{cell, none_zero_genes(cell) &gt; x}
+:param linear_data: data
+:param use_ratio: plot as ratio or
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_gene_sparsity">
+<code class="descclassname">cyclum.illustration.</code><code class="descname">plot_gene_sparsity</code><span class="sig-paren">(</span><em>linear_data</em>, <em>use_ratio=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_gene_sparsity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_gene_sparsity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a figure of #{cell, none_zero_genes(cell) &gt; x}
+:param linear_data: data
+:param use_ratio: plot as ratio or
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_multi_distr">
+<code class="descclassname">cyclum.illustration.</code><code class="descname">plot_multi_distr</code><span class="sig-paren">(</span><em>xs</em>, <em>ys</em>, <em>colors</em>, <em>labels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_multi_distr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_multi_distr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_pair_color">
+<code class="descclassname">cyclum.illustration.</code><code class="descname">plot_pair_color</code><span class="sig-paren">(</span><em>a</em>, <em>b</em>, <em>color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_pair_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_pair_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>either plot an embedding, two dimensions at a time
+or compare two embeddings
+:param a:
+:param b:
+:param color:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_round_color">
+<code class="descclassname">cyclum.illustration.</code><code class="descname">plot_round_color</code><span class="sig-paren">(</span><em>flat</em>, <em>color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_round_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_round_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_round_distr_color">
+<code class="descclassname">cyclum.illustration.</code><code class="descname">plot_round_distr_color</code><span class="sig-paren">(</span><em>flat</em>, <em>label</em>, <em>color_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_round_distr_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_round_distr_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_round_distr_color2">
+<code class="descclassname">cyclum.illustration.</code><code class="descname">plot_round_distr_color2</code><span class="sig-paren">(</span><em>flat</em>, <em>label1</em>, <em>label2</em>, <em>color_dict1</em>, <em>color_dict2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_round_distr_color2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_round_distr_color2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.preproc">
+<span id="cyclum-preproc-module"></span><h2>cyclum.preproc module<a class="headerlink" href="#module-cyclum.preproc" title="Permalink to this headline">¶</a></h2>
+<p>Provide transformation from count matrix to TPM/PKM.
+It also supports transforming data frames</p>
+<dl class="function">
+<dt id="cyclum.preproc.calc_pkm">
+<code class="descclassname">cyclum.preproc.</code><code class="descname">calc_pkm</code><span class="sig-paren">(</span><em>count_matrix</em>, <em>gene_length_vector</em>, <em>is_cell_row=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/preproc.html#calc_pkm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.preproc.calc_pkm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transformation from count matrix to PKM matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>count_matrix</strong> – count matrix</li>
+<li><strong>gene_length_vector</strong> – lengths of genes</li>
+<li><strong>is_cell_row</strong> – if true, cells should be rows</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.preproc.calc_pkm_for_df">
+<code class="descclassname">cyclum.preproc.</code><code class="descname">calc_pkm_for_df</code><span class="sig-paren">(</span><em>df</em>, <em>gene_length_vector</em>, <em>is_cell_row=True</em><span class="sig-paren">)</span><a class="headerlink" href="#cyclum.preproc.calc_pkm_for_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cyclum.preproc.calc_tpm">
+<code class="descclassname">cyclum.preproc.</code><code class="descname">calc_tpm</code><span class="sig-paren">(</span><em>count_matrix</em>, <em>gene_length_vector</em>, <em>is_cell_row=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/preproc.html#calc_tpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.preproc.calc_tpm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transformation from count matrix to TPM matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>count_matrix</strong> – count matrix</li>
+<li><strong>gene_length_vector</strong> – lengths of genes</li>
+<li><strong>is_cell_row</strong> – if true, cells should be rows</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.preproc.calc_tpm_for_df">
+<code class="descclassname">cyclum.preproc.</code><code class="descname">calc_tpm_for_df</code><span class="sig-paren">(</span><em>df</em>, <em>gene_length_vector</em>, <em>is_cell_row=True</em><span class="sig-paren">)</span><a class="headerlink" href="#cyclum.preproc.calc_tpm_for_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cyclum.preproc.for_df">
+<code class="descclassname">cyclum.preproc.</code><code class="descname">for_df</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/preproc.html#for_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.preproc.for_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-cyclum.smart_train">
