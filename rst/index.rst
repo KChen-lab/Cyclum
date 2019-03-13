@@ -17,11 +17,14 @@ Also provided are a set of supplementary tools to visualize and anaylzing the re
    :maxdepth: 2
    :caption: Contents:
 
+   download_install
    quick_start
-   examples
    input_formats
    output_formats
    cyclum
+   faq
+   features
+   license
 
 Indices and tables
 ==================

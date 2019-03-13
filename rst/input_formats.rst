@@ -1,12 +1,12 @@
 Input Formats
 =============
 
-As a marker-gene free method, cyclum only requires an expression matrix and a configuration file.
+As a marker-gene free method, cyclum only requires an expression matrix.
 
 Expression matrix
 -----------------
 
-Several formats are supported
+Several formats are supported but the current
 
 Configuration file
 ------------------

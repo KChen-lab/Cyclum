@@ -8,18 +8,23 @@ Single-cell pseudo-time
 
 This is the embedding of the cells
 
-Transformation matrix
+Rotation matrix
 ---------------------
 
-This the matrix for transforming.
+This the matrix for transforming the pseudo-times to an "ideal cycling cell". The ideal cell
 
-.. math::
 
-   (a + b)^2 = a^2 + 2ab + b^2
+Corrected expression matrix
+---------------------------
 
-   (a - b)^2 = a^2 - 2ab + b^2
+To store the corrected expression matrix, there are two ways -- csv and binary file.
+Although csv file is human readable, importing csv in R is significantly slow, due to overhead of parsing the file.
+Binary file is much smaller and faster, but not human readable.
 
-Expression matrix
------------------
+Csv file
+^^^^^^^^
 
-It is an option to output the expression matrix in binary format. Although csv file is human readable, importing csv in R is significantly slow, due to overhead of parsing the file. Binary file is much smaller and faster, but not human readable.
+Binary file
+^^^^^^^^^^^
+
+For more details, please refer to the module :mod:`cyclum.writer`.

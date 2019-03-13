@@ -1,5 +1,6 @@
+#!/usr/bin/env bash
 source activate tensorflow-gpu
-cp example_mESC.ipynb rst/
+cp *.ipynb rst/
 sphinx-build -b html rst docs
-rm rst/example_mESC.ipynb
+rm rst/*.ipynb
 git add docs/

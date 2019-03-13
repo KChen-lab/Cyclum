@@ -80,16 +80,23 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download_install.html">Download and Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Output Formats</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#single-cell-pseudo-time">Single-cell pseudo-time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#transformation-matrix">Transformation matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#expression-matrix">Expression matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rotation-matrix">Rotation matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#corrected-expression-matrix">Corrected expression matrix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#csv-file">Csv file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binary-file">Binary file</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cyclum.html">cyclum package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
             
@@ -185,15 +192,22 @@
 <h2>Single-cell pseudo-time<a class="headerlink" href="#single-cell-pseudo-time" title="Permalink to this headline">¶</a></h2>
 <p>This is the embedding of the cells</p>
 </div>
-<div class="section" id="transformation-matrix">
-<h2>Transformation matrix<a class="headerlink" href="#transformation-matrix" title="Permalink to this headline">¶</a></h2>
-<p>This the matrix for transforming.</p>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}(a + b)^2 = a^2 + 2ab + b^2\\(a - b)^2 = a^2 - 2ab + b^2\end{aligned}\end{align} \]</div>
+<div class="section" id="rotation-matrix">
+<h2>Rotation matrix<a class="headerlink" href="#rotation-matrix" title="Permalink to this headline">¶</a></h2>
+<p>This the matrix for transforming the pseudo-times to an “ideal cycling cell”. The ideal cell</p>
 </div>
-<div class="section" id="expression-matrix">
-<h2>Expression matrix<a class="headerlink" href="#expression-matrix" title="Permalink to this headline">¶</a></h2>
-<p>It is an option to output the expression matrix in binary format. Although csv file is human readable, importing csv in R is significantly slow, due to overhead of parsing the file. Binary file is much smaller and faster, but not human readable.</p>
+<div class="section" id="corrected-expression-matrix">
+<h2>Corrected expression matrix<a class="headerlink" href="#corrected-expression-matrix" title="Permalink to this headline">¶</a></h2>
+<p>To store the corrected expression matrix, there are two ways – csv and binary file.
+Although csv file is human readable, importing csv in R is significantly slow, due to overhead of parsing the file.
+Binary file is much smaller and faster, but not human readable.</p>
+<div class="section" id="csv-file">
+<h3>Csv file<a class="headerlink" href="#csv-file" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="binary-file">
+<h3>Binary file<a class="headerlink" href="#binary-file" title="Permalink to this headline">¶</a></h3>
+<p>For more details, please refer to the module <a class="reference internal" href="cyclum.html#module-cyclum.writer" title="cyclum.writer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cyclum.writer</span></code></a>.</p>
+</div>
 </div>
 </div>
 

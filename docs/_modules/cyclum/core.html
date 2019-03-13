@@ -78,11 +78,14 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../download_install.html">Download and Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../input_formats.html">Input Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../output_formats.html">Output Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cyclum.html">cyclum package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 
             
@@ -298,7 +301,9 @@
 <span class="sd">        Fits the model and give the inferred pseudotime, and also its relationship to the gene expression.</span>
 <span class="sd">        These outputs are essential for downstream analysis.</span>
 
-<span class="sd">        :return: pseudotime and rotation matrix</span>
+<span class="sd">        :return:</span>
+<span class="sd">            pseudotime: the pseudo-time for each cell, in the same order as the input, in a [0, 2\pi] scale.</span>
+<span class="sd">            rotation: the rotation matrix</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tf_pretrain_burnin</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">50e-3</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tf_pretrain_loss</span><span class="p">,</span> <span class="n">var_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pretrain_var_list</span><span class="p">)</span>
         <span class="n">tf_pretrain_train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tf_pretrain_loss</span><span class="p">,</span> <span class="n">var_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pretrain_var_list</span><span class="p">)</span>
@@ -372,18 +377,18 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
                 <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-        <span class="n">pseudotime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tf_E_circular</span><span class="p">)</span>
-        <span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tf_V0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pseudotime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tf_E_circular</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tf_V0</span><span class="p">)</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Full time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
         <span class="c1">#saver.save(self.sess, &#39;./&#39; + rec_file_name)</span>
 
-        <span class="k">return</span> <span class="n">pseudotime</span><span class="p">,</span> <span class="n">rotation</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pseudotime</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span></div>
 
 
 <div class="viewcode-block" id="PreloadCyclum.close"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadCyclum.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Close the TensorFlow Session. The model will be **deleted**.</span>
+<span class="sd">        Close the TensorFlow Session. All information about the model will be **deleted**.</span>
 
 <span class="sd">        :return: None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -397,13 +402,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="PreloadCyclum.generate"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadCyclum.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PreloadCyclum.generate"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadCyclum.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pseudotime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Given a pseudo-time, generate a &quot;standard&quot; cell</span>
+<span class="sd">        Given a pseudo-time, generate a &quot;ideal cycling cell&quot;</span>
+
+<span class="sd">        :type pseudotime: float or numpy.matrix</span>
+<span class="sd">        :param pseudotime: the pseudo-time. If not specified it will use the whole inferred pseudotime.</span>
+<span class="sd">        :return: the gene expression of a &quot;ideal cycling cell&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_circular</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pseudotime</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pseudotime</span><span class="p">)],</span> <span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pseudotime</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_circular</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span></div>
+
+<div class="viewcode-block" id="PreloadCyclum.correct"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadCyclum.correct">[docs]</a>    <span class="k">def</span> <span class="nf">correct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Correct the input expression matrix wrt cell cycle.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PreloadCyclum.predict"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadCyclum.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -413,6 +431,8 @@
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
+
+
 
 <div class="viewcode-block" id="PreloadNaiveCyclum"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadNaiveCyclum">[docs]</a><span class="k">class</span> <span class="nc">PreloadNaiveCyclum</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">q_circular</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">q_linear</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -515,6 +535,12 @@
         <span class="n">sess</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">pseudotime</span><span class="p">,</span> <span class="n">rotation</span></div></div>
+
+
+<div class="viewcode-block" id="Cyclum"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.Cyclum">[docs]</a><span class="k">class</span> <span class="nc">Cyclum</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wraps the mathematical method up and provide more functions.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 </pre></div>
 
            </div>

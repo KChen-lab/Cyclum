@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="FAQ" href="faq.html" />
     <link rel="prev" title="Output Formats" href="output_formats.html" /> 
 
   
@@ -79,8 +80,8 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download_install.html">Download and Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_formats.html">Output Formats</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">cyclum package</a><ul>
@@ -91,6 +92,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-cyclum">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
             
@@ -189,6 +193,13 @@
 <p>This module implements the scae core.
 Current version is a fast implementation</p>
 <dl class="class">
+<dt id="cyclum.core.Cyclum">
+<em class="property">class </em><code class="descclassname">cyclum.core.</code><code class="descname">Cyclum</code><a class="reference internal" href="_modules/cyclum/core.html#Cyclum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.core.Cyclum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wraps the mathematical method up and provide more functions.</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="cyclum.core.PreloadCyclum">
 <em class="property">class </em><code class="descclassname">cyclum.core.</code><code class="descname">PreloadCyclum</code><span class="sig-paren">(</span><em>Y</em>, <em>q_circular=3</em>, <em>q_linear=0</em>, <em>seed=0</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/core.html#PreloadCyclum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.core.PreloadCyclum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -213,12 +224,26 @@ Before fit()</p>
 <dl class="method">
 <dt id="cyclum.core.PreloadCyclum.close">
 <code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/core.html#PreloadCyclum.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.core.PreloadCyclum.close" title="Permalink to this definition">¶</a></dt>
-<dd><p>Close the TensorFlow Session. The model will be <strong>deleted</strong>.</p>
+<dd><p>Close the TensorFlow Session. All information about the model will be <strong>deleted</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.core.PreloadCyclum.correct">
+<code class="descname">correct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/core.html#PreloadCyclum.correct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.core.PreloadCyclum.correct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Correct the input expression matrix wrt cell cycle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
@@ -233,7 +258,8 @@ These outputs are essential for downstream analysis.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pseudotime and rotation matrix</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pseudotime: the pseudo-time for each cell, in the same order as the input, in a [0, 2pi] scale.
+rotation: the rotation matrix</td>
 </tr>
 </tbody>
 </table>
@@ -241,13 +267,15 @@ These outputs are essential for downstream analysis.</p>
 
 <dl class="method">
 <dt id="cyclum.core.PreloadCyclum.generate">
-<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/core.html#PreloadCyclum.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.core.PreloadCyclum.generate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a pseudo-time, generate a “standard” cell</p>
+<code class="descname">generate</code><span class="sig-paren">(</span><em>pseudotime=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/core.html#PreloadCyclum.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.core.PreloadCyclum.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a pseudo-time, generate a “ideal cycling cell”</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pseudotime</strong> (<em>float</em><em> or </em><em>numpy.matrix</em>) – the pseudo-time. If not specified it will use the whole inferred pseudotime.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the gene expression of a “ideal cycling cell”</td>
 </tr>
 </tbody>
 </table>
@@ -423,6 +451,8 @@ and “example-name.txt”. They store the matrix and the column and row names s
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="output_formats.html" class="btn btn-neutral" title="Output Formats" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

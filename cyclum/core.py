@@ -150,7 +150,9 @@ class PreloadCyclum:
         Fits the model and give the inferred pseudotime, and also its relationship to the gene expression.
         These outputs are essential for downstream analysis.
 
-        :return: pseudotime and rotation matrix
+        :return:
+            pseudotime: the pseudo-time for each cell, in the same order as the input, in a [0, 2\pi] scale.
+            rotation: the rotation matrix
         """
         tf_pretrain_burnin = tf.train.AdamOptimizer(50e-3).minimize(self.tf_pretrain_loss, var_list=self.pretrain_var_list)
         tf_pretrain_train = tf.train.AdamOptimizer(1e-3).minimize(self.tf_pretrain_loss, var_list=self.pretrain_var_list)
@@ -224,18 +226,18 @@ class PreloadCyclum:
                 print(' time %.2f' % (time.time() - t1))
                 t1 = time.time()
 
-        pseudotime = self.sess.run(self.tf_E_circular)
-        rotation = self.sess.run(self.tf_V0)
+        self.pseudotime = self.sess.run(self.tf_E_circular)
+        self.rotation = self.sess.run(self.tf_V0)
 
         print('Full time %.2f' % (time.time() - t0))
         #saver.save(self.sess, './' + rec_file_name)
 
-        return pseudotime, rotation
+        return self.pseudotime, self.rotation
 
 
     def close(self):
         """
-        Close the TensorFlow Session. The model will be **deleted**.
+        Close the TensorFlow Session. All information about the model will be **deleted**.
 
         :return: None
         """
@@ -249,13 +251,26 @@ class PreloadCyclum:
         """
         pass
 
-    def generate(self):
+    def generate(self, pseudotime=None):
         """
-        Given a pseudo-time, generate a "standard" cell
+        Given a pseudo-time, generate a "ideal cycling cell"
+
+        :type pseudotime: float or numpy.matrix
+        :param pseudotime: the pseudo-time. If not specified it will use the whole inferred pseudotime.
+        :return: the gene expression of a "ideal cycling cell"
+        """
+        if self.q_circular == 2:
+            tf.concat([tf.cos(pseudotime), tf.sin(pseudotime)], 1) @ self.rotation
+        else:
+            np.concatenate([np.cos(pseudotime + i * 2 * np.pi / self.q_circular) for i in range(3)], axis=1) @ self.rotation
+
+    def correct(self):
+        """
+        Correct the input expression matrix wrt cell cycle.
 
         :return:
         """
-        pass
+        return self.Y - self.generate()
 
     def predict(self):
         """
@@ -265,6 +280,8 @@ class PreloadCyclum:
         :return:
         """
         pass
+
+
 
 class PreloadNaiveCyclum:
     def __init__(self, Y, q_circular=3, q_linear=0, seed=0):
@@ -367,3 +384,9 @@ class PreloadNaiveCyclum:
         sess.close()
 
         return pseudotime, rotation
+
+
+class Cyclum:
+    """
+    Wraps the mathematical method up and provide more functions.
+    """

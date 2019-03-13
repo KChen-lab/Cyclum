@@ -1,0 +1,904 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Recover cell cycle in mESC &mdash; cyclum 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Input Formats" href="input_formats.html" />
+    <link rel="prev" title="Remove cell cycle from perturbed mESC" href="example_mESC_simulated.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cyclum
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download_install.html">Download and Install</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="quick_start.html">Quick Start Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_mESC.html">Recover cell cycle in mESC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_mESC_simulated.html">Remove cell cycle from perturbed mESC</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Recover cell cycle in mESC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Import-necessary-packages">Import necessary packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Read-data">Read data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Set-up-the-model-and-fit-the-model">Set up the model and fit the model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Illustrations">Illustrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Comparisons">Comparisons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#PCA">PCA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reCAT">reCAT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output_formats.html">Output Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cyclum.html">cyclum package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cyclum</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="quick_start.html">Quick Start Guide</a> &raquo;</li>
+        
+      <li>Recover cell cycle in mESC</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/example_mel78.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 5ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Recover-cell-cycle-in-mESC">
+<h1>Recover cell cycle in mESC<a class="headerlink" href="#Recover-cell-cycle-in-mESC" title="Permalink to this headline">¶</a></h1>
+<p>Here we use the mESC dataset. For simplicity we have converted the dataset into TPM. The original count data is available at ArrayExpress: <a class="reference external" href="https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2805/">E-MTAB-2805</a>. Tools to transform data are also provided and explained in the following sections.</p>
+<div class="section" id="Import-necessary-packages">
+<h2>Import necessary packages<a class="headerlink" href="#Import-necessary-packages" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 1
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
+<span class="kn">import</span> <span class="nn">sklearn</span> <span class="k">as</span> <span class="nn">skl</span>
+<span class="kn">import</span> <span class="nn">sklearn.preprocessing</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<p>Warning information from TensorFlow may occur. It doesn’t matter.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">cyclum</span>
+<span class="kn">from</span> <span class="nn">cyclum</span> <span class="k">import</span> <span class="n">writer</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/shaoheng/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">input_file_mask</span> <span class="o">=</span> <span class="s1">&#39;data/mESC/mesc-tpm&#39;</span>
+<span class="n">output_file_mask</span> <span class="o">=</span> <span class="s1">&#39;./results/mESC_original/mesc-tpm&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Read-data">
+<h2>Read data<a class="headerlink" href="#Read-data" title="Permalink to this headline">¶</a></h2>
+<p>Here we have label, so we load both. However, the label is not used until evaluation.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read in data and perform log transform (log2(x+1)), centering (mean = 1) and scaling (sd = 1).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tpm</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">read_df_from_binary</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">sttpm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">skl</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">tpm</span><span class="o">.</span><span class="n">values</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+    <span class="n">label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file_mask</span> <span class="o">+</span> <span class="s1">&#39;-label.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">sttpm</span><span class="p">,</span> <span class="n">label</span>
+
+<span class="n">sttpm</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>There is no convention whether cells should be columns or rows. Here we require cells to be rows.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sttpm</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Gnai3</th>
+      <th>Pbsn</th>
+      <th>Cdc45</th>
+      <th>H19</th>
+      <th>Scml2</th>
+      <th>Apoh</th>
+      <th>Narf</th>
+      <th>Cav2</th>
+      <th>Klf6</th>
+      <th>Scmh1</th>
+      <th>...</th>
+      <th>RP23-345J21.2</th>
+      <th>AC121960.1</th>
+      <th>AC136147.1</th>
+      <th>AC122013.1</th>
+      <th>AC132389.1</th>
+      <th>Gm11392</th>
+      <th>AC160109.2</th>
+      <th>AC154675.1</th>
+      <th>AC156980.1</th>
+      <th>RP23-429I18.1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>G1_cell1_count</th>
+      <td>-0.411123</td>
+      <td>-0.059028</td>
+      <td>-0.099416</td>
+      <td>5.385822</td>
+      <td>-0.691219</td>
+      <td>0.0</td>
+      <td>-0.690715</td>
+      <td>-0.059028</td>
+      <td>-1.051909</td>
+      <td>-0.350978</td>
+      <td>...</td>
+      <td>-0.146722</td>
+      <td>0.0</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>-0.824399</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
+      <td>0.0</td>
+      <td>-0.144843</td>
+      <td>0.090295</td>
+    </tr>
+    <tr>
+      <th>G1_cell2_count</th>
+      <td>-0.180800</td>
+      <td>-0.059028</td>
+      <td>0.777223</td>
+      <td>-0.165725</td>
+      <td>-0.820206</td>
+      <td>0.0</td>
+      <td>0.362341</td>
+      <td>-0.059028</td>
+      <td>1.458881</td>
+      <td>0.207421</td>
+      <td>...</td>
+      <td>-0.146722</td>
+      <td>0.0</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>-0.824399</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
+      <td>0.0</td>
+      <td>-0.144843</td>
+      <td>-1.271033</td>
+    </tr>
+    <tr>
+      <th>G1_cell3_count</th>
+      <td>-1.409101</td>
+      <td>-0.059028</td>
+      <td>-1.218187</td>
+      <td>-0.165725</td>
+      <td>-0.820206</td>
+      <td>0.0</td>
+      <td>-0.690715</td>
+      <td>-0.059028</td>
+      <td>-1.271394</td>
+      <td>-0.657735</td>
+      <td>...</td>
+      <td>2.593349</td>
+      <td>0.0</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>-0.592938</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
+      <td>0.0</td>
+      <td>-0.144843</td>
+      <td>-1.271033</td>
+    </tr>
+    <tr>
+      <th>G1_cell4_count</th>
+      <td>-1.867558</td>
+      <td>-0.059028</td>
+      <td>0.923695</td>
+      <td>-0.165725</td>
+      <td>-0.820206</td>
+      <td>0.0</td>
+      <td>0.903266</td>
+      <td>-0.059028</td>
+      <td>1.430708</td>
+      <td>-0.657735</td>
+      <td>...</td>
+      <td>-0.146722</td>
+      <td>0.0</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>2.938898</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
+      <td>0.0</td>
+      <td>-0.144843</td>
+      <td>-1.271033</td>
+    </tr>
+    <tr>
+      <th>G1_cell5_count</th>
+      <td>-1.646290</td>
+      <td>-0.059028</td>
+      <td>0.001887</td>
+      <td>-0.165725</td>
+      <td>-0.820206</td>
+      <td>0.0</td>
+      <td>-0.690715</td>
+      <td>-0.059028</td>
+      <td>-0.811233</td>
+      <td>-0.657735</td>
+      <td>...</td>
+      <td>-0.146722</td>
+      <td>0.0</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>-0.824399</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
+      <td>0.0</td>
+      <td>-0.144843</td>
+      <td>-0.111558</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 38293 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">label</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>stage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>G1_cell1_count</th>
+      <td>g0/g1</td>
+    </tr>
+    <tr>
+      <th>G1_cell2_count</th>
+      <td>g0/g1</td>
+    </tr>
+    <tr>
+      <th>G1_cell3_count</th>
+      <td>g0/g1</td>
+    </tr>
+    <tr>
+      <th>G1_cell4_count</th>
+      <td>g0/g1</td>
+    </tr>
+    <tr>
+      <th>G1_cell5_count</th>
+      <td>g0/g1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="Set-up-the-model-and-fit-the-model">
+<h2>Set up the model and fit the model<a class="headerlink" href="#Set-up-the-model-and-fit-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Fitting the model may take some time. Using a GTX 960M GPU it takes 6 minutes.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">cyclum</span><span class="o">.</span><span class="n">PreloadCyclum</span><span class="p">(</span><span class="n">sttpm</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">q_circular</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">q_linear</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pseudotime</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+pretrain burnin
+step  2000: loss [0.1452561, 45035228.0, 141884.6] time 9.83
+pretrain train
+step  2000: loss [0.14524707, 45035230.0, 141884.84] time 7.32
+step  4000: loss [0.14524722, 45035230.0, 141884.84] time 6.24
+midtrain burnin
+step  2000: loss [0.14524722, 13479.106, 65288.434] time 31.53
+midtrain train
+step  2000: loss [0.14524722, 13475.677, 65288.434] time 31.44
+step  4000: loss [0.14524722, 13475.676, 65288.434] time 29.15
+finaltrain train
+step  2000: loss [0.23462683, 12895.94, 35502.785] time 41.88
+step  4000: loss [0.25569192, 12895.507, 18958.936] time 38.46
+step  6000: loss [0.276326, 12895.623, 9609.924] time 38.45
+finaltrain refine
+step  2000: loss [0.28275946, 12895.442, 7700.0806] time 42.01
+step  4000: loss [0.28499442, 12895.469, 6226.207] time 41.03
+step  6000: loss [0.28545943, 12895.44, 5038.1367] time 39.55
+step  8000: loss [0.2893271, 12895.435, 4072.1836] time 40.60
+step 10000: loss [0.29161924, 12895.42, 3288.5647] time 40.55
+Full time 438.50
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Illustrations">
+<h2>Illustrations<a class="headerlink" href="#Illustrations" title="Permalink to this headline">¶</a></h2>
+<p>We illustrate the results on a circle, to show its circular nature. There is virtually no start and end of the circle. Red, green and blue represents G0/G1, S and G2/M phase respectively. The inner lines represents single cells. The cells spread across the The areas outside</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">aimport</span> cyclum.illustration
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">color_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;stage&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;g0/g1&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;g2/m&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">},</span>
+                 <span class="s1">&#39;subcluster&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;intact&quot;</span><span class="p">:</span> <span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="s2">&quot;perturbed&quot;</span><span class="p">:</span> <span class="s2">&quot;violet&quot;</span><span class="p">}}</span>
+<span class="n">cyclum</span><span class="o">.</span><span class="n">illustration</span><span class="o">.</span><span class="n">plot_round_distr_color</span><span class="p">(</span><span class="n">pseudotime</span><span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;stage&#39;</span><span class="p">],</span> <span class="n">color_map</span><span class="p">[</span><span class="s1">&#39;stage&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<img alt="_images/example_mel78_18_0.png" src="_images/example_mel78_18_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/example_mel78_18_1.png" src="_images/example_mel78_18_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Comparisons">
+<h2>Comparisons<a class="headerlink" href="#Comparisons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="PCA">
+<h3>PCA<a class="headerlink" href="#PCA" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="reCAT">
+<h3>reCAT<a class="headerlink" href="#reCAT" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="input_formats.html" class="btn btn-neutral float-right" title="Input Formats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="example_mESC_simulated.html" class="btn btn-neutral" title="Remove cell cycle from perturbed mESC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Shaoheng Liang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
