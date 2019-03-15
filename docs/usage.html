@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>License &mdash; cyclum 0.1 documentation</title>
+  <title>Usage &mdash; cyclum 0.1 documentation</title>
   
 
   
@@ -28,7 +28,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Features" href="features.html" /> 
+    <link rel="next" title="Quick Start Guide" href="quick_start.html" />
+    <link rel="prev" title="Download and Install" href="download_install.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -80,7 +81,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="download_install.html">Download and Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_formats.html">Output Formats</a></li>
@@ -88,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cyclum.html">cyclum package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
             
@@ -134,13 +135,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>License</li>
+      <li>Usage</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/license.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -177,8 +178,56 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="license">
-<h1>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>The fields are shown in the help.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python run_cyclum.py --help
+usage: run_cyclum.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--remove<span class="o">]</span> <span class="o">[</span>--binary<span class="o">]</span> <span class="o">[</span>--binary-only<span class="o">]</span> <span class="o">[</span>--linear q<span class="o">]</span>
+                     input <span class="o">[</span>output<span class="o">]</span>
+
+Recover and remove cell cycle.
+
+positional arguments:
+  input          input file name
+  output         output name mask<span class="p">;</span> the prefix <span class="k">for</span> all output names
+
+optional arguments:
+  -h, --help     show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --remove       also output the cell cycle removed expression matrix
+  --binary       output using binary file<span class="p">;</span> faster to <span class="nb">read</span> by python or R
+  --binary-only  output using binary file only without csv
+  --linear q     integer number of linear dimensions
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Arguments</th>
+<th class="head">Annotation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>input</td>
+<td>The full name of the input file</td>
+</tr>
+<tr class="row-odd"><td>output</td>
+<td>The prefix of outputs. Default to be the prefix of input</td>
+</tr>
+<tr class="row-even"><td>--remove</td>
+<td>Besides the cell timings and gene profiles, also output the cell
+cycle removed expression matrix</td>
+</tr>
+<tr class="row-odd"><td>--binary-only</td>
+<td>output using binary file only (without csv)</td>
+</tr>
+<tr class="row-even"><td>--linear q</td>
+<td>q is an integer, the number of linear dimensions</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 
@@ -189,8 +238,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="quick_start.html" class="btn btn-neutral float-right" title="Quick Start Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="features.html" class="btn btn-neutral" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="download_install.html" class="btn btn-neutral" title="Download and Install" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

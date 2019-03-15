@@ -79,9 +79,11 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../download_install.html">Download and Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../quick_start.html">Quick Start Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../input_formats.html">Input Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../output_formats.html">Output Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customization.html">Customization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cyclum.html">cyclum package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../features.html">Features</a></li>
@@ -161,6 +163,380 @@
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+
+
+<span class="k">class</span> <span class="nc">_BaseCyclum</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The base class for all the realizations.</span>
+<span class="sd">    All this class knows is math.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Y_value&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y2&quot;</span><span class="p">,</span> <span class="s2">&quot;isbuilt&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">ispreload</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type Y: numpy matrix</span>
+<span class="sd">        :param Y:</span>
+<span class="sd">        :type q: int</span>
+<span class="sd">        :param q: dimension of embedding (pseudotime)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y_value</span> <span class="o">=</span> <span class="n">Y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span>
+        <span class="k">if</span> <span class="n">ispreload</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isbuilt</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">linear_encoder</span><span class="p">(</span><span class="n">qs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        declare a linear encoder</span>
+
+<span class="sd">        :param qs: the index of rows in embedding to generate</span>
+<span class="sd">        :return: an dict in a list; the sum of these list is the required encoder configuration for build()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">qs</span><span class="o">=</span><span class="n">qs</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">nonlinear_encoder</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="n">hidden_qs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        declare a nonlinear encoder</span>
+
+<span class="sd">        :param qs: the index of rows in embedding to generate</span>
+<span class="sd">        :return: an dict in a list; the sum of these list is the required decoder configuration for build()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;nonlinear&#39;</span><span class="p">,</span> <span class="n">qs</span><span class="o">=</span><span class="n">qs</span><span class="p">,</span> <span class="n">hidden_qs</span><span class="o">=</span><span class="n">hidden_qs</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">linear_decoder</span><span class="p">(</span><span class="n">qs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        declare a linear decoder</span>
+
+<span class="sd">        :param qs: the index of rows in embedding to be used</span>
+<span class="sd">        :return: an dict in a list; the sum of these list is the required input of build()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">qs</span><span class="o">=</span><span class="n">qs</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">circular_decoder</span><span class="p">(</span><span class="n">qs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        declare a circular decoder</span>
+
+<span class="sd">        :param qs: the index of rows in embedding to be used</span>
+<span class="sd">        :return: an dict in a list; the sum of these list is the required input of build()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;circular&#39;</span><span class="p">,</span> <span class="n">qs</span><span class="o">=</span><span class="n">qs</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">_make_linear_layer</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        make a linear layer</span>
+
+<span class="sd">        :param Z: the input tensor</span>
+<span class="sd">        :param Q: dimension of the output</span>
+<span class="sd">        :return: the output tensor of this layer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Q</span><span class="p">])</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;W&#39;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">Q</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">W</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_nonlinear_layer</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        make a nonlinear layer</span>
+
+<span class="sd">        :param Z: the input tensor</span>
+<span class="sd">        :param Q: dimension of the output</span>
+<span class="sd">        :return: the output tensor of this layer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Q</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;W&#39;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">Q</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">Z</span> <span class="o">@</span> <span class="n">W</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_circular_layer</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        make a circular layer</span>
+
+<span class="sd">        :param Z: the input tensor</span>
+<span class="sd">        :param Q: dimension of the output</span>
+<span class="sd">        :return: the output tensor of this layer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="n">Q</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;W&#39;</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">Z</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_nonlinear_encoder</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hidden_qs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        sum up the nonlinear layers to make a nonlinear encoder</span>
+
+<span class="sd">        :param Z: the input tensor</span>
+<span class="sd">        :param Q: the final output dimension</span>
+<span class="sd">        :param hidden_qs: the hidden layer dimensions</span>
+<span class="sd">        :return: the output tensor of this encoder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">Z</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hidden_qs</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">&#39;layer&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_nonlinear_layer</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_nonlinear_layer</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_linear_encoder</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Use one linear layer as a linear encoder.</span>
+<span class="sd">        No need to have hidden layers due to the property of linear transformation.</span>
+
+<span class="sd">        :param Z: the input tensor</span>
+<span class="sd">        :param Q: the output dimension</span>
+<span class="sd">        :return: the output tensor of this encoder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_linear_layer</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_linear_decoder</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">P</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Use one linear layer as a linear decoder.</span>
+<span class="sd">        No need to have hidden layers due to the property of linear transformation.</span>
+
+<span class="sd">        :param Z: the input tensor</span>
+<span class="sd">        :param P: the output dimension</span>
+<span class="sd">        :return: the output tensor of this encoder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_linear_layer</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_circular_decoder</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">P</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Use one circular layer as a linear decoder.</span>
+
+<span class="sd">        :param Z: the input tensor</span>
+<span class="sd">        :param P: the output dimension</span>
+<span class="sd">        :return: the output tensor of this encoder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_circular_layer</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_encoder</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">encoder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        make the full encoder</span>
+
+<span class="sd">        :param Y: the input tensor</span>
+<span class="sd">        :param Q: the output dimension</span>
+<span class="sd">        :param encoder: the encoder configuration</span>
+<span class="sd">        :return: the output tensor of the full encoder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">Y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Q</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">encoder</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">&#39;encoder&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_linear_encoder</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">component</span><span class="p">[</span><span class="s1">&#39;qs&#39;</span><span class="p">]))</span>
+                    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">component</span><span class="p">[</span><span class="s1">&#39;qs&#39;</span><span class="p">]):</span>
+                        <span class="n">temp</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">+=</span> <span class="n">res</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;nonlinear&#39;</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_nonlinear_encoder</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">component</span><span class="p">[</span><span class="s1">&#39;qs&#39;</span><span class="p">]),</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;hidden_qs&#39;</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">component</span><span class="p">[</span><span class="s1">&#39;qs&#39;</span><span class="p">]):</span>
+                        <span class="n">temp</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">+=</span> <span class="n">res</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="kc">False</span>  <span class="c1"># You should never get here</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;neck&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_decoder</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">decoder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        make the full decoder</span>
+
+<span class="sd">        :param X: the input tensor</span>
+<span class="sd">        :param P: the output dimension</span>
+<span class="sd">        :param decoder: the decoder configuration</span>
+<span class="sd">        :return: the output tensor of the full decoder</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">decoder</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s1">&#39;decoder&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+                    <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_linear_decoder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;qs&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">P</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;circular&#39;</span><span class="p">:</span>
+                    <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_circular_decoder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;qs&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">P</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">add_n</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">decoder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        build the model</span>
+
+<span class="sd">        :param encoder: encoder configuration</span>
+<span class="sd">        :param decoder: decoder configuration</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_encoder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">encoder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y2</span> <span class="o">=</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">_make_decoder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">decoder</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Train the model. To be implemented in derived classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="PreloadCyclum2"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadCyclum2">[docs]</a><span class="k">class</span> <span class="nc">PreloadCyclum2</span><span class="p">(</span><span class="n">_BaseCyclum</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">encoder</span> <span class="o">=</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">nonlinear_encoder</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span> <span class="o">+</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">linear_encoder</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">decoder</span> <span class="o">=</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">circular_decoder</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">_BaseCyclum</span><span class="o">.</span><span class="n">linear_decoder</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">encoder</span><span class="p">,</span> <span class="n">decoder</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_initial_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_candidate</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get initial value by running on the first few PCs.</span>
+
+<span class="sd">        :param n_candidate: number of PCs.</span>
+<span class="sd">        :return: proposed initial value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pc</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">whiten</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">svd_solver</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+                 <span class="n">tol</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">iterated_power</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y_value</span><span class="p">)</span>
+        <span class="n">spc</span> <span class="o">=</span> <span class="n">pc</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">unit_score_1d</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">uniform_score_1d</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ind_1d</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_candidate</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">ind_1d</span><span class="p">:</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spc</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">spc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+                <span class="n">unit_score_1d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">temp</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
+
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">spc</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">spc</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span>
+                <span class="n">temp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+                <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">temp</span><span class="p">),</span> <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">temp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">uniform_score_1d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span>
+
+        <span class="n">min_max_normalize</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+        <span class="n">unit_score_1d</span> <span class="o">=</span> <span class="n">min_max_normalize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">unit_score_1d</span><span class="p">))</span>
+        <span class="n">uniform_score_1d</span> <span class="o">=</span> <span class="n">min_max_normalize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">uniform_score_1d</span><span class="p">))</span>
+
+        <span class="n">final_score_1d</span> <span class="o">=</span> <span class="n">unit_score_1d</span> <span class="o">+</span> <span class="n">uniform_score_1d</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">ind_1d</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">final_score_1d</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spc</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">spc</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">spc</span><span class="p">[:,</span> <span class="n">ind</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PreloadCyclum2.train"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadCyclum2.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        train the model</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_default_graph</span><span class="p">()</span>
+
+        <span class="n">paragon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_initial_value</span><span class="p">()</span>
+        <span class="n">cossin</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">Z_circular_pre_train</span> <span class="o">=</span> <span class="n">cossin</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">pretrain_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">Z_circular_pre_train</span> <span class="o">-</span> <span class="n">paragon</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span>
+        <span class="n">pretrain_var_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;encoder0/layer0/W:0&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder0/layer0/b:0&#39;</span><span class="p">,</span>
+                                   <span class="s1">&#39;encoder0/layer1/W:0&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder0/layer1/b:0&#39;</span><span class="p">,</span>
+                                   <span class="s1">&#39;encoder0/output/W:0&#39;</span><span class="p">,</span> <span class="s1">&#39;encoder0/output/b:0&#39;</span><span class="p">]</span>
+        <span class="n">pretrain_var_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">GLOBAL_VARIABLES</span><span class="p">,</span> <span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">pretrain_var_names</span><span class="p">]</span>
+        <span class="c1">#self.pretrain_var_list = [self.tf_W_circular1, self.tf_b_circular1, self.tf_W_circular2, self.tf_b_circular2,</span>
+                                  <span class="c1">#self.tf_W_circular3, self.tf_b_circular3]</span>
+
+        <span class="n">midtrain_var_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;decoder0/output/W:0&#39;</span><span class="p">,</span> <span class="s1">&#39;decoder1/output/W:0&#39;</span><span class="p">,</span> <span class="s1">&#39;decoder1/output/b:0&#39;</span><span class="p">]</span>
+        <span class="n">midtrain_var_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">GLOBAL_VARIABLES</span><span class="p">,</span> <span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">midtrain_var_names</span><span class="p">]</span>
+        <span class="c1">#self.midtrain_var_list = [self.tf_V0, self.tf_V1, self.tf_c]</span>
+
+        <span class="n">R</span> <span class="o">=</span> <span class="p">((</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s1">&#39;encoder0/layer0/W:0&#39;</span><span class="p">))</span> <span class="o">+</span>
+                 <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s1">&#39;encoder0/layer1/W:0&#39;</span><span class="p">))</span> <span class="o">+</span>
+                 <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s1">&#39;encoder0/output/W:0&#39;</span><span class="p">))</span>
+                 <span class="p">)</span> <span class="o">/</span> <span class="mi">10</span> <span class="o">+</span>
+                <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s1">&#39;encoder1/output/W:0&#39;</span><span class="p">))</span> <span class="o">+</span>
+                 <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s1">&#39;decoder0/output/W:0&#39;</span><span class="p">))</span> <span class="o">+</span>
+                 <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s1">&#39;decoder1/output/W:0&#39;</span><span class="p">))</span>
+                 <span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="n">L</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+
+        <span class="n">pretrain_burnin</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">50e-3</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">pretrain_loss</span><span class="p">,</span> <span class="n">var_list</span><span class="o">=</span><span class="n">pretrain_var_list</span><span class="p">)</span>
+        <span class="n">pretrain_train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">pretrain_loss</span><span class="p">,</span> <span class="n">var_list</span><span class="o">=</span><span class="n">pretrain_var_list</span><span class="p">)</span>
+
+        <span class="n">midtrain_burnin</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">50e-3</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">var_list</span><span class="o">=</span><span class="n">midtrain_var_list</span><span class="p">)</span>
+        <span class="n">midtrain_train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">1e-3</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">var_list</span><span class="o">=</span><span class="n">midtrain_var_list</span><span class="p">)</span>
+
+        <span class="c1">#tf_burnin = tf.train.AdamOptimizer(50e-3).minimize(self.tf_L + self.tf_R * 0.2)</span>
+        <span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">2e-4</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">refine</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="mf">5e-5</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="n">R</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="c1">#saver = tf.train.Saver()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pretrain burnin&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">pretrain_burnin</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step </span><span class="si">%5d</span><span class="s1">: loss &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">pretrain_loss</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pretrain train&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4000</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">pretrain_train</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step </span><span class="si">%5d</span><span class="s1">: loss &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">pretrain_loss</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;midtrain burnin&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">midtrain_burnin</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step </span><span class="si">%5d</span><span class="s1">: loss &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">pretrain_loss</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;midtrain train&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4000</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">midtrain_train</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step </span><span class="si">%5d</span><span class="s1">: loss &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">pretrain_loss</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;finaltrain train&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6000</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step </span><span class="si">%5d</span><span class="s1">: loss &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">pretrain_loss</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;finaltrain refine&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">refine</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step </span><span class="si">%5d</span><span class="s1">: loss &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">pretrain_loss</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t1</span><span class="p">))</span>
+                <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pseudotime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">get_collection</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">GraphKeys</span><span class="o">.</span><span class="n">GLOBAL_VARIABLES</span><span class="p">,</span> <span class="s1">&#39;decoder0/output/W:0&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Full time </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pseudotime</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span></div></div>
+
 
 <div class="viewcode-block" id="PreloadCyclum"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadCyclum">[docs]</a><span class="k">class</span> <span class="nc">PreloadCyclum</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -431,7 +807,6 @@
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div></div>
-
 
 
 <div class="viewcode-block" id="PreloadNaiveCyclum"><a class="viewcode-back" href="../../cyclum.html#cyclum.core.PreloadNaiveCyclum">[docs]</a><span class="k">class</span> <span class="nc">PreloadNaiveCyclum</span><span class="p">:</span>

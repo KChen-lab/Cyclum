@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Remove cell cycle from perturbed mESC &mdash; cyclum 0.1 documentation</title>
+  <title>Recover cell cycle in mESC &mdash; cyclum 0.1 documentation</title>
   
 
   
@@ -27,9 +27,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Analyze Melanoma Patient 78" href="example_mel78.html" />
-    <link rel="prev" title="Recover cell cycle in mESC" href="example_mESC.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -79,22 +77,10 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="download_install.html">Download and Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="quick_start.html">Quick Start Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="example_mESC.html">Recover cell cycle in mESC</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Remove cell cycle from perturbed mESC</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Import-necessary-packages">Import necessary packages</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Read-data">Read data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Set-up-the-model-and-fit-the-model">Set up the model and fit the model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Illustrations">Illustrations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Subclone-analysis">Subclone analysis</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="example_mel78.html">Analyze Melanoma Patient 78</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_formats.html">Output Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a></li>
@@ -147,15 +133,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="quick_start.html">Quick Start Guide</a> &raquo;</li>
-        
-      <li>Remove cell cycle from perturbed mESC</li>
+      <li>Recover cell cycle in mESC</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/example_mESC_simulated.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/example_mESC_neo.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -390,9 +374,9 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Remove-cell-cycle-from-perturbed-mESC">
-<h1>Remove cell cycle from perturbed mESC<a class="headerlink" href="#Remove-cell-cycle-from-perturbed-mESC" title="Permalink to this headline">¶</a></h1>
-<p>Here we use the mESC dataset with 600 cell cycle genes and 1000 other gene expressions doubled for 40% cells. For simplicity we have converted the dataset into TPM.</p>
+<div class="section" id="Recover-cell-cycle-in-mESC">
+<h1>Recover cell cycle in mESC<a class="headerlink" href="#Recover-cell-cycle-in-mESC" title="Permalink to this headline">¶</a></h1>
+<p>Here we use the mESC dataset. For simplicity we have converted the dataset into TPM. The original count data is available at ArrayExpress: <a class="reference external" href="https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-2805/">E-MTAB-2805</a>. Tools to transform data are also provided and explained in the following sections.</p>
 <div class="section" id="Import-necessary-packages">
 <h2>Import necessary packages<a class="headerlink" href="#Import-necessary-packages" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
@@ -421,7 +405,6 @@ div.rendered_html tbody tr:hover {
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
 </pre></div>
 </div>
 </div>
@@ -431,9 +414,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="n">tf</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">cyclum</span>
+<span></span><span class="kn">import</span> <span class="nn">cyclum</span>
 <span class="kn">from</span> <span class="nn">cyclum</span> <span class="k">import</span> <span class="n">writer</span>
 </pre></div>
 </div>
@@ -452,7 +433,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">input_file_mask</span> <span class="o">=</span> <span class="s1">&#39;data/mESC/perturbed-mesc-tpm-linear&#39;</span>
+<span></span><span class="n">input_file_mask</span> <span class="o">=</span> <span class="s1">&#39;data/mESC/mesc-tpm&#39;</span>
+<span class="n">output_file_mask</span> <span class="o">=</span> <span class="s1">&#39;./results/mESC_original/mesc-tpm&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -469,10 +451,10 @@ div.rendered_html tbody tr:hover {
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read in data and perform log transform (log2(x+1)), centering (mean = 1) and scaling (sd = 1).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">tpm</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">read_df_from_binary</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">)</span>
+    <span class="n">tpm</span> <span class="o">=</span> <span class="n">writer</span><span class="o">.</span><span class="n">read_df_from_binary</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
     <span class="n">sttpm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">skl</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">tpm</span><span class="o">.</span><span class="n">values</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">tpm</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
-    <span class="n">label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file_mask</span> <span class="o">+</span> <span class="s1">&#39;-label.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_file_mask</span> <span class="o">+</span> <span class="s1">&#39;-label.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
     <span class="k">return</span> <span class="n">sttpm</span><span class="p">,</span> <span class="n">label</span>
 
 <span class="n">sttpm</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">input_file_mask</span><span class="p">)</span>
@@ -538,123 +520,123 @@ div.rendered_html tbody tr:hover {
   <tbody>
     <tr>
       <th>G1_cell1_count</th>
-      <td>-0.240365</td>
-      <td>-0.059976</td>
-      <td>0.077328</td>
-      <td>5.298087</td>
-      <td>-0.714166</td>
+      <td>-0.411123</td>
+      <td>-0.059028</td>
+      <td>-0.099416</td>
+      <td>5.385822</td>
+      <td>-0.691219</td>
       <td>0.0</td>
-      <td>-0.707230</td>
-      <td>-0.059976</td>
-      <td>-1.114342</td>
-      <td>-0.368917</td>
+      <td>-0.690715</td>
+      <td>-0.059028</td>
+      <td>-1.051909</td>
+      <td>-0.350978</td>
       <td>...</td>
-      <td>-0.149121</td>
+      <td>-0.146722</td>
       <td>0.0</td>
-      <td>-0.080859</td>
-      <td>-0.381839</td>
-      <td>-0.846925</td>
-      <td>-0.059976</td>
-      <td>-0.081147</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>-0.824399</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
       <td>0.0</td>
-      <td>-0.147211</td>
-      <td>0.049833</td>
+      <td>-0.144843</td>
+      <td>0.090295</td>
     </tr>
     <tr>
       <th>G1_cell2_count</th>
-      <td>-0.368984</td>
-      <td>-0.059976</td>
-      <td>0.615395</td>
-      <td>-0.168451</td>
-      <td>-0.842523</td>
+      <td>-0.180800</td>
+      <td>-0.059028</td>
+      <td>0.777223</td>
+      <td>-0.165725</td>
+      <td>-0.820206</td>
       <td>0.0</td>
-      <td>0.337309</td>
-      <td>-0.059976</td>
-      <td>1.437104</td>
-      <td>0.184563</td>
+      <td>0.362341</td>
+      <td>-0.059028</td>
+      <td>1.458881</td>
+      <td>0.207421</td>
       <td>...</td>
-      <td>-0.149121</td>
+      <td>-0.146722</td>
       <td>0.0</td>
-      <td>-0.080859</td>
-      <td>-0.381839</td>
-      <td>-0.846925</td>
-      <td>-0.059976</td>
-      <td>-0.081147</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>-0.824399</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
       <td>0.0</td>
-      <td>-0.147211</td>
-      <td>-1.326395</td>
+      <td>-0.144843</td>
+      <td>-1.271033</td>
     </tr>
     <tr>
       <th>G1_cell3_count</th>
-      <td>-1.588597</td>
-      <td>-0.059976</td>
-      <td>-1.439700</td>
-      <td>-0.168451</td>
-      <td>-0.842523</td>
+      <td>-1.409101</td>
+      <td>-0.059028</td>
+      <td>-1.218187</td>
+      <td>-0.165725</td>
+      <td>-0.820206</td>
       <td>0.0</td>
-      <td>-0.707230</td>
-      <td>-0.059976</td>
-      <td>-1.337381</td>
-      <td>-0.672972</td>
+      <td>-0.690715</td>
+      <td>-0.059028</td>
+      <td>-1.271394</td>
+      <td>-0.657735</td>
       <td>...</td>
-      <td>2.548733</td>
+      <td>2.593349</td>
       <td>0.0</td>
-      <td>-0.080859</td>
-      <td>-0.381839</td>
-      <td>-0.616570</td>
-      <td>-0.059976</td>
-      <td>-0.081147</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>-0.592938</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
       <td>0.0</td>
-      <td>-0.147211</td>
-      <td>-1.326395</td>
+      <td>-0.144843</td>
+      <td>-1.271033</td>
     </tr>
     <tr>
       <th>G1_cell4_count</th>
-      <td>-2.043812</td>
-      <td>-0.059976</td>
-      <td>0.766249</td>
-      <td>-0.168451</td>
-      <td>-0.842523</td>
+      <td>-1.867558</td>
+      <td>-0.059028</td>
+      <td>0.923695</td>
+      <td>-0.165725</td>
+      <td>-0.820206</td>
       <td>0.0</td>
-      <td>0.873861</td>
-      <td>-0.059976</td>
-      <td>1.408474</td>
-      <td>-0.672972</td>
+      <td>0.903266</td>
+      <td>-0.059028</td>
+      <td>1.430708</td>
+      <td>-0.657735</td>
       <td>...</td>
-      <td>-0.149121</td>
+      <td>-0.146722</td>
       <td>0.0</td>
-      <td>-0.080859</td>
-      <td>-0.381839</td>
-      <td>2.898387</td>
-      <td>-0.059976</td>
-      <td>-0.081147</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>2.938898</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
       <td>0.0</td>
-      <td>-0.147211</td>
-      <td>-1.326395</td>
+      <td>-0.144843</td>
+      <td>-1.271033</td>
     </tr>
     <tr>
       <th>G1_cell5_count</th>
-      <td>-1.668098</td>
-      <td>-0.059976</td>
-      <td>0.182776</td>
-      <td>-0.168451</td>
-      <td>-0.842523</td>
+      <td>-1.646290</td>
+      <td>-0.059028</td>
+      <td>0.001887</td>
+      <td>-0.165725</td>
+      <td>-0.820206</td>
       <td>0.0</td>
-      <td>-0.707230</td>
-      <td>-0.059976</td>
-      <td>-0.869770</td>
-      <td>-0.672972</td>
+      <td>-0.690715</td>
+      <td>-0.059028</td>
+      <td>-0.811233</td>
+      <td>-0.657735</td>
       <td>...</td>
-      <td>-0.149121</td>
+      <td>-0.146722</td>
       <td>0.0</td>
-      <td>-0.080859</td>
-      <td>-0.381839</td>
-      <td>-0.846925</td>
-      <td>-0.059976</td>
-      <td>-0.081147</td>
+      <td>-0.079577</td>
+      <td>-0.374972</td>
+      <td>-0.824399</td>
+      <td>-0.059028</td>
+      <td>-0.079861</td>
       <td>0.0</td>
-      <td>-0.147211</td>
-      <td>-0.154229</td>
+      <td>-0.144843</td>
+      <td>-0.111558</td>
     </tr>
   </tbody>
 </table>
@@ -694,34 +676,28 @@ div.rendered_html tbody tr:hover {
     <tr style="text-align: right;">
       <th></th>
       <th>stage</th>
-      <th>subcluster</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>G1_cell1_count</th>
       <td>g0/g1</td>
-      <td>perturbed</td>
     </tr>
     <tr>
       <th>G1_cell2_count</th>
       <td>g0/g1</td>
-      <td>intact</td>
     </tr>
     <tr>
       <th>G1_cell3_count</th>
       <td>g0/g1</td>
-      <td>intact</td>
     </tr>
     <tr>
       <th>G1_cell4_count</th>
       <td>g0/g1</td>
-      <td>intact</td>
     </tr>
     <tr>
       <th>G1_cell5_count</th>
       <td>g0/g1</td>
-      <td>perturbed</td>
     </tr>
   </tbody>
 </table>
@@ -731,21 +707,12 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Set-up-the-model-and-fit-the-model">
 <h2>Set up the model and fit the model<a class="headerlink" href="#Set-up-the-model-and-fit-the-model" title="Permalink to this headline">¶</a></h2>
 <p>Fitting the model may take some time. Using a GTX 960M GPU it takes 6 minutes.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">cyclum</span><span class="o">.</span><span class="n">PreloadCyclum</span><span class="p">(</span><span class="n">sttpm</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">q_circular</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">q_linear</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">pseudotime</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">cyclum</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">PreloadCyclum2</span><span class="p">(</span><span class="n">sttpm</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -754,28 +721,112 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-pretrain burnin
-step  2000: loss [0.17363924, 38648384.0, 143098.72] time 9.98
-pretrain train
-step  2000: loss [0.17294206, 38648396.0, 143098.72] time 7.21
-step  4000: loss [0.17294218, 38648390.0, 143098.72] time 6.14
-midtrain burnin
-step  2000: loss [0.17294218, 13706.275, 66501.27] time 30.63
-midtrain train
-step  2000: loss [0.17294218, 13703.313, 66501.27] time 30.84
-step  4000: loss [0.17294218, 13703.31, 66501.27] time 28.50
-finaltrain train
-step  2000: loss [0.25978315, 13456.805, 36317.523] time 41.18
-step  4000: loss [0.3560579, 13454.46, 19613.684] time 37.69
-step  6000: loss [0.40473315, 13453.682, 10077.552] time 37.72
-finaltrain refine
-step  2000: loss [0.41543347, 13453.116, 8114.8086] time 41.51
-step  4000: loss [0.43487915, 13452.949, 6591.534] time 37.74
-step  6000: loss [0.44793454, 13452.951, 5367.22] time 37.72
-step  8000: loss [0.45629007, 13452.896, 4374.1514] time 37.78
-step 10000: loss [0.45684564, 13452.864, 3562.853] time 37.73
-Full time 422.85
+&lt;tf.Variable &#39;encoder0/layer0/W:0&#39; shape=(38293, 30) dtype=float32_ref&gt;
+&lt;tf.Variable &#39;encoder0/layer1/W:0&#39; shape=(30, 20) dtype=float32_ref&gt;
+&lt;tf.Variable &#39;encoder0/output/W:0&#39; shape=(20, 1) dtype=float32_ref&gt;
+&lt;tf.Variable &#39;encoder1/output/W:0&#39; shape=(38293, 1) dtype=float32_ref&gt;
+&lt;tf.Variable &#39;decoder1/output/W:0&#39; shape=(1, 38293) dtype=float32_ref&gt;
 </pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pseudotime</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+pretrain burnin
+step  2000: loss [0.54444665, 1969947.8, 121143.03] time 109.92
+pretrain train
+step  2000: loss [0.5424754, 1969949.1, 121143.6] time 9.57
+step  4000: loss [0.5399632, 1969950.5, 121143.94] time 8.39
+midtrain burnin
+step  2000: loss [0.5399632, 13904.404, 62345.047] time 27.58
+midtrain train
+step  2000: loss [0.5399632, 13810.742, 62331.48] time 27.07
+step  4000: loss [0.5399632, 13810.743, 62331.484] time 24.95
+finaltrain train
+step  2000: loss [0.56510144, 12973.681, 33319.746] time 37.58
+step  4000: loss [0.56663483, 12972.624, 17433.268] time 34.32
+step  6000: loss [0.5627208, 12970.52, 8580.605] time 34.37
+finaltrain refine
+step  2000: loss [0.56201273, 12970.036, 6782.819] time 37.83
+step  4000: loss [0.56127185, 12970.028, 5387.996] time 34.33
+step  6000: loss [0.5613446, 12970.02, 4268.316] time 34.41
+step  8000: loss [0.5640953, 12969.78, 3363.4065] time 35.22
+step 10000: loss [0.56425256, 12969.755, 2635.1238] time 35.89
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-10-856c06eb0890&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>pseudotime<span class="ansi-blue-fg">,</span> rotation <span class="ansi-blue-fg">=</span> model<span class="ansi-blue-fg">.</span>train<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/PycharmProjects/cyclum/cyclum/core.py</span> in <span class="ansi-cyan-fg">train</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    379</span>
+<span class="ansi-green-intense-fg ansi-bold">    380</span>         self<span class="ansi-blue-fg">.</span>pseudotime <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>sess<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>X<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 381</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>rotation <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>sess<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>tf<span class="ansi-blue-fg">.</span>get_variable<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    382</span>
+<span class="ansi-green-intense-fg ansi-bold">    383</span>         print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Full time %.2f&#39;</span> <span class="ansi-blue-fg">%</span> <span class="ansi-blue-fg">(</span>time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> t0<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">get_variable</span><span class="ansi-blue-fg">(name, shape, dtype, initializer, regularizer, trainable, collections, caching_device, partitioner, validate_shape, use_resource, custom_getter, constraint, synchronization, aggregation)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1465</span>       constraint<span class="ansi-blue-fg">=</span>constraint<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   1466</span>       synchronization<span class="ansi-blue-fg">=</span>synchronization<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 1467</span><span class="ansi-red-fg">       aggregation=aggregation)
+</span><span class="ansi-green-intense-fg ansi-bold">   1468</span>
+<span class="ansi-green-intense-fg ansi-bold">   1469</span>
+
+<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">get_variable</span><span class="ansi-blue-fg">(self, var_store, name, shape, dtype, initializer, regularizer, reuse, trainable, collections, caching_device, partitioner, validate_shape, use_resource, custom_getter, constraint, synchronization, aggregation)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1215</span>           constraint<span class="ansi-blue-fg">=</span>constraint<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">   1216</span>           synchronization<span class="ansi-blue-fg">=</span>synchronization<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 1217</span><span class="ansi-red-fg">           aggregation=aggregation)
+</span><span class="ansi-green-intense-fg ansi-bold">   1218</span>
+<span class="ansi-green-intense-fg ansi-bold">   1219</span>   def _get_partitioned_variable(self,
+
+<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">get_variable</span><span class="ansi-blue-fg">(self, name, shape, dtype, initializer, regularizer, reuse, trainable, collections, caching_device, partitioner, validate_shape, use_resource, custom_getter, constraint, synchronization, aggregation)</span>
+<span class="ansi-green-intense-fg ansi-bold">    525</span>           constraint<span class="ansi-blue-fg">=</span>constraint<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    526</span>           synchronization<span class="ansi-blue-fg">=</span>synchronization<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 527</span><span class="ansi-red-fg">           aggregation=aggregation)
+</span><span class="ansi-green-intense-fg ansi-bold">    528</span>
+<span class="ansi-green-intense-fg ansi-bold">    529</span>   def _get_partitioned_variable(self,
+
+<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">_true_getter</span><span class="ansi-blue-fg">(name, shape, dtype, initializer, regularizer, reuse, trainable, collections, caching_device, partitioner, validate_shape, use_resource, constraint, synchronization, aggregation)</span>
+<span class="ansi-green-intense-fg ansi-bold">    479</span>           constraint<span class="ansi-blue-fg">=</span>constraint<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    480</span>           synchronization<span class="ansi-blue-fg">=</span>synchronization<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 481</span><span class="ansi-red-fg">           aggregation=aggregation)
+</span><span class="ansi-green-intense-fg ansi-bold">    482</span>
+<span class="ansi-green-intense-fg ansi-bold">    483</span>     <span class="ansi-red-fg"># Set trainable value based on synchronization value.</span>
+
+<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">_get_single_variable</span><span class="ansi-blue-fg">(self, name, shape, dtype, initializer, regularizer, partition_info, reuse, trainable, collections, caching_device, validate_shape, use_resource, constraint, synchronization, aggregation)</span>
+<span class="ansi-green-intense-fg ansi-bold">    867</span>     <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> shape<span class="ansi-blue-fg">.</span>is_fully_defined<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> initializing_from_value<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    868</span>       raise ValueError(&#34;Shape of a new variable (%s) must be fully defined, &#34;
+<span class="ansi-green-fg">--&gt; 869</span><span class="ansi-red-fg">                        &#34;but instead was %s.&#34; % (name, shape))
+</span><span class="ansi-green-intense-fg ansi-bold">    870</span>
+<span class="ansi-green-intense-fg ansi-bold">    871</span>     <span class="ansi-red-fg"># Create the tensor to initialize the variable with default value.</span>
+
+<span class="ansi-red-fg">ValueError</span>: Shape of a new variable () must be fully defined, but instead was &lt;unknown&gt;.
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">pseudotime</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="Illustrations">
@@ -806,137 +857,14 @@ Full time 422.85
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_mESC_simulated_18_0.png" src="_images/example_mESC_simulated_18_0.png" />
+<img alt="_images/example_mESC_neo_19_0.png" src="_images/example_mESC_neo_19_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_mESC_simulated_18_1.png" src="_images/example_mESC_simulated_18_1.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Subclone-analysis">
-<h2>Subclone analysis<a class="headerlink" href="#Subclone-analysis" title="Permalink to this headline">¶</a></h2>
-<p>Many analysis are done in R, so we also choose R to do this job. On the jupyter/python side, package rpy2 is needed to run R inline. On the R side, packages Rtsne and matrixStats are required. It takes some time to transfer data from python to R.</p>
-<p>The data corrected by cyclum shows better separation of two subclones in the tsne plot.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">sttpm2</span> <span class="o">=</span> <span class="n">sttpm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pseudotime</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">rotation</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%</span><span class="k">load_ext</span> rpy2.ipython
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
-</pre></div>
-</div>
-<div class="input_area highlight-r notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%</span>R
-<span class="kn">library</span><span class="p">(</span>Rtsne<span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span>matrixStats<span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span>mclust<span class="p">)</span>
-
-calc_class_score_cv <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> cls<span class="p">){</span>
-  cv <span class="o">=</span> cvMclustDA<span class="p">(</span>MclustDA<span class="p">(</span>x<span class="p">,</span> cls<span class="p">,</span> G<span class="o">=</span><span class="m">1</span><span class="p">,</span> verbose <span class="o">=</span> <span class="bp">F</span><span class="p">),</span> verbose <span class="o">=</span> <span class="bp">F</span><span class="p">)</span>
-  <span class="kr">return</span><span class="p">(</span><span class="m">1</span> <span class="o">-</span> cv<span class="o">$</span>error<span class="p">)</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%</span><span class="k">R</span> -i label
-<span class="o">%</span><span class="k">R</span> -i sttpm sttpm = as.matrix(sttpm)
-<span class="o">%</span><span class="k">R</span> -i sttpm2 sttpm2 = as.matrix(sttpm2)
-<span class="o">%</span><span class="k">R</span> print(dim(sttpm))
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/shaoheng/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/rpy2/robjects/pandas2ri.py:190: FutureWarning: from_items is deprecated. Please use DataFrame.from_dict(dict(items), ...) instead. DataFrame.from_dict(OrderedDict(items)) may be used to preserve the key order.
-  res = PandasDataFrame.from_items(items)
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[1]   279 38293
-
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
-</pre></div>
-</div>
-<div class="input_area highlight-r notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%</span>R
-
-<span class="kp">set.seed</span><span class="p">(</span><span class="m">2019</span><span class="p">)</span>
-
-nonzero_mask <span class="o">&lt;-</span> colSds<span class="p">(</span>sttpm<span class="p">)</span> <span class="o">&gt;</span> <span class="m">1e-3</span>
-original_tsne <span class="o">&lt;-</span> Rtsne<span class="p">(</span>sttpm<span class="p">[,</span> nonzero_mask<span class="p">],</span> pca_scale <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> theta<span class="o">=</span><span class="m">0.1</span><span class="p">)</span>
-plot<span class="p">(</span>original_tsne<span class="o">$</span>Y<span class="p">,</span> col<span class="o">=</span><span class="kp">as.factor</span><span class="p">(</span>label<span class="o">$</span>subcluster<span class="p">),</span> pch<span class="o">=</span><span class="m">19</span><span class="p">)</span>
-title<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="s">&#39;original data separation rate:&#39;</span><span class="p">,</span> calc_class_score_cv<span class="p">(</span>original_tsne<span class="o">$</span>Y<span class="p">,</span> label<span class="o">$</span>subcluster<span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="_images/example_mESC_simulated_25_0.png" src="_images/example_mESC_simulated_25_0.png" />
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
-</pre></div>
-</div>
-<div class="input_area highlight-r notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%</span>R
-
-nonzero_mask <span class="o">&lt;-</span> colSds<span class="p">(</span>sttpm2<span class="p">)</span> <span class="o">&gt;</span> <span class="m">1e-3</span>
-corrected_tsne <span class="o">&lt;-</span> Rtsne<span class="p">(</span>sttpm2<span class="p">[,</span> nonzero_mask<span class="p">],</span> pca_scale <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> theta<span class="o">=</span><span class="m">0.1</span><span class="p">)</span>
-plot<span class="p">(</span>corrected_tsne<span class="o">$</span>Y<span class="p">,</span> col<span class="o">=</span><span class="kp">as.factor</span><span class="p">(</span>label<span class="o">$</span>subcluster<span class="p">),</span> pch<span class="o">=</span><span class="m">19</span><span class="p">)</span>
-title<span class="p">(</span><span class="kp">paste</span><span class="p">(</span><span class="s">&#39;corrected data separation rate:&#39;</span><span class="p">,</span> calc_class_score_cv<span class="p">(</span>corrected_tsne<span class="o">$</span>Y<span class="p">,</span> label<span class="o">$</span>subcluster<span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="_images/example_mESC_simulated_26_0.png" src="_images/example_mESC_simulated_26_0.png" />
+<img alt="_images/example_mESC_neo_19_1.png" src="_images/example_mESC_neo_19_1.png" />
 </div>
 </div>
 </div>
@@ -947,15 +875,6 @@ title<span class="p">(</span><span class="kp">paste</span><span class="p">(</spa
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="example_mel78.html" class="btn btn-neutral float-right" title="Analyze Melanoma Patient 78" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="example_mESC.html" class="btn btn-neutral" title="Recover cell cycle in mESC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

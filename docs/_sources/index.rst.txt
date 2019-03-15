@@ -18,9 +18,11 @@ Also provided are a set of supplementary tools to visualize and anaylzing the re
    :caption: Contents:
 
    download_install
+   usage
    quick_start
    input_formats
    output_formats
+   customization
    cyclum
    faq
    features
