@@ -49,4 +49,4 @@ The fields are shown in the help.
 | \\-\\-linear q         | q is an integer, the number of linear dimensions                   |
 +------------------------+--------------------------------------------------------------------+
 
-The output file names will be the output prefix attached by "-cell.csv", "-gene.csv" and "-corrected.csv".
+The output file names will be the output prefix trailed by "-cell.csv", "-gene.csv" and "-corrected.csv".

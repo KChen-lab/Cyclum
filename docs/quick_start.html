@@ -83,9 +83,13 @@
 <li class="toctree-l1"><a class="reference internal" href="download_install.html">Download and Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="example_mESC.html">Recover cell cycle in mESC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_mESC_simulated.html">Remove cell cycle from perturbed mESC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_mel78.html">Analyze Melanoma Patient 78</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#call-from-bash">Call from bash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#call-from-python">Call from python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="example_mESC.html">Recover cell cycle in mESC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_mESC_simulated.html">Remove cell cycle from perturbed mESC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example_mel78.html">Analyze Melanoma Patient 78</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
@@ -185,15 +189,31 @@
 </style>
 <div class="section" id="quick-start-guide">
 <h1>Quick Start Guide<a class="headerlink" href="#quick-start-guide" title="Permalink to this headline">¶</a></h1>
-<p>We provide examples for recovering cell cycle and removing cell cycle.
+<div class="section" id="call-from-bash">
+<h2>Call from bash<a class="headerlink" href="#call-from-bash" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to run Cyclum as a stand alone software.
+The expression of mESC in TPM is provided in the data directory.
+Just make sure you have all the dependencies and <code class="code docutils literal notranslate"><span class="pre">cd</span></code> to the folder containing <code class="code docutils literal notranslate"><span class="pre">run_cyclum.py</span></code> and run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python run_cyclum.py data/mESC/mesc-tpm.csv --cell-is-column --remove
+</pre></div>
+</div>
+<p>You will find the outputs in the same directory as the input file <code class="code docutils literal notranslate"><span class="pre">data/mESC/</span></code>.
+<code class="code docutils literal notranslate"><span class="pre">mesc-tpm-cell.csv</span></code> contains the pseudotime for all cells.
+<code class="code docutils literal notranslate"><span class="pre">mesc-tpm-gene.csv</span></code> contains the “magnitude” and “phase” of the cell-cycle components in the genes.
+<code class="code docutils literal notranslate"><span class="pre">mesc-tpm-corrected.csv</span></code> contains the expression matrix with cell-cycle component removed.</p>
+</div>
+<div class="section" id="call-from-python">
+<h2>Call from python<a class="headerlink" href="#call-from-python" title="Permalink to this headline">¶</a></h2>
+<p>Nonetheless, Cyclum is also a python package.
+We provide examples for recovering cell cycle and removing cell cycle by calling it in python.
 Please click on the following links to access them.</p>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Examples:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="example_mESC.html">Recover cell cycle in mESC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example_mESC_simulated.html">Remove cell cycle from perturbed mESC</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example_mel78.html">Analyze Melanoma Patient 78</a></li>
 </ul>
+</div>
 </div>
 </div>
 
