@@ -86,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_formats.html">Output Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cyclum.html">cyclum package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">cyclum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -182,21 +182,25 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>The fields are shown in the help.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python run_cyclum.py --help
-usage: run_cyclum.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--remove<span class="o">]</span> <span class="o">[</span>--binary<span class="o">]</span> <span class="o">[</span>--binary-only<span class="o">]</span> <span class="o">[</span>--linear q<span class="o">]</span>
+usage: run_cyclum.py <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--cell-is-column<span class="o">]</span> <span class="o">[</span>--no-transform<span class="o">]</span> <span class="o">[</span>--remove<span class="o">]</span>
+                     <span class="o">[</span>--binary-output<span class="o">]</span> <span class="o">[</span>--binary-output-only<span class="o">]</span> <span class="o">[</span>--linear q<span class="o">]</span>
                      input <span class="o">[</span>output<span class="o">]</span>
 
 Recover and remove cell cycle.
 
 positional arguments:
-  input          input file name
-  output         output name mask<span class="p">;</span> the prefix <span class="k">for</span> all output names
+  input                 input file name
+  output                output name mask<span class="p">;</span> the prefix <span class="k">for</span> all output names
 
 optional arguments:
-  -h, --help     show this <span class="nb">help</span> message and <span class="nb">exit</span>
-  --remove       also output the cell cycle removed expression matrix
-  --binary       output using binary file<span class="p">;</span> faster to <span class="nb">read</span> by python or R
-  --binary-only  output using binary file only without csv
-  --linear q     integer number of linear dimensions
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --cell-is-column      indicating that each column represents a cells
+  --no-transform        indicating that no further transform is needed
+  --remove              also output the cell cycle removed expression matrix
+  --binary-output       output using binary file<span class="p">;</span> faster to <span class="nb">read</span> by python or
+                     R
+  --binary-output-only  output using binary file only without csv
+  --linear q            integer number of linear dimensions
 </pre></div>
 </div>
 <table border="1" class="docutils">
@@ -211,10 +215,17 @@ optional arguments:
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>input</td>
-<td>The full name of the input file</td>
+<td>The full name of the input file (tab delimited with cell names and
+gene names. The names do not have to have a meaning.)</td>
 </tr>
 <tr class="row-odd"><td>output</td>
 <td>The prefix of outputs. Default to be the prefix of input</td>
+</tr>
+<tr class="row-even"><td>--cell-is-column</td>
+<td>Tell the program that each column (i.e. not row) stands for a cell</td>
+</tr>
+<tr class="row-odd"><td>--no-transform</td>
+<td>Tell the program not to log transform the imput data</td>
 </tr>
 <tr class="row-even"><td>--remove</td>
 <td>Besides the cell timings and gene profiles, also output the cell
@@ -228,6 +239,7 @@ cycle removed expression matrix</td>
 </tr>
 </tbody>
 </table>
+<p>The output file names will be the output prefix attached by “-cell.csv”, “-gene.csv” and “-corrected.csv”.</p>
 </div>
 
 

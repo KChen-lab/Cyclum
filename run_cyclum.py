@@ -1,15 +1,4 @@
 import argparse
-import cyclum
-import numpy as np
-import pandas as pd
-import sklearn as skl
-import cyclum.writer as writer
-
-# What is needed:
-# Necessary: input name
-# Can be substituted: output name (use the prefix of input)
-# options: --remove
-# options: --binary
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Recover and remove cell cycle.')
@@ -21,8 +10,8 @@ if __name__ == "__main__":
                         help='indicating that each column represents a cells')
     parser.add_argument('--no-transform', action='store_true',
                         help='indicating that no further transform is needed')
-    #parser.add_argument('--remove', action='store_true',
-    #                    help='also output the cell cycle removed expression matrix')
+    parser.add_argument('--remove', action='store_true',
+                        help='also output the cell cycle removed expression matrix')
     parser.add_argument('--binary-output', action='store_true',
                         help='output using binary file; faster to read by python or R')
     parser.add_argument('--binary-output-only', action='store_true',
@@ -31,6 +20,12 @@ if __name__ == "__main__":
                         help='integer number of linear dimensions')
 
     args = parser.parse_args()
+
+    import cyclum
+    import numpy as np
+    import pandas as pd
+    import sklearn as skl
+    import cyclum.writer as writer
 
     if not args.cell_is_column:
         print("The rows are presumed to represent cells")
@@ -59,12 +54,23 @@ if __name__ == "__main__":
 
     pseudotime_df = pd.DataFrame(data=pseudotime, columns=['pseudotime'], index=tpm.index)
 
-    rotation_df = pd.DataFrame(data=rotation, index=['rotation' + str(i + 1) for i in range(rotation.shape[0])], columns=tpm.columns)
+    #rotation_df = pd.DataFrame(data=rotation, index=['rotation' + str(i + 1) for i in range(rotation.shape[0])], columns=tpm.columns)
+
+    mag = np.sqrt((rotation[0, :] - rotation[1, :] / 2 - rotation[2, :] / 2) ** 2 +
+                  3 * (rotation[1, :] - rotation[2, :]) ** 2 / 4 + 1e-12)
+
+    ang = np.arccos((rotation[0, :] - rotation[1, :] / 2 - rotation[2, :] / 2) / mag)
+
+    rotation_df = pd.DataFrame(data=np.vstack([mag, ang]), index=['magnitude', 'angle'], columns=tpm.columns)
 
     if not args.binary_output_only:
-        pseudotime_df.to_csv(args.output_file_mask + '-pseudotime.csv', sep='\t')
-        rotation_df.to_csv(args.output_file_mask + '-rotation.csv', sep='\t')
+        pseudotime_df.to_csv(args.output_file_mask + '-cell.csv', sep='\t')
+        rotation_df.to_csv(args.output_file_mask + '-gene.csv', sep='\t')
 
     if args.binary_output:
-        writer.write_df_to_binary(args.output_file_mask + '-pseudotime', pseudotime_df)
-        writer.write_df_to_binary(args.output_file_mask + '-pseudotime', rotation_df)
+        writer.write_df_to_binary(args.output_file_mask + '-cell', pseudotime_df)
+        writer.write_df_to_binary(args.output_file_mask + '-gene', rotation_df)
+
+    if args.remove:
+        sttpm2 = sttpm - np.concatenate([np.cos(pseudotime + i * 2 * np.pi / 3) for i in range(3)], axis=1) @ rotation
+        sttpm2.to_csv(args.output_file_mask + '-corrected.csv', sep='\t')

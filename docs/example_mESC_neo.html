@@ -84,7 +84,7 @@
 <li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_formats.html">Output Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cyclum.html">cyclum package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">cyclum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -729,7 +729,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -737,107 +737,336 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-pretrain burnin
-step  2000: loss [0.54444665, 1969947.8, 121143.03] time 109.92
-pretrain train
-step  2000: loss [0.5424754, 1969949.1, 121143.6] time 9.57
-step  4000: loss [0.5399632, 1969950.5, 121143.94] time 8.39
-midtrain burnin
-step  2000: loss [0.5399632, 13904.404, 62345.047] time 27.58
-midtrain train
-step  2000: loss [0.5399632, 13810.742, 62331.48] time 27.07
-step  4000: loss [0.5399632, 13810.743, 62331.484] time 24.95
-finaltrain train
-step  2000: loss [0.56510144, 12973.681, 33319.746] time 37.58
-step  4000: loss [0.56663483, 12972.624, 17433.268] time 34.32
-step  6000: loss [0.5627208, 12970.52, 8580.605] time 34.37
-finaltrain refine
-step  2000: loss [0.56201273, 12970.036, 6782.819] time 37.83
-step  4000: loss [0.56127185, 12970.028, 5387.996] time 34.33
-step  6000: loss [0.5613446, 12970.02, 4268.316] time 34.41
-step  8000: loss [0.5640953, 12969.78, 3363.4065] time 35.22
-step 10000: loss [0.56425256, 12969.755, 2635.1238] time 35.89
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-10-856c06eb0890&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>pseudotime<span class="ansi-blue-fg">,</span> rotation <span class="ansi-blue-fg">=</span> model<span class="ansi-blue-fg">.</span>train<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/PycharmProjects/cyclum/cyclum/core.py</span> in <span class="ansi-cyan-fg">train</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    379</span>
-<span class="ansi-green-intense-fg ansi-bold">    380</span>         self<span class="ansi-blue-fg">.</span>pseudotime <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>sess<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>X<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 381</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>rotation <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>sess<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>tf<span class="ansi-blue-fg">.</span>get_variable<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    382</span>
-<span class="ansi-green-intense-fg ansi-bold">    383</span>         print<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Full time %.2f&#39;</span> <span class="ansi-blue-fg">%</span> <span class="ansi-blue-fg">(</span>time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> t0<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">get_variable</span><span class="ansi-blue-fg">(name, shape, dtype, initializer, regularizer, trainable, collections, caching_device, partitioner, validate_shape, use_resource, custom_getter, constraint, synchronization, aggregation)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1465</span>       constraint<span class="ansi-blue-fg">=</span>constraint<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1466</span>       synchronization<span class="ansi-blue-fg">=</span>synchronization<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">-&gt; 1467</span><span class="ansi-red-fg">       aggregation=aggregation)
-</span><span class="ansi-green-intense-fg ansi-bold">   1468</span>
-<span class="ansi-green-intense-fg ansi-bold">   1469</span>
-
-<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">get_variable</span><span class="ansi-blue-fg">(self, var_store, name, shape, dtype, initializer, regularizer, reuse, trainable, collections, caching_device, partitioner, validate_shape, use_resource, custom_getter, constraint, synchronization, aggregation)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1215</span>           constraint<span class="ansi-blue-fg">=</span>constraint<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1216</span>           synchronization<span class="ansi-blue-fg">=</span>synchronization<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">-&gt; 1217</span><span class="ansi-red-fg">           aggregation=aggregation)
-</span><span class="ansi-green-intense-fg ansi-bold">   1218</span>
-<span class="ansi-green-intense-fg ansi-bold">   1219</span>   def _get_partitioned_variable(self,
-
-<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">get_variable</span><span class="ansi-blue-fg">(self, name, shape, dtype, initializer, regularizer, reuse, trainable, collections, caching_device, partitioner, validate_shape, use_resource, custom_getter, constraint, synchronization, aggregation)</span>
-<span class="ansi-green-intense-fg ansi-bold">    525</span>           constraint<span class="ansi-blue-fg">=</span>constraint<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    526</span>           synchronization<span class="ansi-blue-fg">=</span>synchronization<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">--&gt; 527</span><span class="ansi-red-fg">           aggregation=aggregation)
-</span><span class="ansi-green-intense-fg ansi-bold">    528</span>
-<span class="ansi-green-intense-fg ansi-bold">    529</span>   def _get_partitioned_variable(self,
-
-<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">_true_getter</span><span class="ansi-blue-fg">(name, shape, dtype, initializer, regularizer, reuse, trainable, collections, caching_device, partitioner, validate_shape, use_resource, constraint, synchronization, aggregation)</span>
-<span class="ansi-green-intense-fg ansi-bold">    479</span>           constraint<span class="ansi-blue-fg">=</span>constraint<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    480</span>           synchronization<span class="ansi-blue-fg">=</span>synchronization<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">--&gt; 481</span><span class="ansi-red-fg">           aggregation=aggregation)
-</span><span class="ansi-green-intense-fg ansi-bold">    482</span>
-<span class="ansi-green-intense-fg ansi-bold">    483</span>     <span class="ansi-red-fg"># Set trainable value based on synchronization value.</span>
-
-<span class="ansi-green-fg">~/.conda/envs/tensorflow-gpu/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py</span> in <span class="ansi-cyan-fg">_get_single_variable</span><span class="ansi-blue-fg">(self, name, shape, dtype, initializer, regularizer, partition_info, reuse, trainable, collections, caching_device, validate_shape, use_resource, constraint, synchronization, aggregation)</span>
-<span class="ansi-green-intense-fg ansi-bold">    867</span>     <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> shape<span class="ansi-blue-fg">.</span>is_fully_defined<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> initializing_from_value<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    868</span>       raise ValueError(&#34;Shape of a new variable (%s) must be fully defined, &#34;
-<span class="ansi-green-fg">--&gt; 869</span><span class="ansi-red-fg">                        &#34;but instead was %s.&#34; % (name, shape))
-</span><span class="ansi-green-intense-fg ansi-bold">    870</span>
-<span class="ansi-green-intense-fg ansi-bold">    871</span>     <span class="ansi-red-fg"># Create the tensor to initialize the variable with default value.</span>
-
-<span class="ansi-red-fg">ValueError</span>: Shape of a new variable () must be fully defined, but instead was &lt;unknown&gt;.
+pretrain burnin
+step  2000: loss [0.6328813, 1890222.0, 120670.266] time 11.93
+pretrain train
+step  2000: loss [0.63267934, 1890225.4, 120666.53] time 9.97
+step  4000: loss [0.6324089, 1890222.0, 120666.75] time 8.07
+midtrain burnin
+step  2000: loss [0.6324089, 13729.129, 62122.69] time 31.57
+midtrain train
+step  2000: loss [0.6324089, 13718.6875, 62122.684] time 32.91
+step  4000: loss [0.6324089, 13718.685, 62122.684] time 29.18
+finaltrain train
+step  2000: loss [0.6441994, 12986.716, 33158.242] time 41.75
+step  4000: loss [0.6452586, 12985.151, 17336.076] time 38.43
+step  6000: loss [0.6454595, 12981.982, 8525.44] time 38.47
+finaltrain refine
+step  2000: loss [0.6459814, 12981.376, 6735.352] time 41.93
+step  4000: loss [0.64787185, 12981.083, 5346.3447] time 38.42
+step  6000: loss [0.6474729, 12980.591, 4230.1133] time 38.48
+step  8000: loss [0.6471928, 12980.596, 3329.9866] time 39.59
+step 10000: loss [0.64715797, 12980.599, 2607.2913] time 39.46
+Full time 441.08
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">pseudotime</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Illustrations">
-<h2>Illustrations<a class="headerlink" href="#Illustrations" title="Permalink to this headline">¶</a></h2>
-<p>We illustrate the results on a circle, to show its circular nature. There is virtually no start and end of the circle. Red, green and blue represents G0/G1, S and G2/M phase respectively. The inner lines represents single cells. The cells spread across the The areas outside</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%</span><span class="k">aimport</span> cyclum.illustration
+<span></span><span class="n">pseudotime</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([[-9.99997437e-01, -1.25285978e+01],
+       [-9.99993086e-01, -7.60270071e+00],
+       [-9.98291016e-01,  6.90062380e+00],
+       [-9.99987245e-01, -2.78075142e+01],
+       [-9.99999225e-01, -2.85076408e+01],
+       [-9.98254418e-01,  1.06687880e+01],
+       [-9.99996185e-01,  1.53862441e+00],
+       [-9.98015940e-01,  1.11663265e+01],
+       [-9.99729753e-01,  2.22984295e+01],
+       [-2.03480914e-01,  1.23849926e+01],
+       [-9.99966502e-01,  3.35057712e+00],
+       [-9.99997795e-01, -1.40906134e+01],
+       [-8.17084789e-01,  2.55291824e+01],
+       [-9.99983072e-01, -2.69362307e+00],
+       [-9.99979019e-01,  1.83463631e+01],
+       [-9.99884784e-01,  1.86223373e+01],
+       [-9.97905850e-01,  1.84945908e+01],
+       [-9.99997973e-01, -1.32733603e+01],
+       [-9.99702454e-01,  8.14664078e+00],
+       [-9.99998093e-01,  2.83003306e+00],
+       [ 9.98380005e-01,  2.98412304e+01],
+       [-9.95011449e-01,  2.51617012e+01],
+       [-9.99586821e-01,  1.39927025e+01],
+       [ 9.97819960e-01,  2.31373463e+01],
+       [-9.95975316e-01,  1.80716171e+01],
+       [-9.80381429e-01,  1.22125130e+01],
+       [-9.99828577e-01,  1.29536352e+01],
+       [-9.99999046e-01, -1.00404730e+01],
+       [-9.99997020e-01, -2.57603035e+01],
+       [-2.28165850e-01,  2.59298592e+01],
+       [-9.99995947e-01, -3.18435879e+01],
+       [-9.79346991e-01,  1.81712666e+01],
+       [-9.99982536e-01, -1.54500313e+01],
+       [ 9.97977674e-01,  3.45299492e+01],
+       [-9.99773324e-01, -2.16571884e+01],
+       [-9.90211964e-01,  3.26029587e+01],
+       [-1.94159135e-01,  4.40137672e+00],
+       [-9.99427676e-01,  6.67476535e-01],
+       [-9.99982476e-01, -1.43571577e+01],
+       [-9.99999642e-01, -1.65807171e+01],
+       [-9.99987185e-01, -2.40905213e+00],
+       [ 1.72170877e-01,  2.40725231e+01],
+       [-9.82581794e-01,  1.99221134e+01],
+       [-9.99991655e-01, -4.20447969e+00],
+       [-9.99998450e-01, -4.59960604e+00],
+       [-9.99982417e-01, -9.24268818e+00],
+       [-9.99926507e-01, -3.59742546e+00],
+       [-9.99818802e-01, -1.54584999e+01],
+       [-9.99998152e-01,  7.20048571e+00],
+       [-9.99997079e-01, -2.72676411e+01],
+       [-9.99601543e-01,  7.43811846e+00],
+       [-9.99991775e-01, -1.05901432e+01],
+       [-9.99997795e-01, -1.65819530e+01],
+       [-9.99673665e-01,  3.66852999e+00],
+       [-9.99997318e-01, -7.09881687e+00],
+       [ 9.99467134e-01, -6.02555799e+00],
+       [-9.99634981e-01, -5.51687908e+00],
+       [-9.99988198e-01, -1.73332691e+01],
+       [-9.99868333e-01, -1.02411861e+01],
+       [-9.99974906e-01,  9.45599842e+00],
+       [-9.99992192e-01, -1.51792612e+01],
+       [-9.99579787e-01,  2.98013077e+01],
+       [ 9.99481261e-01,  1.77329712e+01],
+       [-9.99970734e-01,  4.22268343e+00],
+       [-9.99998868e-01, -1.20039434e+01],
+       [-9.99987662e-01,  1.17504539e+01],
+       [-9.99114692e-01,  4.27821159e+00],
+       [-9.53338325e-01,  2.51548023e+01],
+       [-9.99990642e-01,  5.56729889e+00],
+       [-1.69301361e-01,  2.31041679e+01],
+       [-9.99999046e-01, -2.17637005e+01],
+       [ 9.98114824e-01,  3.01700478e+01],
+       [-9.99993205e-01,  1.58174009e+01],
+       [ 9.98093843e-01,  3.40091400e+01],
+       [-9.99743700e-01,  2.83042297e+01],
+       [-9.99814093e-01, -5.38606596e+00],
+       [-9.60433483e-01,  2.25184536e+01],
+       [-9.99499202e-01, -8.73388195e+00],
+       [-9.99540925e-01,  3.20844102e+00],
+       [ 9.99496520e-01,  2.40174484e+01],
+       [-9.99888301e-01,  7.22566080e+00],
+       [-9.99788404e-01,  4.39410830e+00],
+       [-9.99477506e-01,  1.46624174e+01],
+       [-9.99962568e-01, -4.10330629e+00],
+       [-9.98899639e-01,  2.00968623e+00],
+       [-9.99937356e-01,  4.19695377e+00],
+       [-9.98453677e-01,  2.66486912e+01],
+       [-9.99982655e-01, -1.57598663e+02],
+       [ 9.98789847e-01,  2.99718819e+01],
+       [ 9.99963045e-01,  1.99363384e+01],
+       [ 9.99597967e-01,  3.49274101e+01],
+       [-9.99988794e-01,  6.78846776e-01],
+       [-9.95522738e-01,  1.46314201e+01],
+       [-9.98238802e-01,  7.68856478e+00],
+       [-9.99290526e-01,  1.21773558e+01],
+       [-1.17378235e-01,  1.98673191e+01],
+       [-9.99333203e-01, -3.01016521e+01],
+       [ 9.95971382e-01,  4.63661718e+00],
+       [ 9.99936044e-01,  1.17569380e+01],
+       [-9.99997079e-01, -4.14211006e+01],
+       [ 9.99097049e-01,  2.18666267e+01],
+       [-9.99995351e-01, -3.08175335e+01],
+       [ 8.88980255e-02,  1.70505638e+01],
+       [ 9.99765515e-01,  2.65347347e+01],
+       [ 9.99593556e-01,  5.23492193e+00],
+       [ 9.99411523e-01,  1.81077080e+01],
+       [ 9.97579873e-01,  8.99569798e+00],
+       [ 9.99994934e-01,  2.81604977e+01],
+       [ 9.98855650e-01,  1.88588371e+01],
+       [ 9.99183476e-01,  6.43618250e+00],
+       [ 9.99621630e-01,  2.27271633e+01],
+       [-2.24226430e-01, -1.23303232e+01],
+       [ 9.99952376e-01,  1.72703953e+01],
+       [-9.97668505e-01,  3.10855556e+00],
+       [ 9.98424590e-01,  2.35147991e+01],
+       [ 9.99650478e-01,  2.58039837e+01],
+       [ 9.99952376e-01,  1.12425661e+01],
+       [-9.99189973e-01, -3.10094891e+01],
+       [ 9.92807209e-01,  2.13762608e+01],
+       [ 9.99700308e-01,  2.94311314e+01],
+       [ 9.97915864e-01,  4.66833115e+00],
+       [-9.99997377e-01, -3.77518196e+01],
+       [-9.98794854e-01, -4.86911631e+00],
+       [ 9.99706447e-01,  1.68614883e+01],
+       [-9.67262506e-01, -1.14214354e+01],
+       [-9.99997735e-01, -3.25868263e+01],
+       [-9.99997377e-01, -2.79933949e+01],
+       [ 9.99612868e-01,  2.67884159e+01],
+       [-7.81364962e-02,  1.42936506e+01],
+       [ 9.99233305e-01,  2.63051586e+01],
+       [-9.96419191e-01,  1.18198643e+01],
+       [ 9.85016584e-01,  1.19541192e+00],
+       [-2.05586627e-01,  9.43336010e+00],
+       [ 9.99994099e-01,  1.14645205e+01],
+       [-9.94719386e-01,  8.52477849e-01],
+       [ 9.62439358e-01,  9.94246960e+00],
+       [ 9.59242880e-01,  8.00461102e+00],
+       [ 3.26579630e-01,  3.16362953e+00],
+       [ 2.73330212e-01,  6.42475176e+00],
+       [ 8.41113925e-02,  1.16721077e+01],
+       [ 9.99701440e-01,  9.77957058e+00],
+       [-9.98835862e-01, -6.99593449e+00],
+       [-9.99992371e-01, -2.89122629e+00],
+       [-4.48102504e-01,  1.26627569e+01],
+       [ 9.99679983e-01,  7.38617229e+00],
+       [-3.97589445e-01,  3.79269528e+00],
+       [ 9.98577297e-01,  1.13319864e+01],
+       [ 9.99025166e-01,  7.68435097e+00],
+       [ 9.91853595e-01,  1.35071573e+01],
+       [ 8.27335715e-02,  3.03102136e-01],
+       [ 9.89035010e-01,  4.39923429e+00],
+       [ 9.97308612e-01,  9.53842735e+00],
+       [ 3.36896777e-01,  6.10424089e+00],
+       [-9.98824835e-01,  1.00558329e+01],
+       [-9.99093413e-01, -5.02633333e+00],
+       [ 9.98912215e-01,  2.26064320e+01],
+       [-9.98947501e-01,  1.18908014e+01],
+       [ 9.52893257e-01,  8.37245464e+00],
+       [ 9.91050124e-01,  8.91755104e+00],
+       [-9.99189615e-01, -1.81547623e+01],
+       [ 9.98871505e-01,  9.52563477e+00],
+       [ 9.99714732e-01,  1.81417923e+01],
+       [-9.99724865e-01, -3.22178421e+01],
+       [ 4.84805629e-02,  1.93726997e+01],
+       [ 2.40742430e-01,  7.55723763e+00],
+       [-9.99975860e-01, -2.80632439e+01],
+       [ 4.93315369e-01,  1.84466400e+01],
+       [ 9.84250844e-01,  3.39627838e+01],
+       [ 9.99371350e-01,  2.40653553e+01],
+       [ 9.84407902e-01,  7.11196518e+00],
+       [ 4.74228948e-01,  1.07328501e+01],
+       [-7.86306337e-02,  3.64551735e+00],
+       [-7.03389347e-02, -1.19199276e+01],
+       [ 9.95623589e-01,  4.09888744e+00],
+       [ 9.99122262e-01,  1.29761744e+01],
+       [ 8.96905959e-02,  3.85320520e+00],
+       [ 9.99742150e-01,  2.45727558e+01],
+       [-9.99783993e-01, -3.83753586e+01],
+       [-1.80000648e-01,  2.28405166e+00],
+       [ 9.99696612e-01,  2.57394791e+01],
+       [ 1.59860060e-01,  1.45501175e+01],
+       [-9.96360540e-01,  1.40503378e+01],
+       [ 9.99954939e-01,  1.52325125e+01],
+       [ 9.99090731e-01,  1.06941881e+01],
+       [ 9.99956548e-01,  1.49891462e+01],
+       [ 6.80193976e-02,  7.57459104e-01],
+       [ 9.99129057e-01,  2.44655361e+01],
+       [ 9.96270716e-01,  1.31959219e+01],
+       [ 9.99742031e-01,  1.85612736e+01],
+       [ 9.97635722e-01, -3.21823359e-01],
+       [-3.93721044e-01, -1.36921711e+01],
+       [ 9.99909699e-01,  1.47815390e+01],
+       [-9.99993801e-01, -2.19806763e+02],
+       [ 9.99959052e-01,  2.04392643e+01],
+       [ 9.98249412e-01,  7.09560490e+00],
+       [ 9.93861735e-01,  1.55845318e+01],
+       [-9.99971330e-01, -2.17896454e+02],
+       [ 9.99181271e-01,  1.99470062e+01],
+       [ 9.93446946e-01,  1.07007017e+01],
+       [ 9.99991179e-01,  2.61335258e+01],
+       [ 9.99633312e-01,  1.50127163e+01],
+       [ 9.99827385e-01,  1.43221769e+01],
+       [ 9.99813557e-01,  1.64299488e+01],
+       [ 9.99883592e-01,  2.03166656e+01],
+       [ 9.99948919e-01,  2.60182934e+01],
+       [-9.98795331e-01, -4.48392928e-01],
+       [ 9.99970734e-01,  2.15474548e+01],
+       [ 9.99975264e-01,  2.12304459e+01],
+       [ 9.97492015e-01,  1.88376045e+01],
+       [-9.99988079e-01, -2.19785355e+02],
+       [ 9.99909639e-01,  1.76668739e+01],
+       [ 9.99837399e-01,  2.40327473e+01],
+       [ 9.99970496e-01,  2.49791336e+01],
+       [ 9.90842581e-01,  1.36992035e+01],
+       [ 9.99349475e-01,  1.12074614e+01],
+       [ 9.99946475e-01,  2.55121384e+01],
+       [ 9.99742925e-01, -3.72098970e+00],
+       [ 9.98312175e-01,  8.82606411e+00],
+       [ 9.99979258e-01,  2.13449688e+01],
+       [ 9.99671936e-01,  2.42185307e+01],
+       [ 9.99748886e-01,  2.13617725e+01],
+       [-9.98443961e-01, -5.22543478e+00],
+       [-9.99982893e-01, -2.19437988e+02],
+       [ 9.99922574e-01,  1.69029541e+01],
+       [ 9.99289453e-01,  1.20719404e+01],
+       [ 3.54808152e-01, -1.93682060e+01],
+       [ 9.99618471e-01,  1.99505348e+01],
+       [-9.99488354e-01, -5.54346704e+00],
+       [ 9.99839067e-01,  1.63005466e+01],
+       [ 9.99803841e-01,  1.30540638e+01],
+       [ 9.99989212e-01,  1.97639599e+01],
+       [ 9.99200225e-01,  1.54072313e+01],
+       [ 9.77577567e-01,  6.84791517e+00],
+       [ 9.99877453e-01,  1.35356684e+01],
+       [ 9.98933792e-01,  1.50988483e+01],
+       [-9.99993742e-01, -2.17884094e+02],
+       [ 9.99669909e-01,  1.47362871e+01],
+       [-9.99399602e-01, -3.68166947e+00],
+       [ 9.98192608e-01,  9.83534527e+00],
+       [ 9.98310208e-01,  1.64435272e+01],
+       [ 9.99924004e-01,  3.27271500e+01],
+       [ 9.97226536e-01,  2.31984768e+01],
+       [ 9.99665022e-01, -1.05915952e+00],
+       [ 9.99845445e-01,  3.16980877e+01],
+       [ 9.98209476e-01,  1.61409988e+01],
+       [ 9.98600423e-01,  2.09541988e+01],
+       [ 9.99788344e-01,  1.73005238e+01],
+       [ 9.98253584e-01,  6.86578560e+00],
+       [ 9.97168541e-01,  1.70729713e+01],
+       [-9.99989927e-01, -2.18789413e+02],
+       [ 9.99224246e-01,  1.55689125e+01],
+       [ 2.62240648e-01,  4.41028166e+00],
+       [ 9.99660432e-01,  1.94844685e+01],
+       [ 9.95064855e-01,  3.30572867e+00],
+       [ 9.99835849e-01,  1.41817627e+01],
+       [ 9.99991119e-01,  1.67304173e+01],
+       [ 9.97937083e-01,  8.53064251e+00],
+       [ 9.99953568e-01,  1.48972969e+01],
+       [ 9.99834359e-01,  6.22968769e+00],
+       [ 9.99762714e-01,  1.93890762e+01],
+       [ 9.99543071e-01,  2.65107689e+01],
+       [ 9.99158740e-01,  2.37626381e+01],
+       [-9.99993742e-01, -2.21568253e+02],
+       [ 9.99840558e-01,  2.17488956e+01],
+       [ 9.99978304e-01,  2.74105816e+01],
+       [-9.79628623e-01, -3.00337200e+01],
+       [ 9.98808205e-01,  1.87611389e+01],
+       [ 5.37445307e-01,  7.35658598e+00],
+       [ 9.99901950e-01,  8.33541298e+00],
+       [-9.92081881e-01,  3.31080551e+01],
+       [ 9.99431431e-01,  2.00089188e+01],
+       [ 9.99980330e-01,  2.65032253e+01],
+       [-9.98640418e-01, -5.84463577e+01],
+       [ 9.99464333e-01,  1.75218334e+01],
+       [ 9.99555230e-01,  2.42930775e+01],
+       [-9.99993801e-01, -2.24688049e+02],
+       [-4.09871675e-02,  1.38831100e+01],
+       [ 9.99822080e-01,  2.75614967e+01],
+       [ 1.10392850e-02, -5.15309668e+00],
+       [-9.99954939e-01, -6.40991135e+01],
+       [ 9.99992371e-01,  2.60227356e+01],
+       [-9.99932647e-01, -6.17113953e+01],
+       [ 9.99921501e-01,  6.21193981e+00],
+       [ 9.99968171e-01,  2.40126343e+01],
+       [ 9.99924481e-01,  1.60095005e+01],
+       [-9.99850988e-01, -7.27569733e+01],
+       [-9.99993443e-01, -6.65528259e+01],
+       [-9.99960005e-01, -6.63138351e+01]], dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -846,25 +1075,70 @@ step 10000: loss [0.56425256, 12969.755, 2635.1238] time 35.89
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">rotation</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([[-2.2024615e-03, -2.8028332e-03, -1.6145920e-03, ...,
+         0.0000000e+00,  2.8895540e-03,  4.9248934e-03],
+       [-2.3664348e-02,  2.1950809e-02, -5.0180640e-02, ...,
+        -1.3906082e-38,  5.5273380e-02,  4.7567181e-02],
+       [ 2.5883866e-02, -1.9142484e-02,  5.1777992e-02, ...,
+        -1.9330769e-37, -5.8169167e-02, -5.2490093e-02]], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Illustrations">
+<h2>Illustrations<a class="headerlink" href="#Illustrations" title="Permalink to this headline">¶</a></h2>
+<p>We illustrate the results on a circle, to show its circular nature. There is virtually no start and end of the circle. Red, green and blue represents G0/G1, S and G2/M phase respectively. The inner lines represents single cells. The cells spread across the The areas outside</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">cyclum.illustration</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">color_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;stage&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;g0/g1&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;g2/m&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">},</span>
                  <span class="s1">&#39;subcluster&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;intact&quot;</span><span class="p">:</span> <span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="s2">&quot;perturbed&quot;</span><span class="p">:</span> <span class="s2">&quot;violet&quot;</span><span class="p">}}</span>
-<span class="n">cyclum</span><span class="o">.</span><span class="n">illustration</span><span class="o">.</span><span class="n">plot_round_distr_color</span><span class="p">(</span><span class="n">pseudotime</span><span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;stage&#39;</span><span class="p">],</span> <span class="n">color_map</span><span class="p">[</span><span class="s1">&#39;stage&#39;</span><span class="p">])</span>
+<span class="n">cyclum</span><span class="o">.</span><span class="n">illustration</span><span class="o">.</span><span class="n">plot_round_distr_color</span><span class="p">(</span><span class="n">pseudotime</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="p">[</span><span class="s1">&#39;stage&#39;</span><span class="p">],</span> <span class="n">color_map</span><span class="p">[</span><span class="s1">&#39;stage&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_mESC_neo_19_0.png" src="_images/example_mESC_neo_19_0.png" />
+<img alt="_images/example_mESC_neo_20_0.png" src="_images/example_mESC_neo_20_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_mESC_neo_19_1.png" src="_images/example_mESC_neo_19_1.png" />
+<img alt="_images/example_mESC_neo_20_1.png" src="_images/example_mESC_neo_20_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
 </div>
 </div>
 </div>

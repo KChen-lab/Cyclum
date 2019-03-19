@@ -5,4 +5,3 @@ cyclum
    :maxdepth: 4
 
    cyclum
-   main

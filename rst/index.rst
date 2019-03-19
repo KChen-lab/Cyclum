@@ -23,7 +23,7 @@ Also provided are a set of supplementary tools to visualize and anaylzing the re
    input_formats
    output_formats
    customization
-   cyclum
+   modules
    faq
    features
    license
