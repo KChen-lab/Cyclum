@@ -4,11 +4,11 @@ Download and Install
 Download
 --------
 
-The current release can be downloaded from GitHub:
+The current release is on `GitHub <https://github.com/KChen-lab/cyclum>`_ and can be downloaded by running the command:
 
 .. code:: bash
 
-    git clone https://github.com/lshh125/cyclum.git
+    git clone https://github.com/KChen-lab/cyclum.git
 
 Dependencies
 ------------
