@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Input Formats &mdash; cyclum 0.1 documentation</title>
+  <title>Postprocess in R &mdash; cyclum 0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Output Formats" href="output_formats.html" />
-    <link rel="prev" title="mESC analysis using the object oriented core" href="example_mESC_neo.html" /> 
+    <link rel="next" title="FAQ" href="faq.html" />
+    <link rel="prev" title="Cyclum Package" href="cyclum.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,14 +83,17 @@
 <li class="toctree-l1"><a class="reference internal" href="download_install.html">Download and Install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Input Formats</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#expression-matrix">Expression matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration-file-to-be-supported">Configuration file (to be supported)</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="input_formats.html">Input Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_formats.html">Output Formats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="customization.html">Customization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cyclum.html">Cyclum Package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Postprocess in R</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reader">reader</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -139,13 +142,15 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Input Formats</li>
+          <li><a href="modules.html">Modules</a> &raquo;</li>
+        
+      <li>Postprocess in R</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/input_formats.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/r.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -182,52 +187,11 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="input-formats">
-<h1>Input Formats<a class="headerlink" href="#input-formats" title="Permalink to this headline">¶</a></h1>
-<p>As a marker-gene free method, cyclum only requires an expression matrix.</p>
-<div class="section" id="expression-matrix">
-<h2>Expression matrix<a class="headerlink" href="#expression-matrix" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>Cyclum accept expression matrix as input. Cyclum includes tools to</dt>
-<dd><ul class="first last simple">
-<li>covert count matrix to TPM/PKM value,</li>
-<li>log transform / Freeman-Tukey transform matrix,</li>
-<li>center and scale expression data .</li>
-</ul>
-</dd>
-</dl>
-<p>For evaluation purpose, cyclum also accept cell labels.</p>
-</div>
-<div class="section" id="configuration-file-to-be-supported">
-<h2>Configuration file (to be supported)<a class="headerlink" href="#configuration-file-to-be-supported" title="Permalink to this headline">¶</a></h2>
-<p>The parameters for runing cyclum is specified in the configuration file. Fields are listed in the following table.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="50%" />
-<col width="25%" />
-<col width="25%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Field</th>
-<th class="head">Type</th>
-<th class="head">Annotation</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>name</td>
-<td>&#160;</td>
-<td>&#160;</td>
-</tr>
-<tr class="row-odd"><td>preproc</td>
-<td>&#160;</td>
-<td>&#160;</td>
-</tr>
-<tr class="row-even"><td>output</td>
-<td>&#160;</td>
-<td>&#160;</td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="postprocess-in-r">
+<h1>Postprocess in R<a class="headerlink" href="#postprocess-in-r" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="reader">
+<h2>reader<a class="headerlink" href="#reader" title="Permalink to this headline">¶</a></h2>
+<p>This package supports the binary data files generated by <a class="reference internal" href="cyclum.html#module-cyclum.writer" title="cyclum.writer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cyclum.writer</span></code></a>.</p>
 </div>
 </div>
 
@@ -239,10 +203,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="output_formats.html" class="btn btn-neutral float-right" title="Output Formats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="example_mESC_neo.html" class="btn btn-neutral" title="mESC analysis using the object oriented core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cyclum.html" class="btn btn-neutral" title="Cyclum Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

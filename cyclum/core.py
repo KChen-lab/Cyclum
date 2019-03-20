@@ -124,7 +124,7 @@ class _BaseCyclum:
             with tf.name_scope('layer' + str(i)):
                 temp = _BaseCyclum._make_nonlinear_layer(temp, q)
         with tf.name_scope('output'):
-            return _BaseCyclum._make_nonlinear_layer(temp, Q)
+            return _BaseCyclum._make_linear_layer(temp, Q)
 
     def _make_linear_encoder(Z, Q):
         """
@@ -284,24 +284,24 @@ class PreloadCyclum2(_BaseCyclum):
         Z_circular_pre_train = cossin(tf.gather(self.X, [0], axis=1))
 
         pretrain_loss = tf.nn.l2_loss(Z_circular_pre_train - paragon) / self.N
-        pretrain_var_names = ['encoder0/layer0/W:0', 'encoder0/layer0/b:0',
-                                   'encoder0/layer1/W:0', 'encoder0/layer1/b:0',
-                                   'encoder0/output/W:0', 'encoder0/output/b:0']
+        pretrain_var_names = ['encoder0/layer0/W', 'encoder0/layer0/b',
+                              'encoder0/layer1/W', 'encoder0/layer1/b',
+                              'encoder0/output/W', 'encoder0/output/b']
         pretrain_var_list = [tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, name)[0] for name in pretrain_var_names]
         #self.pretrain_var_list = [self.tf_W_circular1, self.tf_b_circular1, self.tf_W_circular2, self.tf_b_circular2,
                                   #self.tf_W_circular3, self.tf_b_circular3]
 
-        midtrain_var_names = ['decoder0/output/W:0', 'decoder1/output/W:0', 'decoder1/output/b:0']
+        midtrain_var_names = ['decoder0/output/W', 'decoder1/output/W', 'decoder1/output/b']
         midtrain_var_list = [tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, name)[0] for name in midtrain_var_names]
         #self.midtrain_var_list = [self.tf_V0, self.tf_V1, self.tf_c]
 
-        R = ((tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'encoder0/layer0/W:0')[0]) +
-              tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'encoder0/layer1/W:0')[0]) +
-              tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'encoder0/output/W:0')[0])
+        R = ((tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'encoder0/layer0/W')[0]) +
+              tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'encoder0/layer1/W')[0]) +
+              tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'encoder0/output/W')[0])
               ) / 10 +
-             (tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'encoder1/output/W:0')[0]) +
-              tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'decoder0/output/W:0')[0]) +
-              tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'decoder1/output/W:0')[0])
+             (tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'encoder1/output/W')[0]) +
+              tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'decoder0/output/W')[0]) +
+              tf.nn.l2_loss(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'decoder1/output/W')[0])
               )
              )
 
@@ -314,71 +314,45 @@ class PreloadCyclum2(_BaseCyclum):
         midtrain_train = tf.train.AdamOptimizer(1e-3).minimize(L + R * 1.0, var_list=midtrain_var_list)
 
         #tf_burnin = tf.train.AdamOptimizer(50e-3).minimize(self.tf_L + self.tf_R * 0.2)
-        opt = tf.train.AdamOptimizer(2e-4).minimize(L + R * 1.0)
-        refine = tf.train.AdamOptimizer(5e-5).minimize(L + R * 1.0)
+        final_train = tf.train.AdamOptimizer(2e-4).minimize(L + R * 1.0)
+        final_refine = tf.train.AdamOptimizer(5e-5).minimize(L + R * 1.0)
 
-        t1 = t0 = time.time()
+        t0 = time.time()
         #saver = tf.train.Saver()
 
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
 
+        def unit_train(opt, n_step, losses, sess):
+            t1 = time.time()
+            for i in range(n_step):
+                sess.run(opt)
+                if (i + 1) % 2000 == 0:
+                    print('step %5d: loss ' % (i + 1), end="")
+                    print(self.sess.run(losses), end="")
+                    print(' time %.2f' % (time.time() - t1))
+                    t1 = time.time()
+
         print("pretrain burnin")
-        for i in range(2000):
-            self.sess.run(pretrain_burnin)
-            if (i + 1) % 2000 == 0:
-                print('step %5d: loss ' % (i + 1), end="")
-                print(self.sess.run([pretrain_loss, L, R]), end="")
-                print(' time %.2f' % (time.time() - t1))
-                t1 = time.time()
+        unit_train(pretrain_burnin, 2000, [pretrain_loss, L, R], self.sess)
 
         print("pretrain train")
-        for i in range(4000):
-            self.sess.run(pretrain_train)
-            if (i + 1) % 2000 == 0:
-                print('step %5d: loss ' % (i + 1), end="")
-                print(self.sess.run([pretrain_loss, L, R]), end="")
-                print(' time %.2f' % (time.time() - t1))
-                t1 = time.time()
-
+        unit_train(pretrain_train, 4000, [pretrain_loss, L, R], self.sess)
+        
         print("midtrain burnin")
-        for i in range(2000):
-            self.sess.run(midtrain_burnin)
-            if (i + 1) % 2000 == 0:
-                print('step %5d: loss ' % (i + 1), end="")
-                print(self.sess.run([pretrain_loss, L, R]), end="")
-                print(' time %.2f' % (time.time() - t1))
-                t1 = time.time()
+        unit_train(midtrain_burnin, 2000, [pretrain_loss, L, R], self.sess)
 
         print("midtrain train")
-        for i in range(4000):
-            self.sess.run(midtrain_train)
-            if (i + 1) % 2000 == 0:
-                print('step %5d: loss ' % (i + 1), end="")
-                print(self.sess.run([pretrain_loss, L, R]), end="")
-                print(' time %.2f' % (time.time() - t1))
-                t1 = time.time()
+        unit_train(midtrain_train, 4000, [pretrain_loss, L, R], self.sess)
 
         print("finaltrain train")
-        for i in range(6000):
-            self.sess.run(opt)
-            if (i + 1) % 2000 == 0:
-                print('step %5d: loss ' % (i + 1), end="")
-                print(self.sess.run([pretrain_loss, L, R]), end="")
-                print(' time %.2f' % (time.time() - t1))
-                t1 = time.time()
+        unit_train(final_train, 6000, [pretrain_loss, L, R], self.sess)
 
         print("finaltrain refine")
-        for i in range(10000):
-            self.sess.run(refine)
-            if (i + 1) % 2000 == 0:
-                print('step %5d: loss ' % (i + 1), end="")
-                print(self.sess.run([pretrain_loss, L, R]), end="")
-                print(' time %.2f' % (time.time() - t1))
-                t1 = time.time()
+        unit_train(final_refine, 10000, [pretrain_loss, L, R], self.sess)
 
         self.pseudotime = self.sess.run(self.X)
-        self.rotation = self.sess.run(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'decoder0/output/W:0')[0])
+        self.rotation = self.sess.run(tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, 'decoder0/output/W')[0])
 
         print('Full time %.2f' % (time.time() - t0))
 

@@ -1,4 +1,4 @@
-cyclum package
+Cyclum Package
 ==============
 
 Submodules

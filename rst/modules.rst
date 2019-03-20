@@ -1,7 +1,10 @@
-cyclum
-======
+Modules
+=======
+
+Here we show the modules in Cyclum.
 
 .. toctree::
-   :maxdepth: 4
+    :maxdepth: 4
 
-   cyclum
+    cyclum
+    r
