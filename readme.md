@@ -4,4 +4,4 @@ Cyclum is a package to tackle cell cycle. It provides methods to recover cell cy
 
 For further information, please also refer to the [documentation](https://kchen-lab.github.io/cyclum/) and the [manuscript](https://www.biorxiv.org/content/10.1101/625566v1).
 
-We are developing a more user friendly [version](https://github.com/lshh125/cyclum2), including more readable keras implementation, and various helper functions for transferring data among python, R and GSEA.
+We have developed a more user friendly [version](https://github.com/lshh125/cyclum2), including more readable keras implementation, and various helper functions for transferring data among python, R and GSEA. It also includes a tool to decide how many linear component is needed.
