@@ -1,4 +1,4 @@
-# New Cyclum
+# The New Cyclum
 We have developed a new [version](https://github.com/lshh125/cyclum2), which includes more readable keras implementation, and various helper functions for transferring data among python, R and GSEA. It also includes a tool to decide how many linear component is needed. All new experiments are done using this new version.
 
 # Cyclum
