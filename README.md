@@ -18,4 +18,4 @@ Although Python is a good data analysis tool in addition to a general programing
 - `vec2cls`, which writes phenotypes (either discrete, e.g., cell type, or continuous, e.g., pseudotime) to a GSEA compatible `.cls` file,
 - `mat2cls`, which writes multiple sets of phenotypes (continuous only, e.g., multiple PCs) to a GSEA compatible `.cls` file.
 
-[Documentation](https://lshh125.github.io/cyclum2/index.html) is available at https://lshh125.github.io/cyclum2/index.html.
+[Documentation](https://kchen-lab.github.io/Cyclum/index.html) is available at https://lshh125.github.io/cyclum2/index.html.
