@@ -1,0 +1,207 @@
+---
+title: "mESC Analysis"
+output: html_notebook
+---
+
+```{r}
+library(mclust)
+library(Rtsne)
+library(matrixStats)
+source("../utils/reader.R")
+source("../utils/mclust_plot.R")
+source("../utils/hdfrw.R")
+```
+
+```{r}
+cell_line = "mESC"
+expr <- hdf2mat('~/Documents/data/EMTAB2805/tpm.h5')
+lab = c(rep('g0/g1', 96), rep('s', 96), rep('g2/m', 96))
+cyclum <- hdf2mat('~/Documents/data/EMTAB2805/cyclum-pseudotime.h5')
+cyclops <- hdf2mat('~/Documents/data/EMTAB2805/cyclops-pseudotime.h5')
+fsclvm <- hdf2mat('~/Documents/data/EMTAB2805/fsclvm.h5')
+fsclvm_all <- hdf2mat('~/Documents/data/EMTAB2805/fsclvm-all.h5')
+oscope <- hdf2mat('~/Documents/data/EMTAB2805/oscope-pseudotime.h5')
+cogaps <- hdf2mat('~/Documents/data/EMTAB2805/cogaps-pseudotime.h5')
+cogaps_tpm <- hdf2mat('~/Documents/data/EMTAB2805/cogaps-tpm-pseudotime.h5')
+recat <- read.csv('~/Documents/data/EMTAB2805/recat-pseudotime.csv', row.names=1)
+pc <- hdf2mat('~/Documents/data/EMTAB2805/pca.h5')
+lda <- hdf2mat('~/Documents/data/EMTAB2805/lda-pseudotime.h5')
+sincell <- hdf2mat('~/Documents/data/EMTAB2805/sincell-pseudotime.h5')
+```
+
+```{r}
+groundtruth <- vector(length = length(lab))
+groundtruth[lab == 'g0/g1'] = 1
+groundtruth[lab == 's'] = 2
+groundtruth[lab == 'g2/m'] = 3
+
+mclust_result <- MclustDA(cyclum, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(recat$x, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('reCAT Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cyclops, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclops Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(oscope, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('oscope Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+PC1 <- pc[1, ]
+mclust_result <- MclustDA(PC1, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC1 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+PC2 <- pc[2, ]
+mclust_result <- MclustDA(PC2, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC2 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+PC3 <- pc[3, ]
+mclust_result <- MclustDA(PC3, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC3 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+PC4 <- pc[4, ]
+mclust_result <- MclustDA(PC4, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC4 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+PC5 <- pc[5, ]
+mclust_result <- MclustDA(PC5, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC5 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+plot.new()
+
+legend("topleft", legend=c('G0/G1', 'S', 'G2/M'), col=c('#FF0000', '#00FF00', '#0000FF'), pt.bg=c('#FF000040', '#00FF0040', '#0000FF40'), pch=22)
+```
+
+
+```{r}
+mclust_result <- MclustDA(fsclvm[1, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('f-scLVM G2M Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(fsclvm[2, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('f-scLVM p53 checkpoint Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(fsclvm[3, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('f-scLVM Unfolded protein resp Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(fsclvm[4, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('f-scLVM Xenobiotic metabolism Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(fsclvm[5, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('f-scLVM Complement Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(fsclvm[6, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('f-scLVM Mtorc1 signaling Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+mclust_result <- MclustDA(cogaps[, 1], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('CoGAPS 1 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cogaps[, 2], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('CoGAPS 2 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cogaps[, 3], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('CoGAPS 3 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cogaps[, 4], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('CoGAPS 4 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+mclust_result <- MclustDA(cogaps_tpm[, 1], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('CoGAPS TPM 1 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cogaps_tpm[, 2], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('CoGAPS TPM 2 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cogaps_tpm[, 3], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('CoGAPS TPM 3 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cogaps_tpm[, 4], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('CoGAPS TPM 4 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+
+ica <- hdf2mat('~/Documents/data/EMTAB2805/ica-pseudotime.h5')
+
+best_i <- 0
+best_score <- 0
+for (i in 1:nrow(ica)){
+  mclust_result <- MclustDA(ica[i, ], groundtruth, verbose = F)
+  if ((1 - summary(mclust_result)$err) > best_score){
+    best_i <- i
+    best_score <- 1 - summary(mclust_result)$err
+    #print(best_score)
+  }
+}
+
+mclust_result <- MclustDA(ica[best_i, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('ICA Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+best_i <- 0
+best_score <- 0
+for (i in 1:nrow(ica)){
+  mclust_result <- MclustDA(sincell[i, ], groundtruth, verbose = F)
+  if ((1 - summary(mclust_result)$err) > best_score){
+    best_i <- i
+    best_score <- 1 - summary(mclust_result)$err
+    #print(best_score)
+  }
+}
+
+mclust_result <- MclustDA(sincell[best_i, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('Sincell ICA Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+best_i <- 0
+best_score <- 0
+for (i in 1:nrow(fsclvm_all)){
+  mclust_result <- MclustDA(fsclvm_all[i, ], groundtruth, verbose = F)
+  if ((1 - summary(mclust_result)$err) > best_score){
+    best_i <- i
+    best_score <- 1 - summary(mclust_result)$err
+    #print(best_score)
+  }
+}
+
+mclust_result <- MclustDA(fsclvm_all[best_i, ], groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('Slalom Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+mclust_result <- MclustDA(lda, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('LDA 1 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```

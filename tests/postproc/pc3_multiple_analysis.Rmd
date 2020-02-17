@@ -1,0 +1,78 @@
+---
+title: "PC3 linear-circular Analysis"
+output: html_notebook
+---
+
+```{r}
+library(mclust)
+library(Rtsne)
+library(matrixStats)
+source("../utils/reader.R")
+source("../utils/mclust_plot.R")
+source("../utils/hdfrw.R")
+```
+
+```{r}
+cell_line = "pc3"
+expr <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '.h5'))
+lab = read.csv(paste0("~/Documents/data/McDavid/", cell_line, "-label.txt"), sep='\t', row.names=1)
+cyclum1 <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '-1-linear-pseudotime.h5'))
+w1 <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '-1-linear-weight.h5'))
+cyclum3 <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '-3-linear-pseudotime.h5'))
+w3 <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '-3-linear-weight.h5'))
+```
+
+```{r}
+groundtruth <- vector(length = dim(expr)[2])
+groundtruth[lab['stage', ] == 'g0/g1'] = 1
+groundtruth[lab['stage', ] == 's'] = 2
+groundtruth[lab['stage', ] == 'g2/m'] = 3
+
+mclust_result <- MclustDA(cyclum1, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum 1-linear Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cyclum3, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum 3-linear Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+plot.new()
+
+legend("topleft", legend=c('G0/G1', 'S', 'G2/M'), col=c('#FF0000', '#00FF00', '#0000FF'), pt.bg=c('#FF000040', '#00FF0040', '#0000FF40'), pch=22)
+```
+
+
+```{r}
+arg1 = Arg(w1[, 2] + 1i * w1[, 3])
+mag1 = abs(w1[, 2] + 1i * w1[, 3])
+arg3 = Arg(w3[, 4] + 1i * w3[, 5])
+mag3 = abs(w3[, 4] + 1i * w3[, 5])
+```
+
+```{r}
+rownames(expr)[order(-mag1)]
+```
+```{r}
+plot(mag1[order(-mag1)])
+```
+
+```{r}
+rownames(expr)[order(-mag3)]
+```
+
+```{r}
+plot(mag3[order(-mag3)])
+```
+
+Explanation: 
+*E2F1* is a marker for G1/S progression
+*MCM4* is for G1-G1/S phase
+*CASP8AP2* is essential for S phase
+*PCNA* is for S phase
+*CDCA5* is for G2/M phase
+*HIST2H4A* is for M phase
+```{r}
+names(arg3) <- rownames(expr)
+arg3[c('E2F1', 'MCM4', 'CASP8AP2', 'PCNA', 'CDCA5', 'HIST2H4A')]
+```
+

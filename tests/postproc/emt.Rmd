@@ -1,0 +1,53 @@
+---
+title: "hESC comparison"
+output: html_notebook
+---
+
+
+```{r}
+library(Rtsne)
+library(matrixStats)
+source("../utils/reader.R")
+source("../utils/hdfrw.R")
+```
+
+```{r}
+expr <- hdf2mat('/home/shaoheng/Documents/data/EMT/tpm.h5')
+```
+
+
+```{r}
+pseudotime <- hdf2mat('/home/shaoheng/Documents/data/EMT/cyclum-pseudotime.h5')
+label <- hdf2mat('/home/shaoheng/Documents/data/EMT/epimes.h5')
+```
+
+
+```{r}
+plot(pseudotime %% (2 * pi), factor(label))
+```
+
+```{r}
+pseudotime <- pseudotime %% (2 * pi)
+transition1 <- expr[, pseudotime < 3.2 & pseudotime > 1.2]
+transition2 <- expr[, pseudotime < 6 & pseudotime > 4]
+```
+
+```{r}
+library(Seurat)
+obj1 <- CreateSeuratObject(transition1)
+obj2 <- CreateSeuratObject(transition2)
+obj1$group <- 1
+obj2$group <- 2
+obj <- merge(obj1, obj2)
+```
+
+```{r}
+markers <- FindMarkers(obj, ident.1 = 1, ident.2 = 2, group.by = 'group')
+```
+
+```{r}
+met <- c('Bmp4', 'Cited1', 'Ctnnb1', 'Dspp', 'Fzd7', 'Gata3', 'Gdnf', 'Gdnf', 'Grem1', 'Lif', 'Pax2', 'Pax2', 'Pax8',
+'Pelo', 'Sall1', 'Sall1', 'Smo', 'Tcf15', 'Wnt4', 'Wnt4', 'Wnt9b', 'Wnt9b', 'Wt1')
+markers[met, ]
+```
+

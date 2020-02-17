@@ -1,0 +1,85 @@
+---
+title: "Postprocesssing using R"
+output: html_notebook
+---
+
+# Load data and pseudo-time
+
+```{r}
+source("../utils/hdfrw.R")
+source("../utils/gsea.R")
+```
+
+
+```{r}
+expr <- hdf2mat("~/Documents/data/hESC-droplet/GSE125416/GSM357649-regular.h5")
+dim(expr)
+```
+
+```{r}
+set.seed(0)
+subsample <- 1:dim(expr)[2]
+
+mat2txt(expr, "~/Documents/data/hESC-droplet/GSE125416/GSM357649-regular.txt")
+```
+
+```{r}
+pseudotime <- hdf2mat("~/Documents/data/hESC-droplet/GSE125416/GSM357649-pseudotime.h5")
+mat <- matrix(pseudotime, ncol=8, nrow=length(pseudotime))
+mat <- t(t(mat) - (0:7) / 4 * pi) %% (2 * pi)
+colnames(mat) <- paste0('phase', c(0:7))
+mat2cls(mat, 'pseudotime', "~/Documents/data/hESC-droplet/GSE125416/GSM357649-regular-pseudotime.cls")
+```
+
+
+```{r}
+pseudotime <- hdf2mat("~/Documents/data/hESC-droplet/GSE125416/GSM357649-pseudotime.h5")
+mat <- matrix(pseudotime, ncol=8, nrow=length(pseudotime))
+mat <- t(t(mat) - (0:7) / 4 * pi) %% (2 * pi)
+colnames(mat) <- paste0('phase', c(0:7))
+mat2cls(mat, "~/Documents/data/hESC-droplet/GSE125416/GSM357649-regular-pseudotime.cls")
+```
+
+```{r}
+dim(expr)
+```
+
+## Filter MSigDB gene list
+There are a small ammount of genes that are named differently, we need to change those symbols.
+
+```{r}
+msigdb <- read.table("~/Documents/data/hESC-droplet/GSE125416/GO_CELL_CYCLE-0007049-7.0.gmt", header = F, col.names = F, sep='\t', stringsAsFactors = F)
+genes <- msigdb[c(-1, -2), ]
+```
+
+```{r}
+length(genes)
+sum(!(genes %in% rownames(expr)))
+```
+
+```{r}
+#genes[!(genes %in% rownames(expr))]
+```
+
+```{r}
+#all(c("FAM175A", "FAM175B", "GAS7", "KIF23", "BRE", "TEX40", "CTGF", "FAM58A", "BA178A10.2") %in% rownames(expr))
+```
+
+```{r}
+msigdb = msigdb[c(T, T, genes %in% rownames(expr)), , drop=F]
+```
+
+```{r}
+write.table(t(msigdb), "~/Documents/data/hESC-droplet/GSE125416/GO_CELL_CYCLE-0007049-7.0-filtered.gmt", row.names = F, quote = F, col.names = F, sep='\t')
+```
+
+```{r}
+msigdb_path = c("/home/shaoheng/Documents/data/hESC-droplet/GSE125416/msigdb-selected/GO_REGULATION_OF_CELL_CYCLE_G2_M_PHASE_TRANSITION-1902749-7.0.gmt",
+                "/home/shaoheng/Documents/data/hESC-droplet/GSE125416/msigdb-selected/GO_CELL_CYCLE_G1_S_PHASE_TRANSITION-0044843-7.0.gmt",
+                "/home/shaoheng/Documents/data/hESC-droplet/GSE125416/msigdb-selected/GO_CELL_CYCLE_G2_M_PHASE_TRANSITION-0044839-7.0.gmt", 
+                "/home/shaoheng/Documents/data/hESC-droplet/GSE125416/msigdb-selected/GO_CELL_CYCLE-0007049-7.0.gmt",
+                "/home/shaoheng/Documents/data/hESC-droplet/GSE125416/msigdb-selected/GO_REGULATION_OF_CELL_CYCLE_G1_S_PHASE_TRANSITION-1902806-7.0.gmt"
+                )
+dbfilter(msigdb_path, "/home/shaoheng/Documents/data/hESC-droplet/GSE125416/msigdb-selected/GO-filtered.gmt", rownames(expr))
+```
+

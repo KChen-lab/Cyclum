@@ -1,0 +1,44 @@
+---
+title: "mESC Analysis"
+output: html_notebook
+---
+
+```{r}
+library(mclust)
+library(Rtsne)
+library(matrixStats)
+source("../utils/reader.R")
+source("../utils/mclust_plot.R")
+source("../utils/hdfrw.R")
+```
+
+```{r}
+cell_line = "mESC"
+expr <- hdf2mat('~/Documents/data/EMTAB2805/tpm.h5')
+lab = c(rep('g0/g1', 96), rep('s', 96), rep('g2/m', 96))
+cyclum <- hdf2mat('~/Documents/data/EMTAB2805/cyclum-pseudotime.h5')
+cyclum_marker_only <- hdf2mat('~/Documents/data/EMTAB2805/cyclum-marker-only-pseudotime.h5')
+cyclum_marker_weighted <- hdf2mat('~/Documents/data/EMTAB2805/cyclum-marker-weighted-pseudotime.h5')
+```
+
+```{r}
+groundtruth <- vector(length = length(lab))
+groundtruth[lab == 'g0/g1'] = 1
+groundtruth[lab == 's'] = 2
+groundtruth[lab == 'g2/m'] = 3
+
+mclust_result <- MclustDA(cyclum, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cyclum_marker_only, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum marker only Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+  
+mclust_result <- MclustDA(cyclum_marker_weighted, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum marker weighted Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+legend("topleft", legend=c('G0/G1', 'S', 'G2/M'), col=c('#FF0000', '#00FF00', '#0000FF'), pt.bg=c('#FF000040', '#00FF0040', '#0000FF40'), pch=22)
+```
+

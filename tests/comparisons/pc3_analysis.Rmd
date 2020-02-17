@@ -1,0 +1,84 @@
+---
+title: "PC3 Analysis"
+output: html_notebook
+---
+
+```{r}
+library(mclust)
+library(Rtsne)
+library(matrixStats)
+source("../utils/reader.R")
+source("../utils/mclust_plot.R")
+source("../utils/hdfrw.R")
+```
+
+```{r}
+cell_line = "pc3"
+expr <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '.h5'))
+lab = read.csv(paste0("~/Documents/data/McDavid/", cell_line, "-label.txt"), sep='\t', row.names=1)
+cyclum <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '-pseudotime.h5'))
+cyclops <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '-cyclops-pseudotime.h5'))
+oscope <- hdf2mat(paste0('~/Documents/data/McDavid/oscope-', cell_line, '-pseudotime.h5'))
+recat <- read.csv(paste0('~/Documents/data/McDavid/', cell_line, '_recat_emb.csv'), row.names=1)
+pc <- hdf2mat(paste0('~/Documents/data/McDavid/', cell_line, '-pca.h5'))
+fsclvm <- hdf2mat('~/Documents/data/McDavid/fsclvm-pc3.h5')
+```
+
+```{r}
+groundtruth <- vector(length = dim(expr)[2])
+groundtruth[lab['stage', ] == 'g0/g1'] = 1
+groundtruth[lab['stage', ] == 's'] = 2
+groundtruth[lab['stage', ] == 'g2/m'] = 3
+
+mclust_result <- MclustDA(cyclum, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(recat$x, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('reCAT Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cyclops, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclops Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(oscope, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('oscope Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+PC1 <- pc[1, ]
+mclust_result <- MclustDA(PC1, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC1 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+PC2 <- pc[2, ]
+mclust_result <- MclustDA(PC2, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC2 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+PC3 <- pc[3, ]
+mclust_result <- MclustDA(PC3, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC3 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+PC4 <- pc[4, ]
+mclust_result <- MclustDA(PC4, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC4 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+PC5 <- pc[5, ]
+mclust_result <- MclustDA(PC5, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('PC5 Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+plot.new()
+
+legend("topleft", legend=c('G0/G1', 'S', 'G2/M'), col=c('#FF0000', '#00FF00', '#0000FF'), pt.bg=c('#FF000040', '#00FF0040', '#0000FF40'), pch=22)
+```
+```{r}
+mclust_result <- MclustDA(fsclvm, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('Slalom Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```

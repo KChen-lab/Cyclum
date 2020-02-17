@@ -1,0 +1,105 @@
+---
+title: "hESC comparison"
+output: html_notebook
+---
+
+
+```{r}
+library(Rtsne)
+library(matrixStats)
+source("../utils/reader.R")
+source("../utils/hdfrw.R")
+```
+
+```{r}
+control_expr <- hdf2mat('~/Documents/data/hESC-droplet/GSE125416/GSM357649-regular.h5')
+treated_expr <- hdf2mat('~/Documents/data/hESC-droplet/GSE125416/GSM357650-regular.h5')
+```
+
+
+```{r}
+control_pseudotime <- hdf2mat('~/Documents/data/hESC-droplet/GSE125416/GSM357649-pseudotime.h5')
+treated_pseudotime <- hdf2mat('~/Documents/data/hESC-droplet/GSE125416/GSM357650-pseudotime.h5')
+
+control_weight <- hdf2mat('~/Documents/data/hESC-droplet/GSE125416/GSM357649-weight.h5')
+treated_weight <- hdf2mat('~/Documents/data/hESC-droplet/GSE125416/GSM357650-weight.h5')
+```
+
+```{r}
+control_arg <- Arg(control_weight[, 1] + 1i * control_weight[, 2])
+control_mag <- abs(control_weight[, 1] + 1i * control_weight[, 2])
+
+treated_arg <- Arg(treated_weight[, 1] + 1i * treated_weight[, 2])
+treated_mag <- abs(treated_weight[, 1] + 1i * treated_weight[, 2])
+```
+
+```{r}
+genes <- rownames(control_expr)
+```
+
+```{r}
+genes[order(-control_mag)[1:100]]
+```
+
+```{r}
+genes[order(-treated_mag)[1:100]]
+```
+
+```{r}
+names(treated_mag) <- genes
+names(control_mag) <- genes
+```
+
+```{r}
+hist(treated_mag)
+```
+
+```{r}
+hist(control_mag)
+```
+
+```{r}
+plot(x = control_mag, y = treated_mag, pch=20)
+```
+
+```{r}
+plot(treated_pseudotime %% (2 * pi), treated_expr['LDHA', ], pch=20)
+```
+
+```{r}
+plot(control_pseudotime %% (2 * pi), control_expr['LDHA', ], pch=20)
+```
+
+```{r}
+mag <- data.frame(control=control_mag, treated=treated_mag)
+mag[abs(control_mag - treated_mag) > 0.2, ]
+```
+
+
+
+This is good. LDHA is reported to have been downregulated in the original publication. Reports show that its knockdown prohibits cell proliferation. We observe that although it is downregulated, the circular pattern is stronger.
+
+Check "https://books.google.com/books?id=md1ODwAAQBAJ&pg=PA223&lpg=PA223&dq=ENO1+nicotine&source=bl&ots=ujqmQOXvBF&sig=ACfU3U1QUctcbqA30Na-BN0ehS9KSSO4cQ&hl=en&sa=X&ved=2ahUKEwj53fjNgdTlAhUPEqwKHWhACkAQ6AEwBnoECAkQAQ#v=onepage&q=ENO1%20nicotine&f=false"
+
+It is known that ENO1 is influenced by tobacco and is a target of nicotine. ENO1 is also reported to play roles in cell prolifereation and non-small cell lung cancer.
+
+```{r fig.height=10, fig.width=10}
+mask <- abs(control_mag - treated_mag) > 0.15
+plot(x = control_mag, y = treated_mag, col=factor(mask), pch=20)
+text(x = control_mag[mask] + 0.05, y = treated_mag[mask] + 0.02, labels = genes[mask])
+```
+
+
+```{r fig.height=10, fig.width=10}
+mask <- abs(control_mag - treated_mag) < 0.009 & control_mag > 0.6
+plot(x = control_mag, y = treated_mag, col=factor(mask), pch=20)
+text(x = control_mag[mask] + 0.05, y = treated_mag[mask] + 0.02, labels = genes[mask])
+genes[mask]
+```
+```{r}
+plot(control_pseudotime %% (2 * pi), control_expr['POU5F1', ], pch=20)
+```
+
+```{r}
+mag[c('CCNA1', 'CCNA2', 'CCNB1', 'CCNB2', 'CCNB3', 'CCNC', 'CCND1', 'CCND2', 'CCND3', 'CCNE1', 'CCNE2', 'CCNF'), ]
+```

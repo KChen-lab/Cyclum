@@ -1,0 +1,45 @@
+---
+title: "mESC Analysis"
+output: html_notebook
+---
+
+```{r}
+library(mclust)
+library(Rtsne)
+library(matrixStats)
+source("../utils/reader.R")
+source("../utils/mclust_plot.R")
+source("../utils/hdfrw.R")
+```
+
+```{r}
+cell_line = "mESC"
+expr <- hdf2mat('~/Documents/data/EMTAB2805/tpm.h5')
+lab = c(rep('g0/g1', 96), rep('s', 96), rep('g2/m', 96))
+cyclum0 <- hdf2mat('~/Documents/data/EMTAB2805/cyclum-pseudotime-0.h5')
+cyclum1 <- hdf2mat('~/Documents/data/EMTAB2805/cyclum-pseudotime.h5')
+
+weight0 <- hdf2mat('~/Documents/data/EMTAB2805/cyclum-weight-0.h5')
+weight1 <- hdf2mat('~/Documents/data/EMTAB2805/cyclum-weight-1.h5')
+```
+
+```{r}
+groundtruth <- vector(length = length(lab))
+groundtruth[lab == 'g0/g1'] = 1
+groundtruth[lab == 's'] = 2
+groundtruth[lab == 'g2/m'] = 3
+
+mclust_result <- MclustDA(cyclum0, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum 0-linear Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+
+mclust_result <- MclustDA(cyclum1, groundtruth)
+plot(mclust_result, col=c('#FF0000', '#00FF00', '#0000FF'), what="scatterplot")
+title(paste('cyclum 1-linear Accuracy:', round(1 - summary(mclust_result)$err, 3)))
+```
+
+```{r}
+genes <- rownames(expr)
+genes[order(-abs(weight1[, 1]))][1:100]
+```
+
