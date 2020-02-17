@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cyclum package &mdash; cyclum-doc 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cyclum.models package" href="cyclum.models.html" />
+    <link rel="prev" title="cyclum2" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cyclum-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">cyclum2</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">cyclum package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cyclum.models.html">cyclum.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-cyclum.evaluation">cyclum.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-cyclum.hdfrw">cyclum.hdfrw module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-cyclum.illustration">cyclum.illustration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-cyclum.tuning">cyclum.tuning module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-cyclum.writer">cyclum.writer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-cyclum">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cyclum-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">cyclum2</a> &raquo;</li>
+        
+      <li>cyclum package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/cyclum.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cyclum-package">
+<h1>cyclum package<a class="headerlink" href="#cyclum-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cyclum.models.html">cyclum.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cyclum.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cyclum.models.html#module-cyclum.models.ae">cyclum.models.ae module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cyclum.models.html#module-cyclum.models">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-cyclum.evaluation">
+<span id="cyclum-evaluation-module"></span><h2>cyclum.evaluation module<a class="headerlink" href="#module-cyclum.evaluation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cyclum.evaluation.parzen_estimate">
+<code class="sig-prename descclassname">cyclum.evaluation.</code><code class="sig-name descname">parzen_estimate</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">lim</em>, <em class="sig-param">half_granularity=100</em>, <em class="sig-param">window=&lt;function &lt;lambda&gt;&gt;</em>, <em class="sig-param">scale=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/evaluation.html#parzen_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.evaluation.parzen_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate parzen window estimation (a non-parametric density estimation method)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – instances</p></li>
+<li><p><strong>lim</strong> – limit of domain</p></li>
+<li><p><strong>half_granularity</strong> – </p></li>
+<li><p><strong>window</strong> – </p></li>
+<li><p><strong>scale</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.evaluation.periodic_parzen_estimate">
+<code class="sig-prename descclassname">cyclum.evaluation.</code><code class="sig-name descname">periodic_parzen_estimate</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">period=3.14</em>, <em class="sig-param">half_granularity=100</em>, <em class="sig-param">window=&lt;function &lt;lambda&gt;&gt;</em>, <em class="sig-param">scale=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/evaluation.html#periodic_parzen_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.evaluation.periodic_parzen_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate parzen window estimation specifically for periodic domain</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – </p></li>
+<li><p><strong>period</strong> – </p></li>
+<li><p><strong>half_granularity</strong> – </p></li>
+<li><p><strong>window</strong> – </p></li>
+<li><p><strong>scale</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.evaluation.precision_estimate">
+<code class="sig-prename descclassname">cyclum.evaluation.</code><code class="sig-name descname">precision_estimate</code><span class="sig-paren">(</span><em class="sig-param">distr_vector_list</em>, <em class="sig-param">label_vector</em>, <em class="sig-param">possible_label_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/evaluation.html#precision_estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.evaluation.precision_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate precision</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>distr_vector_list</strong> – </p></li>
+<li><p><strong>label_vector</strong> – </p></li>
+<li><p><strong>possible_label_list</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.hdfrw">
+<span id="cyclum-hdfrw-module"></span><h2>cyclum.hdfrw module<a class="headerlink" href="#module-cyclum.hdfrw" title="Permalink to this headline">¶</a></h2>
+<p>Read write HDF.</p>
+<dl class="function">
+<dt id="cyclum.hdfrw.hdf2mat">
+<code class="sig-prename descclassname">cyclum.hdfrw.</code><code class="sig-name descname">hdf2mat</code><span class="sig-paren">(</span><em class="sig-param">filepath</em>, <em class="sig-param">dtype=&lt;class 'float'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/hdfrw.html#hdf2mat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.hdfrw.hdf2mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read hdf generated by hdfrw.R mat2hdf function to a data frame.
+Note that due to how python and R handles data differently, colnames are for index and rownames are for columns,
+and the matrix is also tacitly transposed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – path of hdf file</p></li>
+<li><p><strong>dtype</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>) – type of data; default is float</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a pandas data frame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.hdfrw.mat2hdf">
+<code class="sig-prename descclassname">cyclum.hdfrw.</code><code class="sig-name descname">mat2hdf</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/hdfrw.html#mat2hdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.hdfrw.mat2hdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write dataframe to an hdf file which can be read by hdfrw.R hdf2mat function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, &lt;built-in function array&gt;, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]) – data frame or numpy array to be written</p></li>
+<li><p><strong>filepath</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – path of hdf file to be written</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.illustration">
+<span id="cyclum-illustration-module"></span><h2>cyclum.illustration module<a class="headerlink" href="#module-cyclum.illustration" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cyclum.illustration.FigureWriter">
+<em class="property">class </em><code class="sig-prename descclassname">cyclum.illustration.</code><code class="sig-name descname">FigureWriter</code><span class="sig-paren">(</span><em class="sig-param">pdf_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#FigureWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.FigureWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>keep and write figures into a pdf file.</p>
+<dl class="method">
+<dt id="cyclum.illustration.FigureWriter.add_figure">
+<code class="sig-name descname">add_figure</code><span class="sig-paren">(</span><em class="sig-param">figure</em>, <em class="sig-param">title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#FigureWriter.add_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.FigureWriter.add_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>add a figure, but not write to file
+:param figure:
+:param title:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.illustration.FigureWriter.add_figure_and_write">
+<code class="sig-name descname">add_figure_and_write</code><span class="sig-paren">(</span><em class="sig-param">figure</em>, <em class="sig-param">title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#FigureWriter.add_figure_and_write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.FigureWriter.add_figure_and_write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cyclum.illustration.FigureWriter.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#FigureWriter.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.FigureWriter.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_cell_sparsity">
+<code class="sig-prename descclassname">cyclum.illustration.</code><code class="sig-name descname">plot_cell_sparsity</code><span class="sig-paren">(</span><em class="sig-param">linear_data</em>, <em class="sig-param">use_ratio=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_cell_sparsity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_cell_sparsity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a figure of #{cell, none_zero_genes(cell) &gt; x}
+:param linear_data: data
+:param use_ratio: plot as ratio or
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_gene_sparsity">
+<code class="sig-prename descclassname">cyclum.illustration.</code><code class="sig-name descname">plot_gene_sparsity</code><span class="sig-paren">(</span><em class="sig-param">linear_data</em>, <em class="sig-param">use_ratio=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_gene_sparsity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_gene_sparsity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a figure of #{cell, none_zero_genes(cell) &gt; x}
+:param linear_data: data
+:param use_ratio: plot as ratio or
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_multi_distr">
+<code class="sig-prename descclassname">cyclum.illustration.</code><code class="sig-name descname">plot_multi_distr</code><span class="sig-paren">(</span><em class="sig-param">xs</em>, <em class="sig-param">ys</em>, <em class="sig-param">colors</em>, <em class="sig-param">labels</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_multi_distr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_multi_distr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_pair_color">
+<code class="sig-prename descclassname">cyclum.illustration.</code><code class="sig-name descname">plot_pair_color</code><span class="sig-paren">(</span><em class="sig-param">a</em>, <em class="sig-param">b</em>, <em class="sig-param">color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_pair_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_pair_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>either plot an embedding, two dimensions at a time
+or compare two embeddings
+:param a:
+:param b:
+:param color:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_round_color">
+<code class="sig-prename descclassname">cyclum.illustration.</code><code class="sig-name descname">plot_round_color</code><span class="sig-paren">(</span><em class="sig-param">flat</em>, <em class="sig-param">color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_round_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_round_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_round_distr_color">
+<code class="sig-prename descclassname">cyclum.illustration.</code><code class="sig-name descname">plot_round_distr_color</code><span class="sig-paren">(</span><em class="sig-param">flat</em>, <em class="sig-param">label</em>, <em class="sig-param">color_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_round_distr_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_round_distr_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cyclum.illustration.plot_round_distr_color2">
+<code class="sig-prename descclassname">cyclum.illustration.</code><code class="sig-name descname">plot_round_distr_color2</code><span class="sig-paren">(</span><em class="sig-param">flat</em>, <em class="sig-param">label1</em>, <em class="sig-param">label2</em>, <em class="sig-param">color_dict1</em>, <em class="sig-param">color_dict2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/illustration.html#plot_round_distr_color2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.illustration.plot_round_distr_color2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.tuning">
+<span id="cyclum-tuning-module"></span><h2>cyclum.tuning module<a class="headerlink" href="#module-cyclum.tuning" title="Permalink to this headline">¶</a></h2>
+<p>Auto tuning.</p>
+<dl class="class">
+<dt id="cyclum.tuning.CyclumAutoTune">
+<em class="property">class </em><code class="sig-prename descclassname">cyclum.tuning.</code><code class="sig-name descname">CyclumAutoTune</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">max_linear_dims=3</em>, <em class="sig-param">epochs=500</em>, <em class="sig-param">verbose=100</em>, <em class="sig-param">rate=0.0005</em>, <em class="sig-param">early_stop=False</em>, <em class="sig-param">encoder_depth=2</em>, <em class="sig-param">encoder_width=50</em>, <em class="sig-param">dropout_rate=0.1</em>, <em class="sig-param">nonlinear_reg=0.0001</em>, <em class="sig-param">linear_reg=0.0001</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/tuning.html#CyclumAutoTune"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.tuning.CyclumAutoTune" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="cyclum.models.html#cyclum.models.ae.AutoEncoder" title="cyclum.models.ae.AutoEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cyclum.models.ae.AutoEncoder</span></code></a></p>
+<p>Circular autoencoder with automatically decided number of linear components</p>
+<p>We first perform PCA on the data, and record the MSE of having first 1, 2, …, max_linear_dims + 1 components.
+We then try to train a circular autoencoder with 0, 1, …, max_linear_dims linear components.
+We compare circular autoencoder with i linear components with PCA with (i + 1) components, for i = 0, 1, …
+We record the first i where the difference of loss compared with PCA is greater than both (i - 1) and (i + 1),
+or just (i + 1) if i == 0.</p>
+<p>At the end, this class will be a UNTRAINED model, which has optimal numbers of linear components.
+You can train it will all your data, more epochs, and better learning rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The data used to decide number of linear components. For a large dataset, you may use a representative portion of it.</p></li>
+<li><p><strong>max_linear_dims</strong> – maximum number of linear dimensions.</p></li>
+<li><p><strong>epochs</strong> – number of epochs for each test</p></li>
+<li><p><strong>verbose</strong> – per how many epochs does it report the loss, time consumption, etc.</p></li>
+<li><p><strong>rate</strong> – training rate</p></li>
+<li><p><strong>early_stop</strong> – Stop checking more linear components when result decided? ONLY affects the elbow plot. NO influence on result.</p></li>
+<li><p><strong>encoder_depth</strong> – depth of encoder, i.e., number of <em>hidden</em> layers</p></li>
+<li><p><strong>encoder_width</strong> – <p>width of encoder, one of the following:</p>
+<ul>
+<li><p>An integer stands for number of nodes per layer. All hidden layers will have the same number of nodes.</p></li>
+<li><p>A list, whose length is equal to <cite>encoder_depth</cite>, of integers stand for numbers of nodes of the layers.</p></li>
+</ul>
+</p></li>
+<li><p><strong>dropout_rate</strong> – rate for dropout.</p></li>
+<li><p><strong>nonlinear_reg</strong> – strength of regularization on the nonlinear encoder.</p></li>
+<li><p><strong>linear_reg</strong> – strength of regularization on the linear encoder.</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>Examples:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cyclum.hdfrw</span> <span class="k">import</span> <span class="n">hdf2mat</span><span class="p">,</span> <span class="n">mat2hdf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">hdf2mat</span><span class="p">(</span><span class="s1">&#39;path_to_hdf.h5&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">CyclumAutoTune</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">max_linear_dims</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pseudotime</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">predict_pseudotime</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat2hdf</span><span class="p">(</span><span class="n">pseudotime</span><span class="p">,</span> <span class="s1">&#39;path_to_pseudotime.h5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cyclum.tuning.CyclumAutoTune.show_bar">
+<code class="sig-name descname">show_bar</code><span class="sig-paren">(</span><em class="sig-param">root=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/tuning.html#CyclumAutoTune.show_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.tuning.CyclumAutoTune.show_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show a bar plot for what percentage of more loss is handled by the circular component</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>figure object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.tuning.CyclumAutoTune.show_elbow">
+<code class="sig-name descname">show_elbow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/tuning.html#CyclumAutoTune.show_elbow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.tuning.CyclumAutoTune.show_elbow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show an elbow plot of both PCA and autoencoder
+You will observe the time when autoencoder become to have a higher loss than PCA.
+The previous time is considered as the best model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>figure object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.writer">
+<span id="cyclum-writer-module"></span><h2>cyclum.writer module<a class="headerlink" href="#module-cyclum.writer" title="Permalink to this headline">¶</a></h2>
+<p>Writer gives a very fast way of saving and loading float value matrices.
+It saves matrices in binary and in very rigid format. This avoids overheads in csv reading functions.
+The R counterpart is also available.</p>
+<dl class="function">
+<dt id="cyclum.writer.int32_to_bytes">
+<code class="sig-prename descclassname">cyclum.writer.</code><code class="sig-name descname">int32_to_bytes</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/writer.html#int32_to_bytes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.writer.int32_to_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an 32 bit int number to little endian 4 byte binary format.
+This helps writing a integer to a binary file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>int32</em>) – number to be converted</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>4 byte binary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.writer.read_df_from_binary">
+<code class="sig-prename descclassname">cyclum.writer.</code><code class="sig-name descname">read_df_from_binary</code><span class="sig-paren">(</span><em class="sig-param">file_name_mask</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/writer.html#read_df_from_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.writer.read_df_from_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a data frame from a binary file defined by this module</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_name_mask</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the data frame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.writer.read_matrix_from_binary">
+<code class="sig-prename descclassname">cyclum.writer.</code><code class="sig-name descname">read_matrix_from_binary</code><span class="sig-paren">(</span><em class="sig-param">file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/writer.html#read_matrix_from_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.writer.read_matrix_from_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a matrix from a binary file defined by this module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em>) – the file to read</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.writer.write_df_to_binary">
+<code class="sig-prename descclassname">cyclum.writer.</code><code class="sig-name descname">write_df_to_binary</code><span class="sig-paren">(</span><em class="sig-param">file_name_mask</em>, <em class="sig-param">df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/writer.html#write_df_to_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.writer.write_df_to_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a data frame to a file. Compared with matrix, it has column and row names
+Besides the row names and column names, the data frame must contain only float values.</p>
+<p>Two files will be saved. For exmaple, a call write_df_to_binary(“example”, df) will output an “example-value.bin”
+and “example-name.txt”. They store the matrix and the column and row names separately.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name_mask</strong> (<em>str</em>) – the stem of the file name</p></li>
+<li><p><strong>df</strong> – the data frame to write</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cyclum.writer.write_matrix_to_binary">
+<code class="sig-prename descclassname">cyclum.writer.</code><code class="sig-name descname">write_matrix_to_binary</code><span class="sig-paren">(</span><em class="sig-param">file_name</em>, <em class="sig-param">val</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/writer.html#write_matrix_to_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.writer.write_matrix_to_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an (unnamed) matrix to a file. The matrix should contain only float values, or at least convertible to float.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em>) – name of file</p></li>
+<li><p><strong>val</strong> – The matrix to write</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cyclum">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cyclum" title="Permalink to this headline">¶</a></h2>
+<p>Top-level package for cyclum.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cyclum.models.html" class="btn btn-neutral float-right" title="cyclum.models package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="cyclum2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Shaoheng Liang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,542 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cyclum.models package &mdash; cyclum-doc 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="FAQ" href="faq.html" />
+    <link rel="prev" title="cyclum package" href="cyclum.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cyclum-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">cyclum2</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="cyclum.html">cyclum package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="cyclum.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cyclum.models package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cyclum.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyclum.html#module-cyclum.evaluation">cyclum.evaluation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyclum.html#module-cyclum.hdfrw">cyclum.hdfrw module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyclum.html#module-cyclum.illustration">cyclum.illustration module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyclum.html#module-cyclum.tuning">cyclum.tuning module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyclum.html#module-cyclum.writer">cyclum.writer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cyclum.html#module-cyclum">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cyclum-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">cyclum2</a> &raquo;</li>
+        
+          <li><a href="cyclum.html">cyclum package</a> &raquo;</li>
+        
+      <li>cyclum.models package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/cyclum.models.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cyclum-models-package">
+<h1>cyclum.models package<a class="headerlink" href="#cyclum-models-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-cyclum.models.ae">
+<span id="cyclum-models-ae-module"></span><h2>cyclum.models.ae module<a class="headerlink" href="#module-cyclum.models.ae" title="Permalink to this headline">¶</a></h2>
+<p>Main module.</p>
+<dl class="class">
+<dt id="cyclum.models.ae.AutoEncoder">
+<em class="property">class </em><code class="sig-prename descclassname">cyclum.models.ae.</code><code class="sig-name descname">AutoEncoder</code><span class="sig-paren">(</span><em class="sig-param">input_width=None</em>, <em class="sig-param">encoder_depth=2</em>, <em class="sig-param">encoder_width=50</em>, <em class="sig-param">n_circular_unit=1</em>, <em class="sig-param">n_logistic_unit=0</em>, <em class="sig-param">n_linear_unit=0</em>, <em class="sig-param">n_linear_bypass=0</em>, <em class="sig-param">dropout_rate=0.0</em>, <em class="sig-param">nonlinear_reg=0.0001</em>, <em class="sig-param">linear_reg=0.0001</em>, <em class="sig-param">filepath=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#AutoEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.AutoEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cyclum.models.ae.BaseAutoEncoder" title="cyclum.models.ae.BaseAutoEncoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cyclum.models.ae.BaseAutoEncoder</span></code></a></p>
+<p>A Cyclum style autoencoder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_width</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – width of input, i.e., number of genes</p></li>
+<li><p><strong>encoder_depth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – depth of encoder, i.e., number of <em>hidden</em> layers</p></li>
+<li><p><strong>encoder_width</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]]) – <p>width of encoder, one of the following:</p>
+<ul>
+<li><p>An integer stands for number of nodes per layer. All hidden layers will have the same number of nodes.</p></li>
+<li><p>A list, whose length is equal to <cite>encoder_depth</cite>, of integers stand for numbers of nodes of the layers.</p></li>
+</ul>
+</p></li>
+<li><p><strong>n_circular_unit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – 0 or 1, number of circular unit; may add support for 1+ in the future.</p></li>
+<li><p><strong>n_logistic_unit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – number of logistic (tanh) unit which <em>runs on the circular embedding</em>. Under testing.</p></li>
+<li><p><strong>n_linear_unit</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – number of linear unit which runs <em>on the circular embedding</em>. Under testing.</p></li>
+<li><p><strong>n_linear_bypass</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – number of linear components.</p></li>
+<li><p><strong>dropout_rate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – rate for dropout.</p></li>
+<li><p><strong>nonlinear_reg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – strength of regularization on the nonlinear encoder.</p></li>
+<li><p><strong>linear_reg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – strength of regularization on the linear encoder.</p></li>
+<li><p><strong>filepath</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – filepath of stored model. If specified, all other parameters are omitted.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cyclum.models.ae.AutoEncoder.get_weight">
+<code class="sig-name descname">get_weight</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#AutoEncoder.get_weight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.AutoEncoder.get_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the weight of the transform, where the last two dimensions are for the sinusoidal unit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.AutoEncoder.pre_train">
+<code class="sig-name descname">pre_train</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">n_linear_bypass</em>, <em class="sig-param">epochs=100</em>, <em class="sig-param">verbose=10</em>, <em class="sig-param">rate=0.0001</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#AutoEncoder.pre_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.AutoEncoder.pre_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train the network with PCA. May save some training time. Only applicable to circular with linear bypass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – data used</p></li>
+<li><p><strong>n_linear_bypass</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – number of linear bypasses, must be the same as the one specified during the init.</p></li>
+<li><p><strong>epochs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – training epochs</p></li>
+<li><p><strong>verbose</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – per how many epochs does it report the loss, time consumption, etc.</p></li>
+<li><p><strong>rate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – training rate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>history of loss</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.AutoEncoder.predict_linear_bypass">
+<code class="sig-name descname">predict_linear_bypass</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#AutoEncoder.predict_linear_bypass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.AutoEncoder.predict_linear_bypass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict the linear bypass loadings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – data to be used for training</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the circular pseudotime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.AutoEncoder.predict_pseudotime">
+<code class="sig-name descname">predict_pseudotime</code><span class="sig-paren">(</span><em class="sig-param">data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#AutoEncoder.predict_pseudotime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.AutoEncoder.predict_pseudotime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict the circular pseudotime</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – data to be used for training</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the circular pseudotime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.AutoEncoder.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">batch_size=None</em>, <em class="sig-param">epochs=100</em>, <em class="sig-param">verbose=10</em>, <em class="sig-param">rate=0.0001</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#AutoEncoder.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.AutoEncoder.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train the model. It will not reset the weights each time so it can be called iteratively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – data used for training</p></li>
+<li><p><strong>batch_size</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – batch size for training, if unspecified default to 32 as is set by keras</p></li>
+<li><p><strong>epochs</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – number of epochs in training</p></li>
+<li><p><strong>verbose</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – per how many epochs does it report the loss, time consumption, etc.</p></li>
+<li><p><strong>rate</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – training rate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>history of loss</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cyclum.models.ae.BaseAutoEncoder">
+<em class="property">class </em><code class="sig-prename descclassname">cyclum.models.ae.</code><code class="sig-name descname">BaseAutoEncoder</code><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="class">
+<dt id="cyclum.models.ae.BaseAutoEncoder.MyCallback">
+<em class="property">class </em><code class="sig-name descname">MyCallback</code><span class="sig-paren">(</span><em class="sig-param">interval</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.MyCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.MyCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">keras.callbacks.Callback</span></code></p>
+<p>Call back function for</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>interval</strong> – report loss, time, etc. per interval epochs</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.MyCallback.on_epoch_end">
+<code class="sig-name descname">on_epoch_end</code><span class="sig-paren">(</span><em class="sig-param">batch</em>, <em class="sig-param">logs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.MyCallback.on_epoch_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.MyCallback.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.MyCallback.on_train_begin">
+<code class="sig-name descname">on_train_begin</code><span class="sig-paren">(</span><em class="sig-param">logs=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.MyCallback.on_train_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.MyCallback.on_train_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.circular_unit">
+<em class="property">static </em><code class="sig-name descname">circular_unit</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">comp=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.circular_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.circular_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a circular unit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of this unit</p></li>
+<li><p><strong>comp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – components of phases. 2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>function f: input tensor -&gt; output tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.decoder">
+<em class="property">static </em><code class="sig-name descname">decoder</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.decoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.decoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dncoder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Output width</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>function f: input tensor -&gt; output tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.encoder">
+<em class="property">static </em><code class="sig-name descname">encoder</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">size</em>, <em class="sig-param">reg</em>, <em class="sig-param">drop</em>, <em class="sig-param">act='tanh'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.encoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a nonlinear encoder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of this unit</p></li>
+<li><p><strong>size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]) – Size of each layer</p></li>
+<li><p><strong>reg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – regularization strength</p></li>
+<li><p><strong>drop</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – dropout rate</p></li>
+<li><p><strong>act</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>]) – activation function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>function f: input tensor -&gt; output tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.linear_bypass">
+<em class="property">static </em><code class="sig-name descname">linear_bypass</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">n</em>, <em class="sig-param">reg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.linear_bypass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.linear_bypass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a linear encoder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – </p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – </p></li>
+<li><p><strong>reg</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>function f: input tensor -&gt; output tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.linear_unit">
+<em class="property">static </em><code class="sig-name descname">linear_unit</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">n</em>, <em class="sig-param">trans=True</em>, <em class="sig-param">reg_scale=0.01</em>, <em class="sig-param">reg_trans=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.linear_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.linear_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a logistic unit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of this unit</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of perceptrons</p></li>
+<li><p><strong>trans</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Allow translation (i.e. b in Ax + b)</p></li>
+<li><p><strong>reg_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – regularization on scaling (i.e. A in Ax + b)</p></li>
+<li><p><strong>reg_trans</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – regularization of translation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>function f: input tensor -&gt; output tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a BaseAutoEncoder object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.logistic_unit">
+<em class="property">static </em><code class="sig-name descname">logistic_unit</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">n</em>, <em class="sig-param">trans=True</em>, <em class="sig-param">reg_scale=0.01</em>, <em class="sig-param">reg_trans=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.logistic_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.logistic_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a logistic unit</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of this unit</p></li>
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of perceptrons</p></li>
+<li><p><strong>trans</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Allow translation (i.e. b in Ax + b)</p></li>
+<li><p><strong>reg_scale</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – regularization on scaling (i.e. A in Ax + b)</p></li>
+<li><p><strong>reg_trans</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – regularization of translation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>function f: input tensor -&gt; output tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a BaseAutoEncoder object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> – h5 suffix is recommended, i.e., filename.h5</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cyclum.models.ae.BaseAutoEncoder.show_structure">
+<code class="sig-name descname">show_structure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cyclum/models/ae.html#BaseAutoEncoder.show_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cyclum.models.ae.BaseAutoEncoder.show_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the structure of the network</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The graph for the structure</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-cyclum.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cyclum.models" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="faq.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cyclum.html" class="btn btn-neutral float-left" title="cyclum package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Shaoheng Liang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

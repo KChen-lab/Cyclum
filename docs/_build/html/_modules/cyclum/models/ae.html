@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cyclum.models.ae &mdash; cyclum-doc 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> cyclum-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">cyclum2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">cyclum-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cyclum.models.ae</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cyclum.models.ae</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Main module.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
+<span class="kn">import</span> <span class="nn">keras</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">import</span> <span class="nn">sklearn.decomposition</span>
+<span class="kn">import</span> <span class="nn">sklearn.metrics</span>
+
+
+<div class="viewcode-block" id="BaseAutoEncoder"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder">[docs]</a><span class="k">class</span> <span class="nc">BaseAutoEncoder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="BaseAutoEncoder.circular_unit"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.circular_unit">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">circular_unit</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">comp</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a circular unit</span>
+
+<span class="sd">        :param name: Name of this unit</span>
+<span class="sd">        :param comp: components of phases. 2</span>
+<span class="sd">        :return: function f: input tensor -&gt; output tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">comp</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;comp must be at least 2&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">comp</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_sin&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">),</span>
+                       <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_cos&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Lambda</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="n">comp</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">comp</span><span class="p">)]</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Concatenate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_out&#39;</span><span class="p">)(</span><span class="n">out</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+        <span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.logistic_unit"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.logistic_unit">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">logistic_unit</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">trans</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">reg_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">reg_trans</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a logistic unit</span>
+
+<span class="sd">        :param name: Name of this unit</span>
+<span class="sd">        :param n: Number of perceptrons</span>
+<span class="sd">        :param trans: Allow translation (i.e. b in Ax + b)</span>
+<span class="sd">        :param reg_scale: regularization on scaling (i.e. A in Ax + b)</span>
+<span class="sd">        :param reg_trans: regularization of translation</span>
+<span class="sd">        :return: function f: input tensor -&gt; output tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_scale&#39;</span><span class="p">,</span>
+                                   <span class="n">units</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                                   <span class="n">use_bias</span><span class="o">=</span><span class="n">trans</span><span class="p">,</span>
+                                   <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="n">reg_scale</span><span class="p">),</span>
+                                   <span class="n">bias_regularizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="n">reg_trans</span><span class="p">),</span>
+                                   <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_normal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                                   <span class="n">bias_initializer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">Zeros</span><span class="p">()</span>
+                                   <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_out&#39;</span><span class="p">,</span>
+                                        <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span>
+                                        <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.linear_unit"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.linear_unit">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">linear_unit</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">trans</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">reg_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">reg_trans</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a logistic unit</span>
+
+<span class="sd">        :param name: Name of this unit</span>
+<span class="sd">        :param n: Number of perceptrons</span>
+<span class="sd">        :param trans: Allow translation (i.e. b in Ax + b)</span>
+<span class="sd">        :param reg_scale: regularization on scaling (i.e. A in Ax + b)</span>
+<span class="sd">        :param reg_trans: regularization of translation</span>
+<span class="sd">        :return: function f: input tensor -&gt; output tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_scale&#39;</span><span class="p">,</span>
+                                   <span class="n">units</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                                   <span class="n">use_bias</span><span class="o">=</span><span class="n">trans</span><span class="p">,</span>
+                                   <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="n">reg_scale</span><span class="p">),</span>
+                                   <span class="n">bias_regularizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="n">reg_trans</span><span class="p">),</span>
+                                   <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_normal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                                   <span class="n">bias_initializer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">Zeros</span><span class="p">()</span>
+                                   <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.encoder"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.encoder">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">encoder</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">reg</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">drop</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">act</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;tanh&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a nonlinear encoder</span>
+
+<span class="sd">        :param name: Name of this unit</span>
+<span class="sd">        :param size: Size of each layer</span>
+<span class="sd">        :param reg: regularization strength</span>
+<span class="sd">        :param drop: dropout rate</span>
+<span class="sd">        :param act: activation function</span>
+<span class="sd">        :return: function f: input tensor -&gt; output tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_scale&#39;</span><span class="p">,</span>
+                                       <span class="n">units</span><span class="o">=</span><span class="n">w</span><span class="p">,</span>
+                                       <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="n">reg</span><span class="p">),</span>
+                                       <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_normal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                                       <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">drop</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_dropout&#39;</span><span class="p">,</span>
+                                             <span class="n">rate</span><span class="o">=</span><span class="n">drop</span>
+                                             <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Activation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_act&#39;</span><span class="p">,</span>
+                                            <span class="n">activation</span><span class="o">=</span><span class="n">act</span>
+                                            <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+            <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_out&#39;</span><span class="p">,</span>
+                                   <span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                   <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="c1">#kernel_regularizer=keras.regularizers.l2(reg),</span>
+                                   <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_normal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                                   <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.linear_bypass"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.linear_bypass">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">linear_bypass</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">reg</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a linear encoder</span>
+
+<span class="sd">        :param name:</span>
+<span class="sd">        :param n:</span>
+<span class="sd">        :param reg:</span>
+<span class="sd">        :return: function f: input tensor -&gt; output tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_out&#39;</span><span class="p">,</span>
+                                   <span class="n">units</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                                   <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="n">kernel_regularizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l2</span><span class="p">(</span><span class="n">reg</span><span class="p">),</span>
+                                   <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">glorot_normal</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                                   <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.decoder"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.decoder">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">decoder</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a dncoder</span>
+
+<span class="sd">        :param name:</span>
+<span class="sd">        :param n: Output width</span>
+<span class="sd">        :return: function f: input tensor -&gt; output tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Concatenate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_concat&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_out&#39;</span><span class="p">,</span>
+                                   <span class="n">units</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                                   <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="n">kernel_initializer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">Zeros</span><span class="p">()</span>
+                                   <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.save"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save a BaseAutoEncoder object</span>
+
+<span class="sd">        :param filepath: h5 suffix is recommended, i.e., filename.h5</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.load"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load a BaseAutoEncoder object</span>
+
+<span class="sd">        :param filepath:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">custom_objects</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;keras&quot;</span><span class="p">:</span> <span class="n">keras</span><span class="p">,</span> <span class="s2">&quot;keras.backend&quot;</span><span class="p">:</span> <span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.MyCallback"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.MyCallback">[docs]</a>    <span class="k">class</span> <span class="nc">MyCallback</span><span class="p">(</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">Callback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Call back function for</span>
+
+<span class="sd">        :param interval: report loss, time, etc. per interval epochs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rec</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+<div class="viewcode-block" id="BaseAutoEncoder.MyCallback.on_train_begin"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.MyCallback.on_train_begin">[docs]</a>        <span class="k">def</span> <span class="nf">on_train_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.MyCallback.on_epoch_end"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.MyCallback.on_epoch_end">[docs]</a>        <span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">logs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;loss&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cnt</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;epoch: </span><span class="si">{self.cnt}</span><span class="s1">/</span><span class="si">{self.params[&quot;epochs&quot;]}</span><span class="s1">, loss: {logs.get(&quot;loss&quot;) : .4f}, &#39;</span>
+                      <span class="n">f</span><span class="s1">&#39;time elapsed: {self.rec[&quot;time&quot;][-1] : .2f}s, &#39;</span>
+                      <span class="n">f</span><span class="s1">&#39;time left: {((self.params[&quot;epochs&quot;] / self.cnt - 1) * self.rec[&quot;time&quot;][-1]) : .2f}s&#39;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="BaseAutoEncoder.show_structure"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.BaseAutoEncoder.show_structure">[docs]</a>    <span class="k">def</span> <span class="nf">show_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show the structure of the network</span>
+
+<span class="sd">        :return: The graph for the structure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">SVG</span>
+        <span class="kn">from</span> <span class="nn">keras.utils.vis_utils</span> <span class="k">import</span> <span class="n">model_to_dot</span>
+        <span class="k">return</span> <span class="n">SVG</span><span class="p">(</span><span class="n">model_to_dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">show_shapes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s1">&#39;dot&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">))</span></div></div>
+
+<div class="viewcode-block" id="AutoEncoder"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.AutoEncoder">[docs]</a><span class="k">class</span> <span class="nc">AutoEncoder</span><span class="p">(</span><span class="n">BaseAutoEncoder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Cyclum style autoencoder</span>
+
+<span class="sd">    :param input_width: width of input, i.e., number of genes</span>
+<span class="sd">    :param encoder_depth: depth of encoder, i.e., number of *hidden* layers</span>
+<span class="sd">    :param encoder_width: width of encoder, one of the following:</span>
+
+<span class="sd">        * An integer stands for number of nodes per layer. All hidden layers will have the same number of nodes.</span>
+<span class="sd">        * A list, whose length is equal to `encoder_depth`, of integers stand for numbers of nodes of the layers.</span>
+
+<span class="sd">    :param n_circular_unit: 0 or 1, number of circular unit; may add support for 1+ in the future.</span>
+<span class="sd">    :param n_logistic_unit: number of logistic (tanh) unit which *runs on the circular embedding*. Under testing.</span>
+<span class="sd">    :param n_linear_unit: number of linear unit which runs *on the circular embedding*. Under testing.</span>
+<span class="sd">    :param n_linear_bypass: number of linear components.</span>
+<span class="sd">    :param dropout_rate: rate for dropout.</span>
+<span class="sd">    :param nonlinear_reg: strength of regularization on the nonlinear encoder.</span>
+<span class="sd">    :param linear_reg: strength of regularization on the linear encoder.</span>
+<span class="sd">    :param filepath: filepath of stored model. If specified, all other parameters are omitted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">input_width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">encoder_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+                 <span class="n">encoder_width</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+                 <span class="n">n_circular_unit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">n_logistic_unit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">n_linear_unit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">n_linear_bypass</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">dropout_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">nonlinear_reg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+                 <span class="n">linear_reg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+                 <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+                 <span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">input_width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">encoder_width</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span><span class="p">:</span>
+                <span class="n">encoder_size</span> <span class="o">=</span> <span class="p">[</span><span class="n">encoder_width</span><span class="p">]</span> <span class="o">*</span> <span class="n">encoder_depth</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">encoder_width</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoder_width</span><span class="p">)</span> <span class="o">==</span> <span class="n">encoder_depth</span><span class="p">:</span>
+                <span class="n">encoder_size</span> <span class="o">=</span> <span class="n">encoder_width</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;encoder_width must be either (1) an integer or (2) a list of integer, whose length is &quot;</span>
+                                 <span class="s2">&quot;equal to encoder_depth.&quot;</span><span class="p">)</span>
+
+            <span class="n">y</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">input_width</span><span class="p">,),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;input&#39;</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="p">(</span><span class="s1">&#39;encoder&#39;</span><span class="p">,</span> <span class="n">encoder_size</span><span class="p">,</span> <span class="n">nonlinear_reg</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">,</span> <span class="s1">&#39;tanh&#39;</span><span class="p">)(</span><span class="n">y</span><span class="p">)</span>
+
+            <span class="n">chest</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">n_linear_bypass</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">x_bypass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_bypass</span><span class="p">(</span><span class="s1">&#39;bypass&#39;</span><span class="p">,</span> <span class="n">n_linear_bypass</span><span class="p">,</span> <span class="n">linear_reg</span><span class="p">)(</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">chest</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_bypass</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_logistic_unit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">x_logistic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logistic_unit</span><span class="p">(</span><span class="s1">&#39;logistic&#39;</span><span class="p">,</span> <span class="n">n_logistic_unit</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">chest</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_logistic</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_linear_unit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">x_linear</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_unit</span><span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">n_linear_unit</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">chest</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_linear</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_circular_unit</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">x_circular</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">circular_unit</span><span class="p">(</span><span class="s1">&#39;circular&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">chest</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_circular</span><span class="p">)</span>
+            <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="s1">&#39;decoder&#39;</span><span class="p">,</span> <span class="n">input_width</span><span class="p">)(</span><span class="n">chest</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AutoEncoder.pre_train"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.AutoEncoder.pre_train">[docs]</a>    <span class="k">def</span> <span class="nf">pre_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">n_linear_bypass</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the network with PCA. May save some training time. Only applicable to circular with linear bypass.</span>
+
+<span class="sd">        :param data: data used</span>
+<span class="sd">        :param n_linear_bypass: number of linear bypasses, must be the same as the one specified during the init.</span>
+<span class="sd">        :param epochs: training epochs</span>
+<span class="sd">        :param verbose: per how many epochs does it report the loss, time consumption, etc.</span>
+<span class="sd">        :param rate: training rate</span>
+<span class="sd">        :return: history of loss</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pca_model</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">decomposition</span><span class="o">.</span><span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_linear_bypass</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">pca_load</span> <span class="o">=</span> <span class="n">pca_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">stdd_pca_load</span> <span class="o">=</span> <span class="n">pca_load</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">pca_load</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+
+        <span class="k">if</span> <span class="n">n_linear_bypass</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pretrain_model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;decoder_concat&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                                         <span class="n">inputs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pretrain_model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">outputs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;circular_out&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                                         <span class="n">inputs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+
+        <span class="n">my_callback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MyCallback</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="n">pretrain_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">rate</span><span class="p">))</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">pretrain_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">stdd_pca_load</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">my_callback</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">history</span></div>
+
+<div class="viewcode-block" id="AutoEncoder.train"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.AutoEncoder.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the model. It will not reset the weights each time so it can be called iteratively.</span>
+
+<span class="sd">        :param data: data used for training</span>
+<span class="sd">        :param batch_size: batch size for training, if unspecified default to 32 as is set by keras</span>
+<span class="sd">        :param epochs: number of epochs in training</span>
+<span class="sd">        :param verbose: per how many epochs does it report the loss, time consumption, etc.</span>
+<span class="sd">        :param rate: training rate</span>
+<span class="sd">        :return: history of loss</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span><span class="p">,</span>
+                           <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">rate</span><span class="p">))</span>
+
+        <span class="n">my_callback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MyCallback</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">my_callback</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">history</span></div>
+
+<div class="viewcode-block" id="AutoEncoder.predict_pseudotime"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.AutoEncoder.predict_pseudotime">[docs]</a>    <span class="k">def</span> <span class="nf">predict_pseudotime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Predict the circular pseudotime</span>
+
+<span class="sd">        :param data: data to be used for training</span>
+<span class="sd">        :return: the circular pseudotime</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">input</span><span class="p">],</span>
+                                     <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;encoder_out&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
+                                     <span class="p">)([</span><span class="n">data</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="AutoEncoder.predict_linear_bypass"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.AutoEncoder.predict_linear_bypass">[docs]</a>    <span class="k">def</span> <span class="nf">predict_linear_bypass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Predict the linear bypass loadings.</span>
+
+<span class="sd">        :param data: data to be used for training</span>
+<span class="sd">        :return: the circular pseudotime</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">input</span><span class="p">],</span>
+                                     <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;bypass_out&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
+                                     <span class="p">)([</span><span class="n">data</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="AutoEncoder.get_weight"><a class="viewcode-back" href="../../../cyclum.models.html#cyclum.models.ae.AutoEncoder.get_weight">[docs]</a>    <span class="k">def</span> <span class="nf">get_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the weight of the transform, where the last two dimensions are for the sinusoidal unit</span>
+
+<span class="sd">        :return: a matrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;decoder_out&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">layer</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Shaoheng Liang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

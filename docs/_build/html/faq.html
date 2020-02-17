@@ -1,0 +1,228 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>FAQ &mdash; cyclum-doc 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="cyclum.models package" href="cyclum.models.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cyclum-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="modules.html">cyclum2</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-preprocess-should-be-done-on-the-scrna-seq-data">What preprocess should be done on the scRNA-seq data?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i-choose-number-of-linear-dimensions">How do I choose number of linear dimensions?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-does-the-pseudo-time-mean">What does the pseudo-time mean?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-does-the-circular-pseudo-time-mean">What does the circular pseudo-time mean?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cyclum-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>FAQ</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/faq.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="faq">
+<h1>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-preprocess-should-be-done-on-the-scrna-seq-data">
+<h2>What preprocess should be done on the scRNA-seq data?<a class="headerlink" href="#what-preprocess-should-be-done-on-the-scrna-seq-data" title="Permalink to this headline">¶</a></h2>
+<p>Cyclum is noncommittal on what specific transform is used, as long as the circular pattern is preserved. That said, experiments show that scaled (variance = 1), centered (mean = 1) log-transformed (<span class="math notranslate nohighlight">\(\log_2(x+1)\)</span>) data work well. Using Freeman-Tukey transform (<span class="math notranslate nohighlight">\(\sqrt{x} + \sqrt{x+1}\)</span>) may also be a good idea.</p>
+</div>
+<div class="section" id="how-do-i-choose-number-of-linear-dimensions">
+<h2>How do I choose number of linear dimensions?<a class="headerlink" href="#how-do-i-choose-number-of-linear-dimensions" title="Permalink to this headline">¶</a></h2>
+<p>We provide <code class="code docutils literal notranslate"><span class="pre">cyclum.tuning.CyclumAutoTune</span></code> to help decide the number of linear dimensions.</p>
+</div>
+<div class="section" id="what-does-the-pseudo-time-mean">
+<h2>What does the pseudo-time mean?<a class="headerlink" href="#what-does-the-pseudo-time-mean" title="Permalink to this headline">¶</a></h2>
+<p>It is the inferred stage of a cell. One pseudo-time for one cell itself does not make sense because it is not a real time. However, pseudo-times for more cells reveals their order and similarities. The pseudo-time for many cells shows the trajectory of cells in a scale.</p>
+</div>
+<div class="section" id="what-does-the-circular-pseudo-time-mean">
+<h2>What does the circular pseudo-time mean?<a class="headerlink" href="#what-does-the-circular-pseudo-time-mean" title="Permalink to this headline">¶</a></h2>
+<p>It means we assume that there is no start or end in the time. Cells are going through a circular process, presumably cell cycle. That said, prior knowledge can be used to determine which pseudo-time is G1 phase and M phase, and they can be considered the start and end.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cyclum.models.html" class="btn btn-neutral float-left" title="cyclum.models package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Shaoheng Liang
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
