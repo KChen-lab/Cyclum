@@ -1,3 +1,9 @@
-- [Comparison of nicotine treated and normal cells](https://kchen-lab.github.io/Cyclum/tests/postproc/hESC-comparison.nb.html)
-
-Too see the html, use https://lshh125.github.io/cyclum2/tests/postproc/pc3_multiple_analysis.nb.html, etc.
+- [Comparison of two hESC samples](https://kchen-lab.github.io/Cyclum/tests/postproc/hESC-comparison.nb.html)
+  - Compare circular mangitude of genes between nicotine treated and normal cells
+  - Yields marker genes including _ENO1_, _LDHA_, etc.
+- [Prepare hESC data for GSEA](https://kchen-lab.github.io/Cyclum/tests/postproc/hESC-both.nb.html)
+  - Output expression matrix in a way GSEA recognizes.
+  - Breaks the circular pseudotime at some point to acquire a linear pseudotime.
+  - Filter marker genes list with regard to available genes. Otherwise GSEA will run into error.
+- [EMT and MET markers](https://kchen-lab.github.io/Cyclum/tests/postproc/emt.nb.html)
+  - Find distinct MET markers, such as _Cited1_, _Fzd7.
