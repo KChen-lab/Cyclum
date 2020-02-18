@@ -1,11 +1,16 @@
 # Cyclum
 
 ## Introduction
-Cyclum is a package to tackle cell cycle. It provides methods to recover cell cycle information and remove cell cycle factor from the scRNA-seq data. The methodology is to rely on the circular manifold, instead of the marker genes. Multiple methods suits this idea. We provide an Auto-Encoder based realization at this time, and we are adding Gaussian Process Latent Variable Model soon. Also provided are a set of supplementary tools to visualize and anaylzing the result, in python and in R. We also provide a [one-click self-contained demo](https://github.com/KChen-lab/Cyclum-Demo) ships with its dataset, which shows how to start with an expression matrix, then decide the optimal dimensionality, and finally calculate the circular pseudotime. More examples are available in [test/notebooks](https://github.com/KChen-lab/Cyclum/tree/master/tests/notebooks), where there is a detailed [table of contents](https://github.com/KChen-lab/Cyclum/blob/master/tests/notebooks/README.md). Documentation for submodules and classes in the Cyclum Python module is available as a [website](https://kchen-lab.github.io/Cyclum/docs/_build/html/index.html).
+Cyclum is a package to tackle cell cycle. It provides methods to recover cell cycle information and remove cell cycle factor from the scRNA-seq data. The methodology is to rely on the circular manifold, instead of the marker genes. We provide an Auto-Encoder based realization at this time, and we are adding Gaussian Process Latent Variable Model soon.
 
-Our [preprint](https://www.biorxiv.org/content/10.1101/625566v1) has also been uploaded to BioRxiv.
+## Tutorials
+We also provide a [one-click self-contained demo](https://github.com/KChen-lab/Cyclum-Demo) ships with its dataset, which shows how to start with an expression matrix, then decide the optimal dimensionality, and finally calculate the circular pseudotime. 
+
+More examples are available in [test/notebooks](https://github.com/KChen-lab/Cyclum/tree/master/tests/notebooks), where there is a detailed [table of contents](https://github.com/KChen-lab/Cyclum/blob/master/tests/notebooks/README.md). 
 
 ![Illustration](old-version/docs/Illustration.PNG)
+
+Our [preprint](https://www.biorxiv.org/content/10.1101/625566v1) has also been uploaded to BioRxiv. Documentation for submodules and classes in the Cyclum Python module is available as a [website](https://kchen-lab.github.io/Cyclum/docs/_build/html/index.html). Explanations of other files in [test](https://github.com/KChen-lab/Cyclum/tree/master/tests) are available as `README.md` in the corresponding folders.
 
 ## This is the Updated version:
 We revised almost everything, except for the concept of using sinusoidal function in an autoencoder to find circular biological processes *ab initio*. The autoencoder is now rewritten using [keras](https://keras.io/), in a more readable way. We hope this will help researchers who want to experiment similar network structures. We also implemented class `cyclum.tuning.CyclumAutoTune`, which automatically select the proper number of linear components to help find the "most circular" manifold. The old version is kept in [`old-version`](old-version).
