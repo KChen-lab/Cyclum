@@ -9,7 +9,7 @@ Our [preprint](https://www.biorxiv.org/content/10.1101/625566v1) has also been u
 
 ![Illustration](old-version/docs/Illustration.PNG)
 
-## Updated version:
+## This is the Updated version:
 We revised almost everything, except for the concept of using sinusoidal function in an autoencoder to find circular biological processes *ab initio*. The autoencoder is now rewritten using [keras](https://keras.io/), in a more readable way. We hope this will help researchers who want to experiment similar network structures. We also implemented class `cyclum.tuning.CyclumAutoTune`, which automatically select the proper number of linear components to help find the "most circular" manifold. The old version is kept in [`old-version`](old-version).
 
 ## Transferring data between python and R:
