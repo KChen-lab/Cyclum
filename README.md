@@ -4,7 +4,7 @@
 Cyclum is a package to tackle cell cycle. It provides methods to recover cell cycle information and remove cell cycle factor from the scRNA-seq data. The methodology is to rely on the circular manifold, instead of the marker genes. We provide an Auto-Encoder based realization at this time, and we are adding Gaussian Process Latent Variable Model soon.
 
 ## Tutorials
-We also provide a [one-click self-contained demo](https://github.com/KChen-lab/Cyclum-Demo) ships with its dataset, which shows how to start with an expression matrix, then decide the optimal dimensionality, and finally calculate the circular pseudotime. 
+We provide a [one-click self-contained demo](https://github.com/KChen-lab/Cyclum-Demo) ships with its dataset, which shows how to start with an expression matrix, then decide the optimal dimensionality, and finally calculate the circular pseudotime. 
 
 More examples are available in [test/notebooks](https://github.com/KChen-lab/Cyclum/tree/master/tests/notebooks), where there is a detailed [table of contents](https://github.com/KChen-lab/Cyclum/blob/master/tests/notebooks/README.md). 
 
