@@ -6,4 +6,4 @@
   - Breaks the circular pseudotime at some point to acquire a linear pseudotime.
   - Filter marker genes list with regard to available genes. Otherwise GSEA will run into error.
 - [EMT and MET markers](https://kchen-lab.github.io/Cyclum/tests/postproc/emt.nb.html)
-  - Find distinct MET markers, such as _Cited1_, _Fzd7.
+  - Find distinct MET markers, such as _Cited1_, _Fzd7_.
