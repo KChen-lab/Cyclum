@@ -22,7 +22,7 @@ git clone https://github.com/KChen-lab/Cyclum.git
 cd Cyclum
 pip install .
 ```
-:warning: **This will install cyclum and its dependencies to your system, which effects more than just this directory.** Thus, we highly recommend virtual environment such to avoid messing up your system / breaking dependencies of other software. [Miniconda](https://docs.conda.io/en/latest/miniconda.html) may be a good choice if you have not already installed one.
+:warning: **This will install cyclum and its dependencies to your system, which affects more than just this directory.** Thus, we highly recommend virtual environment such to avoid messing up your system / breaking dependencies of other software. [Miniconda](https://docs.conda.io/en/latest/miniconda.html) may be a good choice if you have not already installed one.
 
 ## Use as portable software
 You can also use cyclum as a portable software, without installing. All the notebooks contains code that add cyclum to the path, so that you can run them directly. However, please make sure the dependencies are fulfilled. 
