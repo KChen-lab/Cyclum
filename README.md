@@ -29,11 +29,11 @@ You can install cyclum by running the following commands, in a directory you des
 
 :warning: **This will install cyclum and its dependencies to your system, which effects more than just this directory.** Thus, we highly recomend virtual environment such as conda to avoid messing up your system / breaking dependencies of other software.
 ```bash
-$ conda create -n cyclum python=3.7 pip
-$ conda activate cyclum
-$ git clone https://github.com/KChen-lab/Cyclum.git
-$ cd Cyclum
-$ pip install .
+conda create -n cyclum python=3.7 pip
+conda activate cyclum
+git clone https://github.com/KChen-lab/Cyclum.git
+cd Cyclum
+pip install .
 ```
 The dependencies shown below will be automatically installed.
 
