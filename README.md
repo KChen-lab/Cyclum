@@ -27,7 +27,6 @@ Although Python is a good data analysis tool in addition to a general programing
 ## Installation
 You can install cyclum by running the following commands, in a directory you desire.
 
-:warning: **This will install cyclum and its dependencies to your system, which effects more than just this directory.** Thus, we highly recomend virtual environment such as conda to avoid messing up your system / breaking dependencies of other software.
 ```bash
 conda create -n cyclum python=3.7 pip
 conda activate cyclum
@@ -35,10 +34,11 @@ git clone https://github.com/KChen-lab/Cyclum.git
 cd Cyclum
 pip install .
 ```
-The dependencies shown below will be automatically installed.
+:warning: **This will install cyclum and its dependencies to your system, which effects more than just this directory.** Thus, we highly recommend virtual environment such to avoid messing up your system / breaking dependencies of other software. [Miniconda](https://docs.conda.io/en/latest/miniconda.html) may be a good choice if you have not already installed one.
 
-## Portable
+## Use as portable software
 You can also use cyclum as a portable software, without installing. All the notebooks contains code that add cyclum to the path, so that you can run them directly. However, please make sure the dependencies are fulfilled. 
+
 ### Software dependencies: 
 Cyclum was tested on these package versions. Please make sure that you have TensorFlow 1.x. Cyclum is compatible with newer versions shown in the "Latest tested" column. 
 |Software    | Version| Latest tested |
