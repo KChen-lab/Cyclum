@@ -23,5 +23,5 @@ setuptools.setup(
     ],
     python_requires='>=3.6, <3.8',
     install_requires=[
-        'keras', 'tensorflow==1.15.2', 'numpy', 'pandas', 'scikit-learn', 'h5py', 'jupyter', 'matplotlib']
+        'keras', 'tensorflow<1.15,!=1.15.0,!=1.15.1', 'numpy', 'pandas', 'scikit-learn', 'h5py', 'jupyter', 'matplotlib']
 )
