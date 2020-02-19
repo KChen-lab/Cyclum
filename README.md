@@ -25,22 +25,33 @@ Although Python is a good data analysis tool in addition to a general programing
 - `mat2cls`, which writes multiple sets of phenotypes (continuous only, e.g., multiple PCs) to a GSEA compatible `.cls` file.
 
 ## Installation
-No installation is needed. However, Cyclum depends on some softwares.
+You can install cyclum by running the following commands, in a directory you desire.
 
+:warning: **This will install cyclum and its dependencies to your system, which effects more than just this directory.** Thus, we highly recomend virtual environment such as conda to avoid messing up your system / breaking dependencies of other software.
+```bash
+$ conda create -n cyclum python=3.7 pip
+$ conda activate cyclum
+$ git clone https://github.com/KChen-lab/Cyclum.git
+$ cd Cyclum
+$ pip install .
+```
+The dependencies shown below will be automatically installed.
+
+## Portable
+You can also use cyclum as a portable software, without installing. All the notebooks contains code that add cyclum to the path, so that you can run them directly. However, please make sure the dependencies are fulfilled. 
 ### Software dependencies: 
-
-|Software    | Version|
-|------------|--------|
-|python      | 3.7.4  |
-|keras       | 2.2.4  |
-|tensorflow  | 1.14.0 |
-|numpy       | 1.16.5 |
-|pandas      | 0.25.2 |
-|scikit-learn| 0.21.3 |
-|h5py        | 2.9.0  |
-|hdf5        | 1.10.4 |
-|jupyter     | 1.0.0  |
-|matplotlib  | 3.1.1  |
+Cyclum was tested on these package versions. Please make sure that you have TensorFlow 1.x. Cyclum is compatible with newer versions shown in the "Latest tested" column. 
+|Software    | Version| Latest tested |
+|------------|--------|---------------|
+|python      | 3.7.4  | 3.7.6         |
+|keras       | 2.2.4  | 2.3.1         |
+|tensorflow  | 1.14.0 | 1.15.0        |
+|numpy       | 1.16.5 | 1.18.1        |
+|pandas      | 0.25.2 | 1.0.1         |
+|scikit-learn| 0.21.3 | 0.22.1        |
+|h5py        | 2.9.0  | 2.10.0        |
+|jupyter     | 1.0.0  | 1.0.0         |
+|matplotlib  | 3.1.1  | 3.1.3         |
 
 We recommend Miniconda to manage the packages. The code should work on packages of newer versions, but in case it fails, you can return to the specific version by, for example, `conda install python=3.7.4`.
 
