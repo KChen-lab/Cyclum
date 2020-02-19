@@ -30,7 +30,7 @@ jupyter notebook
 ```
 A browser window will open showing the directory, where you can go to `tests/notebokks` to view/run the exmaples.
 
-:warning: Please be advised that pip will attemp to install the latest version of the dependencies, which is different from where this program is tested (shown in the table below). TensorFlow < 1.15.2 has a known security issue and are not recommended. However, you can manually change it to specific versions by substitute `install_requires=['keras', 'tensorflow==1.15.2', 'numpy', 'pandas', 'scikit-learn', 'h5py', 'jupyter', 'matplotlib']` with `install_requires=['keras==2.2.4', 'numpy==1.16.5', 'pandas==0.25.2', 'scikit-learn==0.21.3', 'h5py==2.9.0', 'jupyter==1.0.0', 'matplotlib==3.1.1', 'tensorflow==1.14.0']`.
+:warning: Please be advised that pip will attemp to install the latest version of the dependencies, which is different from where this program is tested (shown in the table below). TensorFlow < 1.15.2 has a known security issue and are not recommended. However, you can force pip to install specific versions by change `install_requires=[...]` in `setup.py` to `install_requires=['keras==2.2.4', 'numpy==1.16.5', 'pandas==0.25.2', 'scikit-learn==0.21.3', 'h5py==2.9.0', 'jupyter==1.0.0', 'matplotlib==3.1.1', 'tensorflow==1.14.0']`.
 
 ## Use as portable software
 You can also use cyclum as a portable software, without installing. All the notebooks contains code that add cyclum to the path, so that you can run them directly. However, please make sure the dependencies are fulfilled. 
