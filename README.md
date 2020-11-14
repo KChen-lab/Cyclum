@@ -10,7 +10,7 @@ More examples are available in [test/notebooks](https://github.com/KChen-lab/Cyc
 
 ![Illustration](old-version/docs/Illustration.PNG)
 
-Our paper has been published on Nature Communication: [Liang S, Wang F, Han J, Chen K. Latent periodic process inference from single-cell RNA-seq data. Nat Commun 11(1):1441, 3/2020. e-Pub 3/2020. PMID: 32188848](https://www.nature.com/articles/s41467-020-15295-9). [old preprint](https://www.biorxiv.org/content/10.1101/625566v1) has also been uploaded to BioRxiv. Documentation for submodules and classes in the Cyclum Python module is available as a [website](https://kchen-lab.github.io/Cyclum/docs/_build/html/index.html). Explanations of other files in [test](https://github.com/KChen-lab/Cyclum/tree/master/tests) are available as `README.md` in the corresponding folders.
+Our paper was published: [Liang S, Wang F, Han J, Chen K. Latent periodic process inference from single-cell RNA-seq data. Nat Commun 11(1):1441, 3/2020. e-Pub 3/2020. PMID: 32188848](https://www.nature.com/articles/s41467-020-15295-9). [old preprint](https://www.biorxiv.org/content/10.1101/625566v1) was able @ BioRxiv. Documentation for submodules and classes in the Cyclum Python module is available as a [website](https://kchen-lab.github.io/Cyclum/docs/_build/html/index.html). Explanations of other files in [test](https://github.com/KChen-lab/Cyclum/tree/master/tests) are available as `README.md` in the corresponding folders.
 
 ## Installation
 You can install cyclum by running the following commands, in a directory you desire.
