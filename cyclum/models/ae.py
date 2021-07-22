@@ -1,7 +1,7 @@
 """Main module."""
 
 from math import pi
-import keras
+from tensorflow import keras
 import time
 import numpy
 from typing import List, Union, Callable
