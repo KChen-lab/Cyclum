@@ -37,7 +37,7 @@ def circular_divide2(x, a, b, c):
     best_loc, best_penalty = circular_divide(x, a, b, c)
     reverse_best_loc, reverse_best_penalty = circular_divide(x[::-1], a, b, c)
 
-    res = np.array([''] * n)
+    res = np.array([' ' * max(len(a), len(b), len(c))] * n)
 
     def wrap_around_assign(arr, i, j, v):
         if j >= i:
@@ -54,7 +54,6 @@ def circular_divide2(x, a, b, c):
         values_assigned = (b, a, c)
     for i in range(3):
         wrap_around_assign(res, best_loc[i], best_loc[(i + 1) % 3], values_assigned[i])
-
     return res
 
 def refine_labels(pseudotime, original_labels):
@@ -67,6 +66,6 @@ def refine_labels(pseudotime, original_labels):
     if len(unique_labels) != 3:
         raise ValueError("Only supports 3 classes.")
     order = np.argsort(pseudotime)
-    refined_labels = np.array([''] * len(pseudotime))
+    refined_labels = np.array([' ' * max(len(i) for i in unique_labels)] * len(pseudotime))
     refined_labels[order] = circular_divide2(np.array(original_labels)[order], *unique_labels)
     return refined_labels

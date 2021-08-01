@@ -56,6 +56,16 @@ The code is on Debian GNU/Linux 10 (buster) with both CPU and GPU. The code shou
 
 ## Collaborate with other tools
 
+### Refine labels from other sources:
+If you have labels from other sources such as `scanpy.tl.score_genes_cell_cycle` or `Seurat::CellCycleScoring`, 
+you can use Cyclum to refine the result along the inferred pseudotime.
+```python
+from cyclum.postproc import refine_labels
+refine_labels(pseudotime=[4, 5, 1, 2, 3, 6, 7, 8], original_labels=['G1', 'G1', 'G1', 'G1', 'S', 'S', 'G2M', 'G2M'])
+```
+It will output ```['G1', 'G1', 'G1', 'G1', 'G1', 'S', 'G2M', 'G2M']``` as the refined result. 
+Note that an `S` is replaced by `G1` as it is surrounded by `G1`s.
+
 ### Transferring data between python and R
 Although Python is a good data analysis tool in addition to a general programing language, researchers may want to use R, which is more focused on statistics. Cyclum is implemented in python, but in order to help use both languages, we implemented `mat2hdf` and `hdf2mat` in both Python and R, to help transferring data back and forth rapidly. In general, the correspondence of data structures in R and Python are: unnamed matrices -- 2D numpy.array, named matrices -- pandas.DataFrame, data.frame -- pandas.DataFrame. (Prerequisites: `hdf5r` in R, `h5py` in python.)
 
