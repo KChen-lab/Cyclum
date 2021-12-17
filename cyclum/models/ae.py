@@ -250,6 +250,8 @@ class AutoEncoder(BaseAutoEncoder):
 
         super().__init__()
 
+        self.n_circular_unit = n_circular_unit
+
         if input_width is None:
             self.load(filepath)
         else:
@@ -280,6 +282,19 @@ class AutoEncoder(BaseAutoEncoder):
             y_hat = self.decoder('decoder', input_width)(chest)
 
             self.model = keras.Model(outputs=y_hat, inputs=y)
+    def get_circular_loadings(self):
+        return self.model.get_layer("decoder_out").get_weights()[0][-(self.n_circular_unit * 2):, :]
+
+    def get_circular_component(self, circular_pseudotime):
+        if self.n_circular_unit == 1:
+            return numpy.hstack([numpy.sin(circular_pseudotime),
+                                 numpy.cos(circular_pseudotime)]) @ self.get_circular_loadings()
+        else:
+            temp = []
+            for i in range(self.n_circular_unit):
+                temp.append(numpy.sin(circular_pseudotime[:, [i]]))
+                temp.append(numpy.cos(circular_pseudotime[:, [i]]))
+            return numpy.hstack(temp) @ self.get_circular_loadings()
 
     def pre_train(self, data, n_linear_bypass: int, epochs: int = 100, verbose: int = 10, rate: float = 1e-4):
         """Train the network with PCA. May save some training time. Only applicable to circular with linear bypass.
